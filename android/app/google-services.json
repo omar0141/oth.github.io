@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "47848997917",
+    "project_id": "shakosh-60e60",
+    "storage_bucket": "shakosh-60e60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47848997917:android:bb2be99e4957290499f2f4",
+        "android_client_info": {
+          "package_name": "com.exabytellc.shakosh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWc_7h1TWdAsgZjku7-9vKVpFyCZErDp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

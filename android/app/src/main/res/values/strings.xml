@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">"Bako"</string>
+<string name="facebook_app_id">658008379037988</string>
+<string name="fb_login_protocol_scheme">fb658008379037988</string>
+<string name="facebook_client_token">e3864771429baaee07b8d5e908123e35</string>
+</resources>
