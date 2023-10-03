@@ -5,7 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import '../../../controller/MyApi.dart';
+import '../../../new/Data/Remote/MyApi.dart';
 import '../../../controller/categories.dart';
 import '../../../controller/items.dart';
 import '../../../helper/translation.dart';

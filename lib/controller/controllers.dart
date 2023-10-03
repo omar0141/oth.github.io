@@ -8,7 +8,7 @@ export 'edit_profile.dart';
 export 'items.dart';
 export 'lang.dart';
 export 'login.dart';
-export 'MyApi.dart';
+export '../new/Data/Remote/MyApi.dart';
 export 'orders.dart';
 export 'phone_auth.dart';
 export 'post_firebase.dart';

@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../helper/translation.dart';
 import '../screens/home/home_screen.dart';
 import 'Address.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 import 'package:http/http.dart' as http;
 import 'cart_wishlist.dart';
 import 'dependants.dart';

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 
 class Header2 extends StatelessWidget {
   const Header2({super.key});
@@ -17,8 +19,25 @@ class Header2 extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  buildMenuItem(context, "home".tr, Icons.home, () {}),
-                  buildMenuItem(context, "categories".tr, Icons.list, () {}),
+                  Listener(
+                    onPointerDown: (event) {
+                      onPointerDown(
+                          event, Uri.base.origin + "/#${HomeScreen.routeName}");
+                    },
+                    child: buildMenuItem(context, "home".tr, Icons.home, () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(HomeScreen.routeName);
+                    }),
+                  ),
+                  Listener(
+                      onPointerDown: (event) {
+                        onPointerDown(event, Uri.base.origin + "/#categories");
+                      },
+                      child: buildMenuItem(context, "categories".tr, Icons.list,
+                          () {
+                        Navigator.of(context)
+                            .pushReplacementNamed("categories");
+                      })),
                   buildMenuItem(context, "brands".tr, Icons.local_offer, () {}),
                   buildMenuItem(context, "about-us".tr, Icons.info, () {}),
                   buildMenuItem(context, "contact-us".tr, Icons.call, () {}),

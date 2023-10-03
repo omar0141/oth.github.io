@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shakosh/controller/MyApi.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';

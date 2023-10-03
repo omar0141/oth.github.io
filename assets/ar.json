@@ -184,7 +184,10 @@
   "contact-us": "كلمنا",
   "search-placeholder": "اكتب ال بتدور عليه هنا",
   "welcome-to-bayt-aleadad": "مرحبا بك في بيت العدد",
-  "hi":"مرحبا",
-  "more":"المزيد",
-  "font-family":"Tajawal"
+  "hi": "مرحبا",
+  "more": "المزيد",
+  "font-family": "Tajawal",
+  "copy-link-address": "نسخ الرابط",
+  "open-in-new-tab": "فتح في صفحة جديدة",
+  "all-categories": "كل التصنيفات"
 }

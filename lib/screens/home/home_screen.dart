@@ -16,7 +16,7 @@ import 'package:shakosh/screens/cart/cart_screen.dart';
 import '../../components/product_card.dart';
 import '../../constants.dart';
 import '../../controller/Address.dart';
-import '../../controller/MyApi.dart';
+import '../../new/Data/Remote/MyApi.dart';
 import '../../controller/categories.dart';
 import '../../controller/dependants.dart';
 import '../../controller/items.dart';

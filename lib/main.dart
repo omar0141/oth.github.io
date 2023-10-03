@@ -1,21 +1,18 @@
-// ignore_for_file: unused_import
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shakosh/new/Bloc/Categories/categories_bloc.dart';
+import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
 import 'package:shakosh/new/Config/Services/InitialServices.dart';
 import 'package:shakosh/new/Config/Themes/MyTheme.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Screens/OnBoarding/OnBoardingScreen.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
+import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Config/Routes/routes.dart';
-import 'package:shakosh/screens/home/home_screen.dart';
-import 'package:shakosh/test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'helper/translation.dart';
-import 'package:shakosh/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -43,6 +40,8 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 double screenWidth = 0;
 double screenHeight = 0;
 AppColors colors(context) => Theme.of(context).extension<AppColors>()!;
+late Timer timer;
+late int newDate;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +51,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   HttpOverrides.global = MyHttpOverrides();
+  MyApi.UID = preferences.getString("id") ?? "";
+  MyApi.username = preferences.getString("username") ?? "";
+  String? date = preferences.getString("date");
+  newDate = DateTime.now()
+      .difference(DateTime.parse(date ?? "2023-09-18 21:59"))
+      .inMinutes;
   runApp(MyApp());
 }
 
@@ -74,7 +79,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeMetrics() {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    if (MediaQuery.of(context).size.width > 750) MyApp.setAppState();
+    if (screenWidth > 750) MyApp.setAppState();
     super.didChangeMetrics();
   }
 
@@ -86,6 +91,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    Flurorouter.setupRouter();
   }
 
   @override
@@ -98,18 +104,30 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CategoriesBloc>(
-          create: (BuildContext context) => CategoriesBloc(),
-        ),
-      ],
+    return Directionality(
+      textDirection:
+          "language_iso".tr == "ar" ? TextDirection.rtl : TextDirection.ltr,
       child: MaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyCustomScrollBehavior(),
         title: 'Bayt Aleadad',
         theme: myTheme(),
+        builder: (context, child) {
+          return Overlay(
+            initialEntries: [
+              OverlayEntry(
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<DependanciesBloc>(
+                        create: (BuildContext context) => DependanciesBloc())
+                  ],
+                  child: child!,
+                ),
+              ),
+            ],
+          );
+        },
         locale: Translations.getLocale(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
@@ -118,7 +136,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ],
         supportedLocales: Translations.getLocales(),
         initialRoute: HomeScreen.routeName,
-        routes: routes,
+        onGenerateRoute: Flurorouter.router.generator,
       ),
     );
   }

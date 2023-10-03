@@ -7,7 +7,7 @@ import '../components/loading.dart';
 import '../helper/translation.dart';
 import '../screens/home/home_screen.dart';
 import 'dart:convert';
-import 'package:shakosh/controller/MyApi.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:http/http.dart' as http;
 
 class ChangePasswordC with ChangeNotifier {

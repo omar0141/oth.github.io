@@ -5,7 +5,7 @@ import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header1.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header2.dart';
 
 class ScaffoldDesktop extends StatefulWidget {
-  const ScaffoldDesktop({super.key,required this.child});
+  const ScaffoldDesktop({super.key, required this.child});
   final Widget child;
 
   @override
@@ -77,10 +77,9 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
           Visibility(visible: isVisibleHeader1, child: Header1()),
           Header2(),
           Expanded(
-            child: ListView(controller: scrollController, children: [
-              widget.child,
-              footer(context)
-            ]),
+            child: ListView(
+                controller: scrollController,
+                children: [widget.child, footer(context)]),
           ),
         ],
       ),

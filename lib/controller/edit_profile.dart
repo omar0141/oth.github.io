@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components/loading.dart';
 import '../helper/translation.dart';
 import '../screens/profile/profile_screen.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 import 'package:intl/intl.dart';
 
 import 'items.dart';

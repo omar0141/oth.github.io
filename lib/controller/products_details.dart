@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../helper/translation.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 
 class ProductDetailsC with ChangeNotifier {
   List images = [];

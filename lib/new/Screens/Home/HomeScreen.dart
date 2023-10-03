@@ -7,7 +7,7 @@ import 'package:shakosh/new/Screens/Home/Components/Body.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  static String routeName = "/home";
+  static String routeName = "home";
 
   @override
   Widget build(BuildContext context) {

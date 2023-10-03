@@ -5,6 +5,8 @@ class MyApi {
   static String api = MyApi.base + "API/";
   static String media = MyApi.api + "_media/";
   static String SID = "d3hhZmdQdkRrYnlKOktJdmdSWFVQamZZSnRlWDVqZm5wMXc9PQ==";
+  static String UID = "";
+  static String username = "";
   static String BranchId = "";
   static String AddressId = "";
   static String CID = '';

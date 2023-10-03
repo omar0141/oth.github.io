@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shakosh/new/Bloc/Categories/categories_bloc.dart';
+import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ParentCategories.dart';
@@ -21,6 +21,7 @@ class Body extends StatelessWidget {
         ),
         ParentCategories(
           parentId: parentId,
+          expand: parentId == null ? true : false,
         ),
         ChildCategories()
       ],
@@ -33,11 +34,11 @@ class ChildCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoriesBloc, CategoriesState>(
+    return BlocBuilder<DependanciesBloc, DependanciesState>(
       builder: (context, state) {
-        if (state is CategoriesLoading) {
-          return CategoriesShimmer();
-        } else if (state is CategoriesLoaded) {
+        if (state is DependanciesLoading) {
+          return categoriesShimmer();
+        } else if (state is DependanciesLoaded) {
           List<CategoreyModel> categories = state.childCategories;
           return categoriesWidget(categories);
         } else {
@@ -96,7 +97,9 @@ class ChildCategories extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: CategoriesShimmer());
+                child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: CategoriesShimmer()));
           }),
     );
   }

@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:shakosh/controller/MyApi.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/controller/login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';

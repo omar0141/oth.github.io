@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shakosh/models/Category.dart';
 import 'package:http/http.dart' as http;
 import '../helper/translation.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 
 class Getcategories extends ChangeNotifier {
   List<Category> get getsubcategories => subcategories;

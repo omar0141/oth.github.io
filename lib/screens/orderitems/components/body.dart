@@ -16,7 +16,7 @@ import '../../../size_config.dart';
 import '../../home/home_screen.dart';
 import 'cart_card.dart';
 import 'package:shakosh/constants.dart';
-import 'package:shakosh/controller/MyApi.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 
 class Body extends StatefulWidget {
   final invo;

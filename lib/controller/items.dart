@@ -10,7 +10,7 @@ import 'package:shakosh/models/Item.dart';
 import 'package:http/http.dart' as http;
 import '../helper/translation.dart';
 import 'cart_wishlist.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 
 class Getcategoryitems extends ChangeNotifier {
   List<Item> get getItems => items;

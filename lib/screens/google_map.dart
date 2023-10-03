@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shakosh/components/default_button.dart';
-import 'package:shakosh/controller/MyApi.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/helper/translation.dart';
 import 'package:shakosh/screens/splash/splash_screen.dart';
 import 'package:google_maps_webservice/places.dart';

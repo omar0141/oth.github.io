@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../helper/translation.dart';
 import '../models/Dependants.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 
 class GetDependants extends ChangeNotifier {
   List<Payments> payments = [];

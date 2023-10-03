@@ -9,7 +9,7 @@ import '../components/loading.dart';
 import '../helper/translation.dart';
 import '../screens/splash/splash_screen.dart';
 import 'cart_wishlist.dart';
-import 'MyApi.dart';
+import '../new/Data/Remote/MyApi.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
