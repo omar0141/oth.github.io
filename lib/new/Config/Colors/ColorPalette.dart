@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+const LinearGradient shimmerGradientColor = LinearGradient(
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+  colors: [Colors.grey, Colors.white],
+);
+
 class ColorPalette {
   static const MaterialColor primaryLight = const MaterialColor(
     0xff000000,

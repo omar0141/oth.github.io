@@ -56,7 +56,7 @@ class Getcategories extends ChangeNotifier {
                 .toString(),
             image: (responsebody['data']['categories'][i]['thumbnail'] == null
                 ? null
-                : MyApi.public +
+                : MyApi.media +
                     responsebody['data']['categories'][i]['thumbnail']
                         .toString()),
             selected_id: 0,
@@ -73,7 +73,7 @@ class Getcategories extends ChangeNotifier {
                 .toString(),
             image: (responsebody['data']['categories'][i]['thumbnail'] == null
                 ? null
-                : MyApi.public +
+                : MyApi.media +
                     responsebody['data']['categories'][i]['thumbnail']
                         .toString()),
             selected_id: 0,

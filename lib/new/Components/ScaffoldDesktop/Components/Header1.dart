@@ -37,7 +37,9 @@ class Header1 extends StatelessWidget {
                       Text(
                         "client-service".tr,
                         style: TextStyle(
-                            fontSize: 18, color: colors(context).grey1),
+                          fontSize: 18,
+                          color: colors(context).grey1,
+                        ),
                       ),
                       SelectableText(
                         "(+2) 01023966756",

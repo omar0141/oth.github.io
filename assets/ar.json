@@ -46,7 +46,7 @@
   "female": "أنثى",
   "product-name": "name_alt",
   "cat-name": "name_alt",
-  "home": "الصفحة الرئيسية",
+  "home": "الرئيسية",
   "favourite": "المفضلة",
   "profile": "حسابى",
   "logout": "تسجيل الخروج",
@@ -176,5 +176,15 @@
   "nobranch-warning": "عفوا، لن يتم إكمال طلبك لعدم وجود فروع متاحة بالقرب منك",
   "cart-delete-item-message": "هل تريد حذف ذلك العنصر؟",
   "customer": "عميل",
-  "language": "العربية"
+  "language": "العربية",
+  "client-service": "خدمة العملاء",
+  "categories": "التصنيفات",
+  "brands": "الماركة",
+  "about-us": "عن الشركة",
+  "contact-us": "كلمنا",
+  "search-placeholder": "اكتب ال بتدور عليه هنا",
+  "welcome-to-bayt-aleadad": "مرحبا بك في بيت العدد",
+  "hi":"مرحبا",
+  "more":"المزيد",
+  "font-family":"Tajawal"
 }

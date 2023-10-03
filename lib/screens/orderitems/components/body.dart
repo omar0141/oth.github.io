@@ -237,7 +237,7 @@ class _BodyState extends State<Body> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
                                     child: CachedNetworkImage(
-                                      imageUrl: MyApi.public +
+                                      imageUrl: MyApi.media +
                                           orders_details['data']['products'][i]
                                                   ['thumbnail']
                                               .toString(),

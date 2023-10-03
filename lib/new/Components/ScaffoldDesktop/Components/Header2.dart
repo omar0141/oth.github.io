@@ -17,11 +17,11 @@ class Header2 extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  buildMenuItem(context, "home".tr, () {}),
-                  buildMenuItem(context, "categories".tr, () {}),
-                  buildMenuItem(context, "brands".tr, () {}),
-                  buildMenuItem(context, "about-us".tr, () {}),
-                  buildMenuItem(context, "contact-us".tr, () {}),
+                  buildMenuItem(context, "home".tr, Icons.home, () {}),
+                  buildMenuItem(context, "categories".tr, Icons.list, () {}),
+                  buildMenuItem(context, "brands".tr, Icons.local_offer, () {}),
+                  buildMenuItem(context, "about-us".tr, Icons.info, () {}),
+                  buildMenuItem(context, "contact-us".tr, Icons.call, () {}),
                 ],
               ),
             ),
@@ -33,6 +33,16 @@ class Header2 extends StatelessWidget {
                 onPressed: () {},
                 icon: Icon(
                   FontAwesomeIcons.cartShopping,
+                  color: colors(context).whiteColor,
+                )),
+            SizedBox(
+              width: 5,
+            ),
+            IconButton(
+                tooltip: "favourite".tr,
+                onPressed: () {},
+                icon: Icon(
+                  FontAwesomeIcons.solidHeart,
                   color: colors(context).whiteColor,
                 )),
             SizedBox(
@@ -139,7 +149,7 @@ class Header2 extends StatelessWidget {
     );
   }
 
-  Padding buildMenuItem(context, text, press) {
+  Padding buildMenuItem(context, text, icon, press) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Material(
@@ -150,9 +160,23 @@ class Header2 extends StatelessWidget {
           onTap: press,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-            child: Text(
-              text,
-              style: TextStyle(color: colors(context).whiteColor, fontSize: 18),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: colors(context).whiteColor,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  text,
+                  style: TextStyle(
+                      height: "language_iso".tr == "ar" ? 2 : 1,
+                      color: colors(context).whiteColor,
+                      fontSize: 18),
+                ),
+              ],
             ),
           ),
         ),

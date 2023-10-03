@@ -22,7 +22,7 @@ class ProductDetailsC with ChangeNotifier {
     images = [];
     if (responsebody.length != 0) {
       for (int i = 0; i < responsebody['data']['media'].length; i++) {
-        images.add(MyApi.public + responsebody['data']['media'][i]['filename']);
+        images.add(MyApi.media + responsebody['data']['media'][i]['filename']);
       }
     } else {
       images = ['https://dhbs.pythonanywhere.com/media/notfound.jpg'];

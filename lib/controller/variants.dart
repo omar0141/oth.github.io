@@ -132,7 +132,7 @@ class GetVariants extends ChangeNotifier {
                 discount_price: double.parse(product['discount_price']),
                 image: (product['thumbnail'] == null
                     ? null
-                    : MyApi.public + product['thumbnail'].toString()),
+                    : MyApi.media + product['thumbnail'].toString()),
                 item_no: product['id'].toString(),
                 qtys: 1,
                 detail: '',

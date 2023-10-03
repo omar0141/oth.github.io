@@ -5,3 +5,6 @@ const String onBoarding3 = "assets/images/OnBoarding3.png";
 const String logo = "assets/images/logo.png";
 const String egypt = "assets/images/egypt.png";
 const String unitedKingdom = "assets/images/united-kingdom.png";
+const String more = "assets/images/more.png";
+const String more_outlined = "assets/images/more_outlined.png";
+const String unLoadedImage = "assets/icons/unloaded.svg";

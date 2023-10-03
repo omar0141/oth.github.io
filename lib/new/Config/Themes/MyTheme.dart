@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
 import 'package:shakosh/new/Config/Colors/ColorPalette.dart';
+import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/NoTransitionBuilder.dart';
 
 ThemeData myTheme() {
   return ThemeData(
-      fontFamily: "Muli",
+      fontFamily: "font-family".tr,
       appBarTheme: appBarTheme(),
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {

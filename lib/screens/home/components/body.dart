@@ -172,7 +172,7 @@ class _CategoriesState extends State<Categories> {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CachedNetworkImage(
-                        imageUrl: MyApi.public + data['thumbnail'],
+                        imageUrl: MyApi.media + data['thumbnail'],
                         fit: BoxFit.fill,
                         placeholder: (context, url) =>
                             CircularProgressIndicator(

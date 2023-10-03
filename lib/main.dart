@@ -1,10 +1,12 @@
 // ignore_for_file: unused_import
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shakosh/new/Bloc/MyApp/MyApp_bloc.dart';
+import 'package:shakosh/new/Bloc/Categories/categories_bloc.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
+import 'package:shakosh/new/Config/Services/InitialServices.dart';
 import 'package:shakosh/new/Config/Themes/MyTheme.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Screens/OnBoarding/OnBoardingScreen.dart';
@@ -24,6 +26,14 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
 
 // flutter pub run build_runner build --delete-conflicting-outputs
@@ -70,6 +80,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await InitialServices().getDependancies();
+    });
+
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -86,13 +100,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     screenHeight = MediaQuery.of(context).size.height;
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MyAppBloc>(
-          create: (BuildContext context) => MyAppBloc(),
+        BlocProvider<CategoriesBloc>(
+          create: (BuildContext context) => CategoriesBloc(),
         ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
+        scrollBehavior: MyCustomScrollBehavior(),
         title: 'Bayt Aleadad',
         theme: myTheme(),
         locale: Translations.getLocale(),

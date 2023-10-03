@@ -1,3 +1,4 @@
+import 'package:shakosh/new/Screens/Categories/CategoriesScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Screens/OnBoarding/OnBoardingScreen.dart';
 import 'package:shakosh/screens/categories/category_screen.dart';
@@ -48,4 +49,5 @@ final Map<String, WidgetBuilder> routes = {
   // new
   OnBoardingScreen.routeName: (context) => OnBoardingScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
+  CategoriesScreen.routeName: (context) => CategoriesScreen(),
 };
