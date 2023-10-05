@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
 import 'package:shakosh/new/Data/Local/DependanciesLocal.dart';
+import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Remote/DependanciesRemote.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/ShippingModel.dart';
@@ -18,6 +19,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   String? selectedParentCatgeoryId;
   List<TagsModel> tags = [];
   List<ShippingModel> shippings = [];
+  List<BrandModel> brands = [];
 
   DependanciesBloc() : super(DependanciesLoading()) {
     on<DependanciesEvent>((event, emit) async {
@@ -50,7 +52,8 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       emit(DependanciesLoaded(
           allCategories: allCategories,
           parentCategories: parentCategories,
-          childCategories: subCategories));
+          childCategories: subCategories,
+          brands: brands));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
       emit(DependanciesFaliure());
@@ -80,11 +83,17 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       for (var element in dependanciesData["shipping"]) {
         shippings.add(ShippingModel.fromJson(element));
       }
+      // ==========================================================
+      // Modeling Brands Data From Api
+      for (var element in dependanciesData["categories"]) {
+        brands.add(BrandModel.fromJson(element));
+      }
       //
       emit(DependanciesLoaded(
           allCategories: allCategories,
           parentCategories: parentCategories,
-          childCategories: subCategories));
+          childCategories: subCategories,
+          brands: brands));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
       emit(DependanciesFaliure());

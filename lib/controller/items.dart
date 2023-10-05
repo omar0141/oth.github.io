@@ -132,7 +132,7 @@ class Getcategoryitems extends ChangeNotifier {
     user_id = preferences.getString('user_id');
     loading = true;
     notifyListeners();
-    var url = MyApi.Products;
+    var url = MyApi.products;
     var data = {
       // 'search': '1',
       'SID': MyApi.SID,

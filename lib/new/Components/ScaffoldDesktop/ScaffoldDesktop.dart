@@ -17,6 +17,7 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
   bool isVisibleHeader2 = true;
   bool isVisibleHeader1 = true;
 
+  @override
   void initState() {
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection ==

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Components/ParentCategories.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
@@ -22,6 +23,16 @@ class Body extends StatelessWidget {
         ParentCategories(
           parentId: parentId,
           expand: parentId == null ? true : false,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
+          child: Divider(
+            height: 5,
+          ),
         ),
         ChildCategories()
       ],
@@ -53,7 +64,8 @@ class ChildCategories extends StatelessWidget {
 
   Widget categoriesWidget(List<CategoreyModel> categories) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(
+          horizontal: mySize(10, 10, 30, 30, 30)!, vertical: 20),
       child: GridView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -66,14 +78,25 @@ class ChildCategories extends StatelessWidget {
           itemCount: categories.length,
           itemBuilder: (context, i) {
             CategoreyModel category = categories[i];
-            return Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: CategoryCard(
-                  category: category,
-                ));
+            String route = "categories/${category.id}/products/1";
+            return Listener(
+              onPointerDown: (event) {
+                onPointerDown(event, Uri.base.origin + "/#$route");
+              },
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(route);
+                },
+                child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: CategoryCard(
+                      category: category,
+                    )),
+              ),
+            );
           }),
     );
   }

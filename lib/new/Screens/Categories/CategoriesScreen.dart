@@ -41,6 +41,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         child: Body(
           parentId: widget.parentId,
         ),
+        index: -1,
       );
     }
   }

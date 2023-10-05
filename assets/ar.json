@@ -179,15 +179,18 @@
   "language": "العربية",
   "client-service": "خدمة العملاء",
   "categories": "التصنيفات",
-  "brands": "الماركة",
+  "brands": "الماركات",
   "about-us": "عن الشركة",
   "contact-us": "كلمنا",
   "search-placeholder": "اكتب ال بتدور عليه هنا",
   "welcome-to-bayt-aleadad": "مرحبا بك في بيت العدد",
+  "bayt-aleadad":"بيت العدد",
   "hi": "مرحبا",
   "more": "المزيد",
   "font-family": "Tajawal",
   "copy-link-address": "نسخ الرابط",
   "open-in-new-tab": "فتح في صفحة جديدة",
-  "all-categories": "كل التصنيفات"
+  "all-categories": "كل التصنيفات",
+  "show-all": "عرض الكل",
+  "trending-products": "المنتجات الرائجة"
 }

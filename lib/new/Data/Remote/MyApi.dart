@@ -36,7 +36,7 @@ class MyApi {
       MyApi.api + 'public/ecommerce/products/similar';
   static String ProductVariants =
       MyApi.api + 'public/ecommerce/products/variants';
-  static String Products = MyApi.api + 'public/ecommerce/products/get';
+  static String products = MyApi.api + 'public/ecommerce/products/get';
   static String Categories = MyApi.api + 'public/ecommerce/home';
   static String AddToCart = MyApi.api + 'public/ecommerce/clients/cart/manage';
   static String AddToWishlist =

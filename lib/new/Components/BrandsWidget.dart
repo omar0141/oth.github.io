@@ -7,31 +7,30 @@ import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
-import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
-import 'dart:html' as html;
+import 'package:shakosh/new/Data/Models/BrandModel.dart';
 
 // ignore: must_be_immutable
-class ParentCategories extends StatefulWidget {
-  ParentCategories({super.key, this.parentId, this.expand = false});
+class BrandsWidget extends StatefulWidget {
+  BrandsWidget({super.key, this.home = false});
 
-  String? parentId;
-  bool expand;
+  bool home;
 
   @override
-  State<ParentCategories> createState() => _ParentCategoriesState();
+  State<BrandsWidget> createState() => _BrandsWidgetState();
 }
 
-class _ParentCategoriesState extends State<ParentCategories> {
+class _BrandsWidgetState extends State<BrandsWidget> {
   ScrollController scrollController = ScrollController();
+
   double listanimate = 0;
-  @override
-  void initState() {
-    BlocProvider.of<DependanciesBloc>(context).subCategories.clear();
-    super.initState();
-  }
+
+  bool expand = false;
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.home) {
+      expand = true;
+    }
     return Column(
       children: [
         Row(
@@ -39,33 +38,35 @@ class _ParentCategoriesState extends State<ParentCategories> {
             SizedBox(
               width: mySize(10, 10, 20, 20, 20),
             ),
-            Text(
-              "categories".tr,
-              style: TextStyle(
-                  fontSize: mySize(14, 14, 19, 19, 19),
-                  fontWeight: FontWeight.bold),
-            ),
-            Spacer(),
-            InkWell(
-              onTap: () {
-                widget.expand = !widget.expand;
-                setState(() {});
-              },
-              child: Row(
-                children: [
-                  Text(
-                    "show-all".tr,
-                    style: TextStyle(
-                        fontSize: mySize(14, 14, 19, 19, 19),
-                        fontWeight: FontWeight.bold,
-                        height: 1),
-                  ),
-                  Icon(widget.expand
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down)
-                ],
+            if (widget.home)
+              Text(
+                "brands".tr,
+                style: TextStyle(
+                    fontSize: mySize(14, 14, 19, 19, 19),
+                    fontWeight: FontWeight.bold),
               ),
-            ),
+            Spacer(),
+            if (widget.home)
+              InkWell(
+                onTap: () {
+                  expand = !expand;
+                  setState(() {});
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      "show-all".tr,
+                      style: TextStyle(
+                          fontSize: mySize(14, 14, 19, 19, 19),
+                          fontWeight: FontWeight.bold,
+                          height: 1),
+                    ),
+                    Icon(expand
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down)
+                  ],
+                ),
+              ),
             SizedBox(
               width: mySize(10, 10, 20, 20, 20),
             ),
@@ -76,15 +77,15 @@ class _ParentCategoriesState extends State<ParentCategories> {
         ),
         Row(
           children: [
-            if (!widget.expand && screenWidth > 768) rightScroll(context),
+            if (!expand && screenWidth > 768) rightScroll(context),
             Expanded(
               child: BlocBuilder<DependanciesBloc, DependanciesState>(
                 builder: (context, state) {
                   if (state is DependanciesLoading) {
-                    return categoriesShimmer();
+                    return brandsShimmer();
                   } else if (state is DependanciesLoaded) {
-                    List<CategoreyModel> categories = state.parentCategories;
-                    return catgeoriesWidget(categories);
+                    List<BrandModel> brands = state.brands;
+                    return brandsWidget(brands);
                   } else {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -94,14 +95,14 @@ class _ParentCategoriesState extends State<ParentCategories> {
                 },
               ),
             ),
-            if (!widget.expand && screenWidth > 768) leftScroll(context),
+            if (!expand && screenWidth > 768) leftScroll(context),
           ],
         ),
       ],
     );
   }
 
-  SizedBox categoriesShimmer() {
+  SizedBox brandsShimmer() {
     return SizedBox(
         height: 150,
         child: ListView.builder(
@@ -113,8 +114,8 @@ class _ParentCategoriesState extends State<ParentCategories> {
             }));
   }
 
-  Widget catgeoriesWidget(List<CategoreyModel> categories) {
-    if (widget.expand) {
+  Widget brandsWidget(List<BrandModel> brands) {
+    if (expand) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
         child: GridView.builder(
@@ -126,22 +127,21 @@ class _ParentCategoriesState extends State<ParentCategories> {
               mainAxisSpacing: 10,
               crossAxisCount: mySize(3, 2, 5, 5, 7)!.toInt(),
             ),
-            itemCount: categories.length,
+            itemCount: brands.length,
             itemBuilder: (context, i) {
-              CategoreyModel category = categories[i];
+              BrandModel brand = brands[i];
               return Listener(
                 onPointerDown: (event) {
                   onPointerDown(
-                      event, Uri.base.origin + "/#categories/${category.id}");
+                      event, Uri.base.origin + "/#brands/${brand.id}/products");
                 },
                 child: InkWell(
                   onTap: () {
-                    selectCategory(category);
+                    // selectBrand(brand, context);
                   },
                   child: CategoryCard(
-                    expand: widget.expand,
-                    category: category,
-                    parentId: widget.parentId,
+                    expand: expand,
+                    category: brand,
                   ),
                 ),
               );
@@ -151,27 +151,26 @@ class _ParentCategoriesState extends State<ParentCategories> {
       return SizedBox(
         height: mySize(100, 100, 150, 150, 150),
         child: ListView.builder(
-          itemCount: categories.length <= 10 ? categories.length : 10,
+          itemCount: brands.length <= 10 ? brands.length : 10,
           controller: scrollController,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
-            CategoreyModel category = categories[i];
+            BrandModel brand = brands[i];
             return Padding(
               padding: EdgeInsetsDirectional.only(
                   end: 10, start: mySize(10, 10, 0, 0, 0)!),
               child: Listener(
                 onPointerDown: (event) {
                   onPointerDown(
-                      event, Uri.base.origin + "/#categories/${category.id}");
+                      event, Uri.base.origin + "/#brands/${brand.id}/products");
                 },
                 child: InkWell(
                   onTap: () {
-                    selectCategory(category);
+                    // selectBrand(brand, context);
                   },
                   child: CategoryCard(
-                    expand: widget.expand,
-                    category: category,
-                    parentId: widget.parentId,
+                    expand: expand,
+                    category: brand,
                   ),
                 ),
               ),
@@ -181,18 +180,8 @@ class _ParentCategoriesState extends State<ParentCategories> {
       );
   }
 
-  void selectCategory(CategoreyModel category) {
-    if (widget.parentId == null) {
-      BlocProvider.of<DependanciesBloc>(context)
-          .add(SelectCategoryEvent(selectedParentCatgeoryId: category.id));
-      Navigator.of(context).pushNamed("categories/${category.id}");
-    } else {
-      html.window.history
-          .pushState(null, 'categories', "#categories/${category.id}");
-      widget.parentId = category.id;
-      BlocProvider.of<DependanciesBloc>(context)
-          .add(SelectCategoryEvent(selectedParentCatgeoryId: widget.parentId!));
-    }
+  void selectBrand(BrandModel brand, context) {
+    Navigator.of(context).pushNamed("categories/${brand.id}");
   }
 
   SizedBox leftScroll(BuildContext context) {

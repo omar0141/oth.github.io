@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shakosh/new/Components/BrandsWidget.dart';
 import 'package:shakosh/new/Components/ParentCategories.dart';
+import 'package:shakosh/new/Screens/Home/Components/TrendingProducts.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -11,7 +13,31 @@ class Body extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        ParentCategories()
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: ParentCategories(),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: BrandsWidget(
+            home: true,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Divider(),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        TrendingProducts()
       ],
     );
   }

@@ -191,10 +191,13 @@
   "contact-us": "Contact Us",
   "search-placeholder": "Search...",
   "welcome-to-bayt-aleadad": "Welcome to Bayt Aleadad",
+  "bayt-aleadad": "Bayt Aleadad",
   "hi": "Hi",
   "more": "More",
   "font-family": "Muli",
-  "copy-link-address":"Copy link address",
-  "open-in-new-tab":"Open in new tab",
-  "all-categories" :"All Categories"
+  "copy-link-address": "Copy link address",
+  "open-in-new-tab": "Open in new tab",
+  "all-categories": "All Categories",
+  "show-all": "Show All",
+  "trending-products": "Trending Products"
 }

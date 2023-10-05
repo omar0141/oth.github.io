@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
+import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
 import 'package:shakosh/new/Config/Services/InitialServices.dart';
 import 'package:shakosh/new/Config/Themes/MyTheme.dart';
@@ -111,7 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyCustomScrollBehavior(),
-        title: 'Bayt Aleadad',
+        title: 'bayt-aleadad'.tr,
         theme: myTheme(),
         builder: (context, child) {
           return Overlay(
@@ -120,7 +121,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 builder: (context) => MultiBlocProvider(
                   providers: [
                     BlocProvider<DependanciesBloc>(
-                        create: (BuildContext context) => DependanciesBloc())
+                        create: (BuildContext context) => DependanciesBloc()),
+                    BlocProvider<ProductsBloc>(
+                        create: (BuildContext context) => ProductsBloc())
                   ],
                   child: child!,
                 ),

@@ -4,6 +4,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 
 class Header2 extends StatelessWidget {
@@ -12,7 +13,7 @@ class Header2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: colors(context).black2,
+        color: colors(context).kprimaryColor,
         height: 60,
         child: Row(
           children: [
@@ -35,10 +36,11 @@ class Header2 extends StatelessWidget {
                       },
                       child: buildMenuItem(context, "categories".tr, Icons.list,
                           () {
-                        Navigator.of(context)
-                            .pushReplacementNamed("categories");
+                        Navigator.of(context).pushNamed("categories");
                       })),
-                  buildMenuItem(context, "brands".tr, Icons.local_offer, () {}),
+                  buildMenuItem(context, "brands".tr, Icons.local_offer, () {
+                    Navigator.of(context).pushNamed(BrandsScreen.routeName);
+                  }),
                   buildMenuItem(context, "about-us".tr, Icons.info, () {}),
                   buildMenuItem(context, "contact-us".tr, Icons.call, () {}),
                 ],

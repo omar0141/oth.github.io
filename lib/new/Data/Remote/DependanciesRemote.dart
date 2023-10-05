@@ -12,11 +12,12 @@ class DependanciesRemote {
       var data = {"SID": MyApi.SID};
       var response = await http.post(Uri.parse(url), body: data);
       var responsebody = jsonDecode(response.body);
-      log("Remote");
+      log("Dependancies Remote");
       if (responsebody == null) {
         MySnackBar()
             .errorSnack(navigatorKey.currentContext, "Server Error", true);
       } else if (responsebody["status"] == 200) {
+        log("Dependancies Remote Success");
         preferences.setString(
             "dependanciesData", jsonEncode(responsebody["data"]));
       } else {
