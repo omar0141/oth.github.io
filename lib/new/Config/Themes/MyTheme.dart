@@ -24,7 +24,7 @@ ThemeData myTheme() {
             grey1: Colors.grey,
             grey2: Color.fromARGB(255, 214, 214, 214),
             kprimaryColor: Color.fromARGB(255, 58, 58, 58),
-            kSecondaryColor: Color.fromARGB(255, 77, 120, 163),
+            kSecondaryColor: Color.fromARGB(255, 0, 38, 255),
             onBoardingCardColor: Color.fromRGBO(231, 232, 233, 1),
             whiteColor: Color.fromRGBO(250, 250, 250, 1),
             shadowColor: Color.fromARGB(255, 235, 235, 235),

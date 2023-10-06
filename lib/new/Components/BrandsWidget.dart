@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
+import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
@@ -42,7 +43,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
               Text(
                 "brands".tr,
                 style: TextStyle(
-                    fontSize: mySize(14, 14, 19, 19, 19),
+                    fontSize: mySize(17, 17, 19, 19, 19),
                     fontWeight: FontWeight.bold),
               ),
             Spacer(),
@@ -57,7 +58,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                     Text(
                       "show-all".tr,
                       style: TextStyle(
-                          fontSize: mySize(14, 14, 19, 19, 19),
+                          fontSize: mySize(17, 17, 19, 19, 19),
                           fontWeight: FontWeight.bold,
                           height: 1),
                     ),
@@ -122,7 +123,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: mySize(130, 130, 161, 161, 161),
+              mainAxisExtent: mySize(137, 137, 167, 167, 167),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: mySize(3, 2, 5, 5, 7)!.toInt(),
@@ -130,14 +131,15 @@ class _BrandsWidgetState extends State<BrandsWidget> {
             itemCount: brands.length,
             itemBuilder: (context, i) {
               BrandModel brand = brands[i];
+              String route = "brands/${brand.id}/products/1";
               return Listener(
                 onPointerDown: (event) {
-                  onPointerDown(
-                      event, Uri.base.origin + "/#brands/${brand.id}/products");
+                  onPointerDown(event, Uri.base.origin + "/#$route");
                 },
                 child: InkWell(
                   onTap: () {
-                    // selectBrand(brand, context);
+                    BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
+                    Navigator.of(context).pushNamed(route);
                   },
                   child: CategoryCard(
                     expand: expand,
@@ -156,17 +158,18 @@ class _BrandsWidgetState extends State<BrandsWidget> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
             BrandModel brand = brands[i];
+            String route = "brands/${brand.id}/products/1";
             return Padding(
               padding: EdgeInsetsDirectional.only(
                   end: 10, start: mySize(10, 10, 0, 0, 0)!),
               child: Listener(
                 onPointerDown: (event) {
-                  onPointerDown(
-                      event, Uri.base.origin + "/#brands/${brand.id}/products");
+                  onPointerDown(event, Uri.base.origin + "/#$route");
                 },
                 child: InkWell(
                   onTap: () {
-                    // selectBrand(brand, context);
+                    BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
+                    Navigator.of(context).pushNamed(route);
                   },
                   child: CategoryCard(
                     expand: expand,

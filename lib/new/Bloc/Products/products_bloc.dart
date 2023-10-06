@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Data/Remote/ProductsRemote.dart';
 
@@ -14,13 +15,30 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   int results = 0;
   String? categoryId;
   String? brandId;
+  String? search;
 
   ProductsBloc() : super(ProductsLoading()) {
     on<ProductsEvent>((event, emit) async {
       if (event is GetProductsEvent) {
         await getProdcuts(event, emit);
+      } else if (event is GetProductDetailsEvent) {
+        await getProductDetails(emit, event);
       }
     });
+  }
+
+  Future<void> getProductDetails(
+      Emitter<ProductsState> emit, GetProductDetailsEvent event) async {
+    emit(ProductsDetailsLoading());
+    // Get Product Details Data From Api
+    var (mediaNew, productDetailsNew) =
+        await _productsRemote.getProductDetails(event.productID);
+    // Modeling Product Details Data From Api
+    ProductDetailsModel productDetails = ProductDetailsModel.fromJson(
+        Map<String, dynamic>.from(productDetailsNew));
+    productDetails.media = mediaNew;
+    //
+    emit(ProductsDetailsLoaded(productDetails: productDetails));
   }
 
   Future<void> getProdcuts(

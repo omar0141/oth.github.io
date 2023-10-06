@@ -52,6 +52,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     if (screenWidth > 768) {
       return ScaffoldDesktop(
+        products: true,
+        categoryId: widget.categoryId,
+        brandId: widget.brandId,
+        search: widget.search,
         child: DesktopBody(
             brandId: widget.brandId,
             categoryId: widget.categoryId,
@@ -61,7 +65,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
     } else {
       return ScaffoldMobile(
         screenName: "products".tr,
-        child: MobileBody(),
+        child: MobileBody(
+            brandId: widget.brandId,
+            categoryId: widget.categoryId,
+            page: widget.page,
+            search: widget.search),
         index: -1,
       );
     }

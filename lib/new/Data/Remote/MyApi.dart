@@ -4,7 +4,7 @@ class MyApi {
   static String base = "https://dev.exabytellc.com/_/Exa/BE/ERP/";
   static String api = MyApi.base + "API/";
   static String media = MyApi.api + "_media/";
-  static String SID = "d3hhZmdQdkRrYnlKOktJdmdSWFVQamZZSnRlWDVqZm5wMXc9PQ==";
+  static String SID = "Y0h1QTJCMys4MGRXOnRraXhIdGVYeGRwbnhoNkRCNmlUTkE9PQ==";
   static String UID = "";
   static String username = "";
   static String BranchId = "";
@@ -30,14 +30,14 @@ class MyApi {
   static String Dependants = MyApi.api + 'public/ecommerce/dependants';
   static String CategoryProducts =
       MyApi.api + 'public/ecommerce/products/get-categories';
-  static String ProductDetails =
+  static String productDetails =
       MyApi.api + 'public/ecommerce/products/details';
   static String ProductSimilars =
       MyApi.api + 'public/ecommerce/products/similar';
   static String ProductVariants =
       MyApi.api + 'public/ecommerce/products/variants';
   static String products = MyApi.api + 'public/ecommerce/products/get';
-  static String Categories = MyApi.api + 'public/ecommerce/home';
+  static String home = MyApi.api + 'public/ecommerce/home';
   static String AddToCart = MyApi.api + 'public/ecommerce/clients/cart/manage';
   static String AddToWishlist =
       MyApi.api + 'public/ecommerce/clients/wishlist/manage';

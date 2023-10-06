@@ -4,6 +4,7 @@ import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Screens/Home/Components/Body.dart';
+import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,6 +29,7 @@ class HomeScreen extends StatelessWidget {
     return AppBar(
       backgroundColor: colors(context).whiteColor,
       titleTextStyle: TextStyle(fontFamily: "font-family".tr),
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           Expanded(
@@ -38,8 +40,11 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                         child: Text(
                       "hi".tr + " " + "Username",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: colors(context).kprimaryColor,
+                          fontFamily: "font-family".tr),
                     )),
                   ],
                 ),
@@ -59,7 +64,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return ProductSearchMobileScreen();
+              }));
+            },
             child: Container(
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(

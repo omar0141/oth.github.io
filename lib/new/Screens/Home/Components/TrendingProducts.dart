@@ -34,7 +34,7 @@ class _TrendingProductsState extends State<TrendingProducts> {
             Text(
               "trending-products".tr,
               style: TextStyle(
-                  fontSize: mySize(14, 14, 19, 19, 19),
+                  fontSize: mySize(17, 17, 19, 19, 19),
                   fontWeight: FontWeight.bold),
             ),
             Spacer(),

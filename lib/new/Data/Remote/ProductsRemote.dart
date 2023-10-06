@@ -38,7 +38,6 @@ class ProductsRemote {
       if (search != null) {
         data["search"] = search;
       }
-      print(data);
       var response = await http.post(Uri.parse(url), body: data);
       var responsebody = jsonDecode(response.body);
       log("Products Remote");
@@ -61,5 +60,32 @@ class ProductsRemote {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
     }
     return (0, 0, 0, []);
+  }
+
+  Future<(List<dynamic>, dynamic)> getProductDetails(String? productId) async {
+    try {
+      var url = MyApi.productDetails;
+      var data = {"SID": MyApi.SID, "product_id": productId ?? ""};
+      var response = await http.post(Uri.parse(url), body: data);
+      var responsebody = jsonDecode(response.body);
+      print(responsebody);
+      log("Product Details Remote");
+      if (responsebody == null) {
+        MySnackBar()
+            .errorSnack(navigatorKey.currentContext, "Server Error", true);
+      } else if (responsebody["status"] == 200) {
+        log("Product Details Remote Success");
+        return (
+          responsebody["data"]["media"] as List,
+          responsebody["data"]["product"]
+        );
+      } else {
+        MySnackBar().errorSnack(
+            navigatorKey.currentContext, responsebody.toString(), true);
+      }
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+    }
+    return ([], {});
   }
 }

@@ -8,7 +8,7 @@ import 'package:shakosh/new/Components/snakbars.dart';
 class DependanciesRemote {
   Future getDependancies() async {
     try {
-      var url = MyApi.Categories;
+      var url = MyApi.home;
       var data = {"SID": MyApi.SID};
       var response = await http.post(Uri.parse(url), body: data);
       var responsebody = jsonDecode(response.body);

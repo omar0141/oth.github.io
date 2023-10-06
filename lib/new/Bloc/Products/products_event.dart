@@ -18,5 +18,11 @@ class GetProductsEvent extends ProductsEvent {
       this.dealId,
       this.brandId,
       this.categoryId,
-      this.search,this.trending = false});
+      this.search,
+      this.trending = false});
+}
+
+class GetProductDetailsEvent extends ProductsEvent {
+  String? productID;
+  GetProductDetailsEvent({this.productID});
 }

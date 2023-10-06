@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/Components/MyBottomNavigationBar.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 
 // ignore: must_be_immutable
 class ScaffoldMobile extends StatefulWidget {
-  ScaffoldMobile(
-      {super.key,
-      required this.child,
-      this.appBar,
-      this.screenName,
-      this.index});
+  ScaffoldMobile({
+    super.key,
+    required this.child,
+    this.appBar,
+    this.screenName,
+    this.index,
+    this.searchOpened = false,
+  });
   final Widget child;
   final AppBar? appBar;
   final String? screenName;
   int? index;
+  bool searchOpened;
 
   @override
   State<ScaffoldMobile> createState() => _ScaffoldMobileState();
@@ -110,8 +116,9 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
       title: Text(
         text,
         style: TextStyle(
-            fontSize: 14,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
+            color: colors(context).kprimaryColor,
             fontFamily: "font-family".tr),
       ),
       leading: Padding(
@@ -139,7 +146,39 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
           padding:
               const EdgeInsetsDirectional.only(end: 10, top: 10, bottom: 10),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              if (widget.searchOpened) {
+                String route;
+                String? brandId =
+                    BlocProvider.of<ProductsBloc>(context).brandId;
+                String? search = BlocProvider.of<ProductsBloc>(context).search;
+                String? categoryId =
+                    BlocProvider.of<ProductsBloc>(context).categoryId;
+                if (brandId != null) {
+                  route = "brands/${brandId}/products/1/$search";
+                } else if (categoryId != null) {
+                  route = "categories/${categoryId}/products/1/$search";
+                } else if (brandId != null && categoryId != null) {
+                  route =
+                      "categories/${categoryId}/brands/${brandId}/products/1/$search";
+                } else {
+                  route = "products/1/$search";
+                }
+                BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+                    page: "1",
+                    brandId: brandId,
+                    categoryId:
+                        BlocProvider.of<ProductsBloc>(context).categoryId,
+                    search: search));
+
+                Navigator.of(context).pushReplacementNamed(route);
+              } else {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return ProductSearchMobileScreen();
+                }));
+              }
+            },
             child: Container(
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(

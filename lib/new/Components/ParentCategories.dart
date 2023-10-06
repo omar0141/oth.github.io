@@ -8,7 +8,7 @@ import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
-import 'dart:html' as html;
+import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
 class ParentCategories extends StatefulWidget {
@@ -42,7 +42,7 @@ class _ParentCategoriesState extends State<ParentCategories> {
             Text(
               "categories".tr,
               style: TextStyle(
-                  fontSize: mySize(14, 14, 19, 19, 19),
+                  fontSize: mySize(17, 17, 19, 19, 19),
                   fontWeight: FontWeight.bold),
             ),
             Spacer(),
@@ -56,7 +56,7 @@ class _ParentCategoriesState extends State<ParentCategories> {
                   Text(
                     "show-all".tr,
                     style: TextStyle(
-                        fontSize: mySize(14, 14, 19, 19, 19),
+                        fontSize: mySize(17, 17, 19, 19, 19),
                         fontWeight: FontWeight.bold,
                         height: 1),
                   ),
@@ -121,7 +121,7 @@ class _ParentCategoriesState extends State<ParentCategories> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: mySize(130, 130, 161, 161, 161),
+              mainAxisExtent: mySize(137, 137, 167, 167, 167),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: mySize(3, 2, 5, 5, 7)!.toInt(),

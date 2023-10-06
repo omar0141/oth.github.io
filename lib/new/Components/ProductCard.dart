@@ -2,11 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Components/AddToCartWidget.dart';
+import 'package:shakosh/new/Components/FavouriteWidget.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
+import 'package:shakosh/new/Screens/ProductDetails/ProductDetailsScreen.dart';
 
 // ignore: must_be_immutable
 class ProductCard extends StatefulWidget {
@@ -19,13 +22,18 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   bool hovered = false;
-  bool favourite = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       hoverColor: Colors.transparent,
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return ProductDetailsScreen(
+            product: widget.product,
+          );
+        }));
+      },
       onHover: (value) {
         hovered = value;
         setState(() {});
@@ -53,7 +61,11 @@ class _ProductCardState extends State<ProductCard> {
           children: [
             Column(
               children: [
-                productImage(widget.product.thumbnail),
+                Row(
+                  children: [
+                    Expanded(child: productImage(widget.product.thumbnail)),
+                  ],
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -67,7 +79,7 @@ class _ProductCardState extends State<ProductCard> {
                         maxLines: 2,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            height: 1.5,
+                            height: "language_iso".tr == "ar" ? 1.5 : 1.2,
                             fontSize: mySize(13, 13, 14, 16, 16)),
                       ),
                     ),
@@ -82,7 +94,7 @@ class _ProductCardState extends State<ProductCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: mySize(18, 18, 20, 20, 20),
-                            color: Color.fromARGB(255, 0, 38, 255)),
+                            color: colors(context).kSecondaryColor),
                       ),
                     ),
                   ],
@@ -90,54 +102,16 @@ class _ProductCardState extends State<ProductCard> {
                 SizedBox(
                   height: 10,
                 ),
-                MaterialButton(
-                  color: colors(context).kprimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  height: 45,
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          "add-to-cart".tr,
-                          style: TextStyle(
-                            color: colors(context).whiteColor,
-                            fontSize: mySize(12, 12, 13, 13, 13),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(Icons.shopping_cart,
-                          size: mySize(17, 17, 20, 20, 20),
-                          color: colors(context).whiteColor)
-                    ],
-                  ),
-                )
+                SizedBox(height: 45, child: AddToCartWidget())
               ],
             ),
             Positioned.directional(
                 textDirection: "language_iso".tr == "ar"
                     ? TextDirection.rtl
                     : TextDirection.ltr,
-                top: -5,
-                start: -5,
-                child: IconButton(
-                  icon: Icon(
-                    favourite ? Icons.favorite : Icons.favorite_outline,
-                    color:
-                        favourite ? Colors.red : colors(context).kprimaryColor,
-                  ),
-                  onPressed: () {
-                    favourite = !favourite;
-                    setState(() {});
-                  },
-                )),
+                top: 5,
+                start: 5,
+                child: FavouriteWidget()),
           ],
         ),
       ),
@@ -149,8 +123,9 @@ class _ProductCardState extends State<ProductCard> {
       borderRadius: BorderRadius.circular(5),
       child: CachedNetworkImage(
           height: mySize(100, 100, 150, 150, 150),
-          width: mySize(100, 100, 150, 150, 150),
+          // width: mySize(100, 100, 150, 150, double.infinity),
           imageUrl: MyApi.media + (image ?? ""),
+          fit: BoxFit.fill,
           placeholder: (context, url) => Center(
                 child: SizedBox(
                   width: 50,
@@ -166,3 +141,4 @@ class _ProductCardState extends State<ProductCard> {
     );
   }
 }
+

@@ -19,7 +19,7 @@ class Getcategories extends ChangeNotifier {
   List get gettags => tags;
 
   Future getGroups() async {
-    var url = MyApi.Categories;
+    var url = MyApi.home;
     var data = {"SID": MyApi.SID};
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);

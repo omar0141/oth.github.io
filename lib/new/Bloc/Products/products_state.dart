@@ -10,3 +10,12 @@ class ProductsLoaded extends ProductsState {
 }
 
 class ProductsFailure extends ProductsState {}
+
+class ProductsDetailsLoading extends ProductsState {}
+
+class ProductsDetailsLoaded extends ProductsState {
+  ProductDetailsModel productDetails;
+  ProductsDetailsLoaded({required this.productDetails});
+}
+
+class ProductsDetailsFailure extends ProductsState {}

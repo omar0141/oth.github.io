@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
+import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
@@ -70,7 +71,7 @@ class ChildCategories extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: mySize(130, 130, 155, 155, 155),
+            mainAxisExtent: mySize(135, 135, 160, 160, 160),
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             crossAxisCount: mySize(2, 2, 5, 5, 7)!.toInt(),
@@ -85,6 +86,8 @@ class ChildCategories extends StatelessWidget {
               },
               child: InkWell(
                 onTap: () {
+                  BlocProvider.of<ProductsBloc>(context).categoryId =
+                      category.id;
                   Navigator.of(context).pushNamed(route);
                 },
                 child: Card(

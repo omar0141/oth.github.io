@@ -4,9 +4,20 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header1.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header2.dart';
 
+// ignore: must_be_immutable
 class ScaffoldDesktop extends StatefulWidget {
-  const ScaffoldDesktop({super.key, required this.child});
+  ScaffoldDesktop(
+      {super.key,
+      required this.child,
+      this.brandId,
+      this.search,
+      this.categoryId,
+      this.products = false});
   final Widget child;
+  String? brandId;
+  String? categoryId;
+  String? search;
+  bool products;
 
   @override
   State<ScaffoldDesktop> createState() => _ScaffoldDesktopState();
@@ -75,7 +86,14 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
       ),
       body: Column(
         children: [
-          Visibility(visible: isVisibleHeader1, child: Header1()),
+          Visibility(
+              visible: isVisibleHeader1,
+              child: Header1(
+                categoryId: widget.categoryId,
+                search: widget.search,
+                brandId: widget.brandId,
+                products: widget.products,
+              )),
           Header2(),
           Expanded(
             child: ListView(

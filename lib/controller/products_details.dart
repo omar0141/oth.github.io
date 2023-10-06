@@ -14,7 +14,7 @@ class ProductDetailsC with ChangeNotifier {
   String? description = '';
 
   Future getData(itm_no, context) async {
-    var url = MyApi.ProductDetails;
+    var url = MyApi.productDetails;
     var data = {'SID': MyApi.SID, 'product_id': itm_no};
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);
