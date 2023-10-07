@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shakosh/main.dart';
-import 'package:shakosh/new/Components/AddToCartWidget.dart';
+import 'package:shakosh/new/Components/CartWidget.dart';
 import 'package:shakosh/new/Components/FavouriteWidget.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
@@ -102,7 +102,7 @@ class _ProductCardState extends State<ProductCard> {
                 SizedBox(
                   height: 10,
                 ),
-                SizedBox(height: 45, child: AddToCartWidget())
+                SizedBox(height: 45, child: CartWidget(product: widget.product,))
               ],
             ),
             Positioned.directional(
@@ -141,4 +141,3 @@ class _ProductCardState extends State<ProductCard> {
     );
   }
 }
-

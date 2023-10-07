@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
+import 'package:shakosh/new/Bloc/cart/cart_bloc.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
 import 'package:shakosh/new/Config/Services/InitialServices.dart';
 import 'package:shakosh/new/Config/Themes/MyTheme.dart';
@@ -63,6 +64,8 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+  static final RouteObserver<PageRoute> routeObserver =
+      RouteObserver<PageRoute>();
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -109,6 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       textDirection:
           "language_iso".tr == "ar" ? TextDirection.rtl : TextDirection.ltr,
       child: MaterialApp(
+        navigatorObservers: [MyApp.routeObserver],
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyCustomScrollBehavior(),
@@ -123,7 +127,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     BlocProvider<DependanciesBloc>(
                         create: (BuildContext context) => DependanciesBloc()),
                     BlocProvider<ProductsBloc>(
-                        create: (BuildContext context) => ProductsBloc())
+                        create: (BuildContext context) => ProductsBloc()),
+                    BlocProvider<CartBloc>(
+                        create: (BuildContext context) => CartBloc())
                   ],
                   child: child!,
                 ),

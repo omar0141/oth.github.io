@@ -34,7 +34,7 @@ class Getcategoryitems extends ChangeNotifier {
   Future getSimiliar(String? product_id) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     user_id = preferences.getString('user_id');
-    var url = MyApi.ProductSimilars;
+    var url = MyApi.productSimilars;
     var data = {
       'SID': MyApi.SID,
       'product_id': product_id.toString(),

@@ -21,12 +21,32 @@ class ProductDetailsScreen extends StatefulWidget {
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+class _ProductDetailsScreenState extends State<ProductDetailsScreen>
+    with RouteAware {
+  @override
+  void didPopNext() {
+    BlocProvider.of<ProductsBloc>(context)
+        .add(GetProductDetailsEvent(productID: widget.product.id, back: true));
+    super.didPopNext();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
   @override
   void initState() {
     BlocProvider.of<ProductsBloc>(context)
         .add(GetProductDetailsEvent(productID: widget.product.id));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    MyApp.routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
@@ -39,7 +59,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       );
     } else {
       return ScaffoldMobile(
-        screenName: "categories".tr,
+        screenName: "language_iso".tr == "ar"
+            ? widget.product.nameAlt
+            : widget.product.name,
         child: MobileBody(
           product: widget.product,
         ),

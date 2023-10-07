@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Screens/Products/Components/ProductsFilter.dart';
-import 'package:shakosh/new/Screens/Products/Components/ProductsWidget.dart';
+import 'package:shakosh/new/Screens/Products/Components/ProductsSection.dart';
 
 // ignore: must_be_immutable
 class DesktopBody extends StatelessWidget {
@@ -42,7 +42,7 @@ class DesktopBody extends StatelessWidget {
               flex: 4,
               child: Column(
                 children: [
-                  ProductsWidget(
+                  ProductsSection(
                     brandId: brandId,
                     categoryId: categoryId,
                     page: page,

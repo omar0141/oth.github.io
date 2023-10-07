@@ -11,6 +11,7 @@ class GetProductsEvent extends ProductsEvent {
   String? categoryId;
   String? search;
   bool trending;
+  bool back;
   GetProductsEvent(
       {this.page,
       this.order,
@@ -19,10 +20,11 @@ class GetProductsEvent extends ProductsEvent {
       this.brandId,
       this.categoryId,
       this.search,
-      this.trending = false});
+      this.trending = false,this.back = false});
 }
 
 class GetProductDetailsEvent extends ProductsEvent {
   String? productID;
-  GetProductDetailsEvent({this.productID});
+  bool back;
+  GetProductDetailsEvent({this.productID,this.back = false});
 }

@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
-import 'package:shakosh/new/Components/ProductCard.dart';
-import 'package:shakosh/new/Components/ProductCardShimmer.dart';
+import 'package:shakosh/new/Components/ProductsShimmer.dart';
+import 'package:shakosh/new/Components/ProductsWidget.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
-class ProductsWidget extends StatelessWidget {
-  ProductsWidget(
+class ProductsSection extends StatefulWidget {
+  ProductsSection(
       {super.key, this.search, this.categoryId, this.brandId, this.page});
 
   String? search;
@@ -20,15 +20,45 @@ class ProductsWidget extends StatelessWidget {
   String? page;
 
   @override
+  State<ProductsSection> createState() => _ProductsSectionState();
+}
+
+class _ProductsSectionState extends State<ProductsSection> with RouteAware {
+  @override
+  void didPopNext() {
+    BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+        back: true,
+        search: widget.search,
+        categoryId: widget.categoryId,
+        brandId: widget.brandId,
+        page: widget.page));
+    super.didPopNext();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    MyApp.routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductsState>(
       builder: (context, state) {
-        brandId = BlocProvider.of<ProductsBloc>(context).brandId;
-        categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
+        widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
+        widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
         if (state is ProductsLoading) {
-          return productsShimmer();
+          return ProductsShimmer();
         } else if (state is ProductsLoaded) {
           List<ProductModel> products = state.products;
+          int numberPages = state.pages;
+          widget.page = state.currentPage.toString();
           if (products.isEmpty) {
             return SizedBox(
                 height: screenHeight * 0.7,
@@ -53,14 +83,17 @@ class ProductsWidget extends StatelessWidget {
                               screenWidth * 0.5,
                               screenWidth * 0.5,
                               screenWidth * 0.4),
-                          child: Pagination(context)),
+                          child: Pagination(context, numberPages)),
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                productsWidget(products),
+                ProductsWidget(
+                  products: products,
+                  crossAxisCount: mySize(2, 2, 3, 3, 4)!.toInt(),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -71,7 +104,7 @@ class ProductsWidget extends StatelessWidget {
                         screenWidth * 0.5,
                         screenWidth * 0.5,
                         screenWidth * 0.4),
-                    child: Pagination(context)),
+                    child: Pagination(context, numberPages)),
                 SizedBox(
                   height: 20,
                 ),
@@ -88,72 +121,30 @@ class ProductsWidget extends StatelessWidget {
     );
   }
 
-  Padding productsWidget(List<ProductModel> products) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: mySize(260, 260, 300, 320, 310),
-            crossAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            mainAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            crossAxisCount: mySize(2, 2, 3, 3, 4)!.toInt(),
-          ),
-          itemCount: products.length,
-          itemBuilder: (context, i) {
-            ProductModel product = products[i];
-            return ProductCard(
-              product: product,
-            );
-          }),
-    );
-  }
-
-  Padding productsShimmer() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: mySize(260, 260, 300, 320, 310),
-            crossAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            mainAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            crossAxisCount: mySize(2, 2, 3, 3, 4)!.toInt(),
-          ),
-          itemCount: 10,
-          itemBuilder: (context, i) {
-            return ProductCardShimmer();
-          }),
-    );
-  }
-
-  Widget Pagination(context) {
-    int numberPages = BlocProvider.of<ProductsBloc>(context).pages;
-    if (int.parse(page ?? "1") > numberPages) {
-      page = "1";
-    } else if (int.parse(page ?? "1") >= numberPages - 1) page = "1";
+  Widget Pagination(context, int numberPages) {
     return NumberPaginator(
       numberPages: numberPages,
       onPageChange: (int index) {
         print(index);
-        page = (index + 1).toString();
+        widget.page = (index + 1).toString();
         BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-            page: page.toString(), brandId: brandId, categoryId: categoryId));
+            page: widget.page.toString(),
+            brandId: widget.brandId,
+            categoryId: widget.categoryId));
         String route;
-        if (brandId != null) {
-          route = "brands/${brandId}/products/$page";
-        } else if (categoryId != null) {
-          route = "categories/${categoryId}/products/$page";
-        } else if (brandId != null && categoryId != null) {
-          route = "categories/${categoryId}/brands/${brandId}/products/$page";
+        if (widget.brandId != null) {
+          route = "brands/${widget.brandId}/products/${widget.page}";
+        } else if (widget.categoryId != null) {
+          route = "categories/${widget.categoryId}/products/${widget.page}";
+        } else if (widget.brandId != null && widget.categoryId != null) {
+          route =
+              "categories/${widget.categoryId}/brands/${widget.brandId}/products/${widget.page}";
         } else {
-          route = "products/$page";
+          route = "products/${widget.page}";
         }
         html.window.history.pushState(null, '', "#$route");
       },
-      initialPage: (int.parse(page ?? "1") - 1),
+      initialPage: (int.parse(widget.page ?? "1") - 1),
       config: NumberPaginatorUIConfig(
         height: mySize(40, 40, 50, 50, 50)!,
         buttonShape: RoundedRectangleBorder(

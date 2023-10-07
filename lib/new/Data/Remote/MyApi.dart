@@ -32,7 +32,7 @@ class MyApi {
       MyApi.api + 'public/ecommerce/products/get-categories';
   static String productDetails =
       MyApi.api + 'public/ecommerce/products/details';
-  static String ProductSimilars =
+  static String productSimilars =
       MyApi.api + 'public/ecommerce/products/similar';
   static String ProductVariants =
       MyApi.api + 'public/ecommerce/products/variants';

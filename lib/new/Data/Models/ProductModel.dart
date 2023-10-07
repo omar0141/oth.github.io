@@ -15,12 +15,12 @@ class ProductModel {
   late double stepOrderQuantity;
   late double maxOrderQuantity;
   late double displayMultiplier;
-  late double featured;
-  late double perOrder;
+  late int featured;
+  late int perOrder;
   late double visibleStock;
   late double stock;
   String? taxEquation;
-  double? cart;
+  late double cart;
   bool? favourite;
 
   ProductModel(
@@ -45,7 +45,7 @@ class ProductModel {
       required this.visibleStock,
       required this.stock,
       this.taxEquation,
-      this.cart,
+      required this.cart,
       this.favourite});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
@@ -59,16 +59,20 @@ class ProductModel {
     thumbnail = json['thumbnail'];
     unitMeasure = json['unit_measure'];
     unitMeasureAlt = json['unit_measure_alt'];
-    price = double.parse(json['price'] ?? "0");
-    discountPrice = double.parse(json['discount_price'] ?? "0");
-    minOrderQuantity = double.parse(json['min_order_quantity'] ?? "0");
-    stepOrderQuantity = double.parse(json['step_order_quantity'] ?? "0");
-    maxOrderQuantity = double.parse(json['max_order_quantity'] ?? "0");
-    displayMultiplier = double.parse(json['display_multiplier'] ?? "0");
-    featured = double.parse(json['featured'] ?? "0");
-    perOrder = double.parse(json['per_order'] ?? "0");
-    visibleStock = double.parse(json['visible_stock'] ?? "0");
-    stock = double.parse(json['stock'] ?? "0");
+    price = double.parse((json['price'] ?? 0).toString());
+    discountPrice = double.parse((json['discount_price'] ?? 0).toString());
+    minOrderQuantity =
+        double.parse((json['min_order_quantity'] ?? 1).toString());
+    stepOrderQuantity =
+        double.parse((json['step_order_quantity'] ?? 1).toString());
+    maxOrderQuantity = double.parse(
+        (json['max_order_quantity'] ?? 999999999999999).toString());
+    displayMultiplier =
+        double.parse((json['display_multiplier'] ?? 1).toString());
+    featured = int.parse((json['featured'] ?? 0).toString());
+    perOrder = int.parse((json['per_order'] ?? 0).toString());
+    visibleStock = double.parse((json['visible_stock'] ?? 0).toString());
+    stock = double.parse((json['stock'] ?? 0).toString());
     taxEquation = json['tax_equation'];
     try {
       cart = json['cart'];

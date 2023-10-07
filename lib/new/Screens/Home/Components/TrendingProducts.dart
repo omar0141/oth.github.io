@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
-import 'package:shakosh/new/Components/ProductCard.dart';
-import 'package:shakosh/new/Components/ProductCardShimmer.dart';
+import 'package:shakosh/new/Components/ProductsShimmer.dart';
+import 'package:shakosh/new/Components/ProductsWidget.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
@@ -14,12 +15,31 @@ class TrendingProducts extends StatefulWidget {
   State<TrendingProducts> createState() => _TrendingProductsState();
 }
 
-class _TrendingProductsState extends State<TrendingProducts> {
+class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
+  @override
+  void didPopNext() {
+    BlocProvider.of<ProductsBloc>(context)
+        .add(GetProductsEvent(trending: true, back: true));
+    super.didPopNext();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
   @override
   void initState() {
     BlocProvider.of<ProductsBloc>(context)
         .add(GetProductsEvent(trending: true));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    MyApp.routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
@@ -49,10 +69,10 @@ class _TrendingProductsState extends State<TrendingProducts> {
         BlocBuilder<ProductsBloc, ProductsState>(
           builder: (context, state) {
             if (state is ProductsLoading) {
-              return productsShimmer();
-            } else if (state is ProductsLoaded) {
+              return ProductsShimmer();
+            } else if (state is TrendingProductsLoaded) {
               List<ProductModel> products = state.products;
-              return productsWidget(products);
+              return ProductsWidget(products: products);
             } else {
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,44 +86,4 @@ class _TrendingProductsState extends State<TrendingProducts> {
     );
   }
 
-  Padding productsWidget(List<ProductModel> products) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: mySize(260, 260, 300, 320, 310),
-            crossAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            mainAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            crossAxisCount: mySize(2, 2, 3, 4, 5)!.toInt(),
-          ),
-          itemCount: products.length,
-          itemBuilder: (context, i) {
-            ProductModel product = products[i];
-            return ProductCard(
-              product: product,
-            );
-          }),
-    );
-  }
-
-  Padding productsShimmer() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: mySize(260, 260, 300, 320, 310),
-            crossAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            mainAxisSpacing: mySize(10, 10, 20, 20, 20)!,
-            crossAxisCount: mySize(2, 2, 3, 4, 5)!.toInt(),
-          ),
-          itemCount: 10,
-          itemBuilder: (context, i) {
-            return ProductCardShimmer();
-          }),
-    );
-  }
 }

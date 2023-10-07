@@ -68,7 +68,6 @@ class ProductsRemote {
       var data = {"SID": MyApi.SID, "product_id": productId ?? ""};
       var response = await http.post(Uri.parse(url), body: data);
       var responsebody = jsonDecode(response.body);
-      print(responsebody);
       log("Product Details Remote");
       if (responsebody == null) {
         MySnackBar()
@@ -87,5 +86,28 @@ class ProductsRemote {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
     }
     return ([], {});
+  }
+
+  Future<List<dynamic>> getSimilarProducts(String? productId) async {
+    try {
+      var url = MyApi.productSimilars;
+      var data = {"SID": MyApi.SID, "product_id": productId ?? ""};
+      var response = await http.post(Uri.parse(url), body: data);
+      var responsebody = jsonDecode(response.body);
+      log("Product Similars Remote");
+      if (responsebody == null) {
+        MySnackBar()
+            .errorSnack(navigatorKey.currentContext, "Server Error", true);
+      } else if (responsebody["status"] == 200) {
+        log("Product Similars Remote Success");
+        return responsebody["data"]["products"];
+      } else {
+        MySnackBar().errorSnack(
+            navigatorKey.currentContext, responsebody.toString(), true);
+      }
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+    }
+    return [];
   }
 }

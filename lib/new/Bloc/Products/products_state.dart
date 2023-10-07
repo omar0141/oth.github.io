@@ -6,7 +6,15 @@ class ProductsLoading extends ProductsState {}
 
 class ProductsLoaded extends ProductsState {
   List<ProductModel> products;
-  ProductsLoaded({required this.products});
+   int pages ;
+  int currentPage ;
+  int results ;
+  ProductsLoaded({required this.products,required this.currentPage,required this.pages,required this.results});
+}
+
+class TrendingProductsLoaded extends ProductsState {
+  List<ProductModel> products;
+  TrendingProductsLoaded({required this.products});
 }
 
 class ProductsFailure extends ProductsState {}
@@ -15,7 +23,9 @@ class ProductsDetailsLoading extends ProductsState {}
 
 class ProductsDetailsLoaded extends ProductsState {
   ProductDetailsModel productDetails;
-  ProductsDetailsLoaded({required this.productDetails});
+  List<ProductModel> productSimilars;
+  ProductsDetailsLoaded(
+      {required this.productDetails, required this.productSimilars});
 }
 
 class ProductsDetailsFailure extends ProductsState {}

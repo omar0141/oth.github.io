@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shakosh/new/Screens/Products/Components/ProductsWidget.dart';
+import 'package:shakosh/new/Screens/Products/Components/ProductsSection.dart';
 
 // ignore: must_be_immutable
 class MobileBody extends StatelessWidget {
@@ -13,7 +13,7 @@ class MobileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProductsWidget(
+    return ProductsSection(
       brandId: brandId,
       categoryId: categoryId,
       page: page,

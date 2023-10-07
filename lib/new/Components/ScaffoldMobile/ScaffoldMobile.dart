@@ -113,18 +113,28 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
     return AppBar(
       backgroundColor: colors(context).whiteColor,
       centerTitle: true,
-      title: Text(
-        text,
-        style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: colors(context).kprimaryColor,
-            fontFamily: "font-family".tr),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Text(
+              text,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: colors(context).kprimaryColor,
+                  fontFamily: "font-family".tr),
+            ),
+          ),
+        ],
       ),
       leading: Padding(
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 10, vertical: 10),
-        child: GestureDetector(
+        child: InkWell(
+          hoverColor: Colors.transparent,
           onTap: () {
             Navigator.of(context).pop();
           },
@@ -145,13 +155,15 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
         Padding(
           padding:
               const EdgeInsetsDirectional.only(end: 10, top: 10, bottom: 10),
-          child: GestureDetector(
+          child: InkWell(
+            hoverColor: Colors.transparent,
             onTap: () {
               if (widget.searchOpened) {
                 String route;
                 String? brandId =
                     BlocProvider.of<ProductsBloc>(context).brandId;
-                String? search = BlocProvider.of<ProductsBloc>(context).search;
+                String? search =
+                    BlocProvider.of<ProductsBloc>(context).search ?? "";
                 String? categoryId =
                     BlocProvider.of<ProductsBloc>(context).categoryId;
                 if (brandId != null) {
@@ -164,12 +176,6 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
                 } else {
                   route = "products/1/$search";
                 }
-                BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-                    page: "1",
-                    brandId: brandId,
-                    categoryId:
-                        BlocProvider.of<ProductsBloc>(context).categoryId,
-                    search: search));
 
                 Navigator.of(context).pushReplacementNamed(route);
               } else {

@@ -10,8 +10,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsRemote _productsRemote = ProductsRemote();
   List<ProductModel> trendingProducts = [];
   List<ProductModel> products = [];
-  int pages = 0;
-  int currentPage = 0;
+  List<ProductModel> productSimilars = [];
+  ProductDetailsModel productDetails = ProductDetailsModel(media: []);
+  int pages = 1;
+  int currentPage = 1;
   int results = 0;
   String? categoryId;
   String? brandId;
@@ -30,55 +32,73 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   Future<void> getProductDetails(
       Emitter<ProductsState> emit, GetProductDetailsEvent event) async {
     emit(ProductsDetailsLoading());
-    // Get Product Details Data From Api
-    var (mediaNew, productDetailsNew) =
-        await _productsRemote.getProductDetails(event.productID);
-    // Modeling Product Details Data From Api
-    ProductDetailsModel productDetails = ProductDetailsModel.fromJson(
-        Map<String, dynamic>.from(productDetailsNew));
-    productDetails.media = mediaNew;
+    if (!event.back) {
+      // Get Product Details Data From Api
+      var (mediaNew, productDetailsNew) =
+          await _productsRemote.getProductDetails(event.productID);
+      // Modeling Product Details Data From Api
+      productDetails = ProductDetailsModel.fromJson(
+          Map<String, dynamic>.from(productDetailsNew));
+      productDetails.media = mediaNew;
+      // Get Product Similars Data From Api
+      productSimilars.clear();
+      List<dynamic> productSimilarsNew =
+          await _productsRemote.getSimilarProducts(event.productID);
+      // Modeling Product Similars Data From Api
+      for (var product in productSimilarsNew) {
+        productSimilars.add(ProductModel.fromJson(product));
+      }
+    }
     //
-    emit(ProductsDetailsLoaded(productDetails: productDetails));
+    emit(ProductsDetailsLoaded(
+        productDetails: productDetails, productSimilars: productSimilars));
   }
 
   Future<void> getProdcuts(
       GetProductsEvent event, Emitter<ProductsState> emit) async {
     emit(ProductsLoading());
-    trendingProducts = [];
-    products = [];
     if (event.trending == true) {
-      // Get Trending Products Data From Api
-      var (pagesNew, currentPageNew, resultsNew, trendingProductsData) =
-          await _productsRemote.getProducts();
-      // Set my bloc data with requested data from api
-      pages = pagesNew;
-      currentPage = currentPageNew;
-      results = resultsNew;
-      // Modeling Trending Products Data From Api
-      for (var product in trendingProductsData) {
-        trendingProducts.add(ProductModel.fromJson(product));
+      if (!event.back) {
+        // Get Trending Products Data From Api
+        var (pagesNew, currentPageNew, resultsNew, trendingProductsData) =
+            await _productsRemote.getProducts();
+        // Set my bloc data with requested data from api
+        pages = pagesNew;
+        currentPage = currentPageNew;
+        results = resultsNew;
+        // Modeling Trending Products Data From Api
+        for (var product in trendingProductsData) {
+          trendingProducts.add(ProductModel.fromJson(product));
+        }
       }
-      emit(ProductsLoaded(products: trendingProducts));
+      emit(TrendingProductsLoaded(products: trendingProducts));
     } else {
-      // Get Products Data with my filter From Api
-      var (pagesNew, currentPageNew, resultsNew, productsData) =
-          await _productsRemote.getProducts(
-              brandId: event.brandId,
-              categoryId: event.categoryId,
-              dealId: event.dealId,
-              order: event.order,
-              page: event.page,
-              search: event.search,
-              stockOnly: event.stockOnly);
-      // Set my bloc data with requested data from api
-      pages = pagesNew;
-      currentPage = currentPageNew;
-      results = resultsNew;
-      // Modeling Trending Products Data From Api
-      for (var product in productsData) {
-        products.add(ProductModel.fromJson(product));
+      if (!event.back) {
+        products = [];
+        // Get Products Data with my filter From Api
+        var (pagesNew, currentPageNew, resultsNew, productsData) =
+            await _productsRemote.getProducts(
+                brandId: event.brandId,
+                categoryId: event.categoryId,
+                dealId: event.dealId,
+                order: event.order,
+                page: event.page,
+                search: event.search,
+                stockOnly: event.stockOnly);
+        // Set my bloc data with requested data from api
+        pages = pagesNew;
+        currentPage = currentPageNew;
+        results = resultsNew;
+        // Modeling Trending Products Data From Api
+        for (var product in productsData) {
+          products.add(ProductModel.fromJson(product));
+        }
       }
-      emit(ProductsLoaded(products: products));
+      emit(ProductsLoaded(
+          products: products,
+          currentPage: currentPage,
+          pages: pages,
+          results: results));
     }
   }
 }
