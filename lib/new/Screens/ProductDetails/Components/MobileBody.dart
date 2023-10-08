@@ -205,7 +205,7 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  product.price.toStringAsFixed(2) + " " + "le".tr,
+                  product.netPrice.toStringAsFixed(2) + " " + "le".tr,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,

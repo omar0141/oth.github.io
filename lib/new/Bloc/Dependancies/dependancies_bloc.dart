@@ -85,7 +85,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       }
       // ==========================================================
       // Modeling Brands Data From Api
-      for (var element in dependanciesData["categories"]) {
+      for (var element in dependanciesData["brands"]) {
         brands.add(BrandModel.fromJson(element));
       }
       //

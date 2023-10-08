@@ -90,7 +90,9 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.product.price.toStringAsFixed(2) + " " + "le".tr,
+                        widget.product.netPrice.toStringAsFixed(2) +
+                            " " +
+                            "le".tr,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: mySize(18, 18, 20, 20, 20),
@@ -102,7 +104,11 @@ class _ProductCardState extends State<ProductCard> {
                 SizedBox(
                   height: 10,
                 ),
-                SizedBox(height: 45, child: CartWidget(product: widget.product,))
+                SizedBox(
+                    height: 45,
+                    child: CartWidget(
+                      product: widget.product,
+                    ))
               ],
             ),
             Positioned.directional(
@@ -111,7 +117,9 @@ class _ProductCardState extends State<ProductCard> {
                     : TextDirection.ltr,
                 top: 5,
                 start: 5,
-                child: FavouriteWidget()),
+                child: FavouriteWidget(
+                  product: widget.product,
+                )),
           ],
         ),
       ),
@@ -123,7 +131,6 @@ class _ProductCardState extends State<ProductCard> {
       borderRadius: BorderRadius.circular(5),
       child: CachedNetworkImage(
           height: mySize(100, 100, 150, 150, 150),
-          // width: mySize(100, 100, 150, 150, double.infinity),
           imageUrl: MyApi.media + (image ?? ""),
           fit: BoxFit.fill,
           placeholder: (context, url) => Center(

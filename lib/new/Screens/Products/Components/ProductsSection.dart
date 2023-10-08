@@ -54,7 +54,9 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
         widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
         if (state is ProductsLoading) {
-          return ProductsShimmer();
+          return ProductsShimmer(
+            crossAxisCount: mySize(2, 2, 3, 3, 4)!.toInt(),
+          );
         } else if (state is ProductsLoaded) {
           List<ProductModel> products = state.products;
           int numberPages = state.pages;

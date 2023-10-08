@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shakosh/main.dart';
-import 'package:shakosh/new/Bloc/cart/cart_bloc.dart';
+import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 
 // ignore: must_be_immutable
 class CartWidget extends StatelessWidget {
-  CartWidget({super.key, this.fontSize, this.iconSize, required this.product});
+  CartWidget(
+      {super.key,
+      this.fontSize,
+      this.iconSize,
+      required this.product,
+      this.height});
 
   double? fontSize;
   double? iconSize;
   ProductModel product;
+  double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class CartWidget extends StatelessWidget {
       int i, BuildContext context, List<ProductModel> cart, CartState state) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 250),
-      height: i == -1 ? 45 : 0,
+      height: i == -1 ? height ?? 45 : 0,
       child: MaterialButton(
         color: (state is CartLoading && state.id == product.id)
             ? colors(context).kprimaryColor!.withOpacity(0.7)
@@ -49,9 +56,12 @@ class CartWidget extends StatelessWidget {
         ),
         onPressed: () {
           if (state is CartLoading && state.id == product.id) {
-          } else
-            BlocProvider.of<CartBloc>(context)
-                .add(AddToCartEvent(product: product));
+          } else {
+            if (product.stock > 0) {
+              BlocProvider.of<CartBloc>(context)
+                  .add(AddToCartEvent(product: product));
+            }
+          }
         },
         child: (state is CartLoading && state.id == product.id)
             ? SizedBox(
@@ -92,13 +102,13 @@ class CartWidget extends StatelessWidget {
       int i, BuildContext context, List<ProductModel> cart, CartState state) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 250),
-      height: i > -1 ? 45 : 0,
+      height: i > -1 ? height ?? 45 : 0,
       child: Row(
         children: [
           Expanded(
             flex: 2,
             child: MaterialButton(
-              height: 45,
+              height: height ?? 45,
               color: (state is CartLoading && state.id == product.id)
                   ? colors(context).kprimaryColor!.withOpacity(0.7)
                   : colors(context).kprimaryColor,
@@ -107,20 +117,28 @@ class CartWidget extends StatelessWidget {
               ),
               onPressed: () {
                 if (state is CartLoading && state.id == product.id) {
-                } else
-                  BlocProvider.of<CartBloc>(context)
-                      .add(AddToCartEvent(product: product));
+                } else {
+                  if (product.stock > 0) {
+                    BlocProvider.of<CartBloc>(context)
+                        .add(AddToCartEvent(product: product));
+                  }
+                }
               },
               child: (state is CartLoading && state.id == product.id)
-                  ? SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: CircularProgressIndicator(
+                  ? Center(
+                      child: SizedBox(
+                          width: 25,
+                          height: 25,
+                          child: CircularProgressIndicator(
+                            color: colors(context).whiteColor,
+                          )),
+                    )
+                  : Center(
+                      child: Icon(
+                        FontAwesomeIcons.plus,
+                        size: iconSize ?? 18,
                         color: colors(context).whiteColor,
-                      ))
-                  : Icon(
-                      Icons.add,
-                      color: colors(context).whiteColor,
+                      ),
                     ),
             ),
           ),
@@ -130,7 +148,7 @@ class CartWidget extends StatelessWidget {
           Expanded(
               flex: 4,
               child: Container(
-                height: 37,
+                height: height ?? 45,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: colors(context).grey2),
@@ -138,8 +156,9 @@ class CartWidget extends StatelessWidget {
                   child: Text(
                     i > -1 ? cart[i].cart.toString() : "0",
                     style: TextStyle(
+                      height: "language_iso".tr == "ar" ? 2 : 1,
                       fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                      fontSize: fontSize ?? 17,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -151,7 +170,7 @@ class CartWidget extends StatelessWidget {
           Expanded(
             flex: 2,
             child: MaterialButton(
-              height: 45,
+              height: height ?? 45,
               color: (state is CartLoading && state.id == product.id)
                   ? colors(context).kprimaryColor!.withOpacity(0.7)
                   : colors(context).kprimaryColor,
@@ -160,20 +179,26 @@ class CartWidget extends StatelessWidget {
               ),
               onPressed: () {
                 if (state is CartLoading && state.id == product.id) {
-                } else
+                } else {
                   BlocProvider.of<CartBloc>(context)
                       .add(RemoveFromCartEvent(product: product));
+                }
               },
               child: (state is CartLoading && state.id == product.id)
-                  ? SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: CircularProgressIndicator(
+                  ? Center(
+                      child: SizedBox(
+                          width: 25,
+                          height: 25,
+                          child: CircularProgressIndicator(
+                            color: colors(context).whiteColor,
+                          )),
+                    )
+                  : Center(
+                      child: Icon(
+                        FontAwesomeIcons.minus,
+                        size: iconSize ?? 18,
                         color: colors(context).whiteColor,
-                      ))
-                  : Icon(
-                      Icons.remove,
-                      color: colors(context).whiteColor,
+                      ),
                     ),
             ),
           ),

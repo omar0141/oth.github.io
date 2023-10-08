@@ -1,8 +1,8 @@
 import 'package:fluro/fluro.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/Categories/CategoriesScreen.dart';
+import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
-import 'package:shakosh/new/Screens/ProductDetails/ProductDetailsScreen.dart';
 import 'package:shakosh/new/Screens/Products/ProductsScreen.dart';
 
 class Flurorouter {
@@ -78,9 +78,8 @@ class Flurorouter {
             brandId: params["brandId"][0],
           ));
   //
-  // static Handler _productDetailsHandler = Handler(
-  //     handlerFunc: (context, Map<String, dynamic> params) =>
-  //         ProductDetailsScreen());
+  static Handler _favouriteHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) => FavouriteScreen());
 
   static void setupRouter() {
     router.define(HomeScreen.routeName, handler: _homeHandler);
@@ -106,7 +105,6 @@ class Flurorouter {
         handler: _productsCategoriesBrandsHandler);
     router.define(ProductsScreen.productsCategoriesBrandsSearchRoute,
         handler: _productsCategoriesBrandsSearchHandler);
-    // router.define(ProductDetailsScreen.routeName,
-    //     handler: _productDetailsHandler);
+    router.define(FavouriteScreen.routeName, handler: _favouriteHandler);
   }
 }

@@ -112,7 +112,7 @@ class DesktopBody extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            product.price.toStringAsFixed(2) + " " + "le".tr,
+                            product.netPrice.toStringAsFixed(2) + " " + "le".tr,
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -141,6 +141,7 @@ class DesktopBody extends StatelessWidget {
                           width: 55,
                           height: 55,
                           iconSize: 30,
+                          product: product,
                         )
                       ],
                     ),

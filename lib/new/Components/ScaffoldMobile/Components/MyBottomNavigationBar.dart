@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
+import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
+import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 
 // ignore: must_be_immutable
@@ -28,6 +33,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         widget.index = value;
         if (value == 0) {
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        } else if (value == 1) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return CartScreen();
+          }));
+        } else if (value == 2) {
+          Navigator.of(context).pushNamed(FavouriteScreen.routeName);
         }
         setState(() {});
       },
@@ -39,13 +50,13 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           label: "home".tr,
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(Icons.shopping_cart),
-          icon: Icon(Icons.shopping_cart_outlined),
+          activeIcon: Icon(Icons.shopping_cart_outlined),
+          icon: cartIcon(),
           label: "cart".tr,
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(Icons.favorite),
-          icon: Icon(Icons.favorite_outline),
+          activeIcon: favouriteIcon(Icons.favorite),
+          icon: favouriteIcon(Icons.favorite_outline),
           label: "favourite".tr,
         ),
         BottomNavigationBarItem(
@@ -54,6 +65,33 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           label: "more".tr,
         ),
       ],
+    );
+  }
+
+  BlocBuilder<CartBloc, CartState> cartIcon() {
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        return Badge(
+            offset: Offset(-5, -5),
+            backgroundColor: colors(context).kprimaryColor,
+            textColor: colors(context).whiteColor,
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
+            label: Text(state.cart.length.toString()),
+            child: Icon(Icons.shopping_cart_outlined));
+      },
+    );
+  }
+
+  BlocBuilder<FavouriteBloc, FavouriteState> favouriteIcon(icon) {
+    return BlocBuilder<FavouriteBloc, FavouriteState>(
+      builder: (context, state) {
+        return Badge(
+            backgroundColor: colors(context).kprimaryColor,
+            textColor: colors(context).whiteColor,
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
+            label: Text(state.favourite.length.toString()),
+            child: Icon(icon));
+      },
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:math_expressions/math_expressions.dart';
+
 class ProductModel {
   String? id;
   String? taxId;
@@ -10,6 +12,7 @@ class ProductModel {
   String? unitMeasure;
   String? unitMeasureAlt;
   late double price;
+  late double netPrice;
   late double discountPrice;
   late double minOrderQuantity;
   late double stepOrderQuantity;
@@ -19,6 +22,8 @@ class ProductModel {
   late int perOrder;
   late double visibleStock;
   late double stock;
+  late double discountValue;
+  late double taxValue;
   String? taxEquation;
   late double cart;
   bool? favourite;
@@ -35,6 +40,7 @@ class ProductModel {
       this.unitMeasure,
       this.unitMeasureAlt,
       required this.price,
+      required this.netPrice,
       required this.discountPrice,
       required this.minOrderQuantity,
       required this.stepOrderQuantity,
@@ -44,11 +50,28 @@ class ProductModel {
       required this.perOrder,
       required this.visibleStock,
       required this.stock,
+      required this.discountValue,
+      required this.taxValue,
       this.taxEquation,
       required this.cart,
       this.favourite});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
+    var (myNetPrice, newTaxValue) = calcNetPrice(json);
+    double newPrice = double.parse((json['price'] ?? 0).toString());
+    double newDiscountPrice =
+        double.parse((json['discount_price'] ?? 0).toString());
+    double newDiscountValue =
+        newPrice - (newDiscountPrice == 0 ? newPrice : newDiscountPrice);
+    //
+    int newPerOrder = int.parse((json['per_order'] ?? 0).toString());
+    double newStock = 0;
+    if (newPerOrder == 1) {
+      newStock = 999999999999999;
+    } else {
+      newStock = double.parse((json['stock'] ?? 0).toString());
+    }
+    //
     id = json['id'];
     taxId = json['tax_id'];
     dealId = json['deal_id'];
@@ -60,6 +83,7 @@ class ProductModel {
     unitMeasure = json['unit_measure'];
     unitMeasureAlt = json['unit_measure_alt'];
     price = double.parse((json['price'] ?? 0).toString());
+    netPrice = myNetPrice;
     discountPrice = double.parse((json['discount_price'] ?? 0).toString());
     minOrderQuantity =
         double.parse((json['min_order_quantity'] ?? 1).toString());
@@ -72,7 +96,9 @@ class ProductModel {
     featured = int.parse((json['featured'] ?? 0).toString());
     perOrder = int.parse((json['per_order'] ?? 0).toString());
     visibleStock = double.parse((json['visible_stock'] ?? 0).toString());
-    stock = double.parse((json['stock'] ?? 0).toString());
+    stock = newStock;
+    discountValue = newDiscountValue;
+    taxValue = newTaxValue;
     taxEquation = json['tax_equation'];
     try {
       cart = json['cart'];
@@ -84,6 +110,30 @@ class ProductModel {
     } catch (e) {
       favourite = false;
     }
+  }
+
+  (double, double) calcNetPrice(Map<String, dynamic> json) {
+    // calc tax
+    double newTax = 0;
+    double newMultiplier =
+        double.parse((json['display_multiplier'] ?? 1).toString());
+    String? newEquation = json['tax_equation'];
+    double newDiscountPrice =
+        double.parse((json['discount_price'] ?? 0).toString());
+    double newPrice = double.parse((json['price'] ?? 0).toString());
+    if (newEquation != null) {
+      Parser p = Parser();
+      String newtax = newEquation.replaceAll('x',
+          '${newDiscountPrice == 0 ? newPrice : newDiscountPrice * newMultiplier}');
+      newTax = p.parse(newtax).evaluate(EvaluationType.REAL, ContextModel());
+    } else {
+      newTax = 0;
+    }
+    // add tex on net Price
+    double myNetPrice = newDiscountPrice == 0
+        ? (newPrice + newTax)
+        : (newDiscountPrice + newTax);
+    return (myNetPrice, newTax);
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +149,7 @@ class ProductModel {
     data['unit_measure'] = this.unitMeasure;
     data['unit_measure_alt'] = this.unitMeasureAlt;
     data['price'] = this.price;
+    data['netPrice'] = this.netPrice;
     data['discount_price'] = this.discountPrice;
     data['min_order_quantity'] = this.minOrderQuantity;
     data['step_order_quantity'] = this.stepOrderQuantity;
@@ -108,6 +159,8 @@ class ProductModel {
     data['per_order'] = this.perOrder;
     data['visible_stock'] = this.visibleStock;
     data['stock'] = this.stock;
+    data['discountValue'] = this.discountValue;
+    data['taxValue'] = this.taxValue;
     data['tax_equation'] = this.taxEquation;
     data['cart'] = this.cart;
     data['favourite'] = this.favourite;

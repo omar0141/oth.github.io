@@ -59,6 +59,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     emit(ProductsLoading());
     if (event.trending == true) {
       if (!event.back) {
+        trendingProducts = [];
         // Get Trending Products Data From Api
         var (pagesNew, currentPageNew, resultsNew, trendingProductsData) =
             await _productsRemote.getProducts();

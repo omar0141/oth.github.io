@@ -1,23 +1,19 @@
 part of 'cart_bloc.dart';
 
-abstract class CartEvent {}
+abstract class NewCartEvent {}
 
-class AddNewToCartEvent extends CartEvent {
-  ProductModel product;
-  AddNewToCartEvent({required this.product});
-}
-
-class AddToCartEvent extends CartEvent {
+class AddToCartEvent extends NewCartEvent {
   ProductModel product;
   AddToCartEvent({required this.product});
 }
 
-class RemoveFromCartEvent extends CartEvent {
+class RemoveFromCartEvent extends NewCartEvent {
   ProductModel product;
-  RemoveFromCartEvent({required this.product});
+  bool remove;
+  RemoveFromCartEvent({required this.product, this.remove = false});
 }
 
-class GetLocalCartEvent extends CartEvent {
+class GetLocalCartEvent extends NewCartEvent {
   List<ProductModel> cart;
   GetLocalCartEvent({required this.cart});
 }

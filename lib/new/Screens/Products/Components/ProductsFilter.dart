@@ -46,6 +46,13 @@ class _ProductsFilterState extends State<ProductsFilter> {
 
   @override
   void initState() {
+    print(widget.categoryId);
+    if (BlocProvider.of<ProductsBloc>(context).categoryId == null) {
+      BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
+    }
+    if (BlocProvider.of<ProductsBloc>(context).brandId == null) {
+      BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
+    }
     widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
     widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
     if (widget.categoryId != null) {

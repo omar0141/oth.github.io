@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header1.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header2.dart';
+import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
 
 // ignore: must_be_immutable
 class ScaffoldDesktop extends StatefulWidget {
@@ -27,6 +28,7 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
   ScrollController scrollController = ScrollController();
   bool isVisibleHeader2 = true;
   bool isVisibleHeader1 = true;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   void initState() {
@@ -59,6 +61,8 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      endDrawer: Drawer(width: screenWidth * 0.3, child: CartScreen()),
       floatingActionButton: Visibility(
         visible: !isVisibleHeader2,
         child: GestureDetector(
@@ -94,7 +98,9 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
                 brandId: widget.brandId,
                 products: widget.products,
               )),
-          Header2(),
+          Header2(
+            scaffoldKey: scaffoldKey,
+          ),
           Expanded(
             child: ListView(
                 controller: scrollController,

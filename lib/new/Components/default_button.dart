@@ -48,9 +48,9 @@ class DefaultButton extends StatelessWidget {
                 : Text(
                     text!,
                     style: TextStyle(
-                      fontSize: fontsize == null ? 14 : fontsize.toDouble(),
-                      color: forecolor ?? Colors.white,
-                    ),
+                        fontSize: fontsize == null ? 14 : fontsize.toDouble(),
+                        color: forecolor ?? Colors.white,
+                        height: 2),
                   ),
           ],
         ),

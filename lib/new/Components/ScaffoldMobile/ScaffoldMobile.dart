@@ -9,19 +9,20 @@ import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 
 // ignore: must_be_immutable
 class ScaffoldMobile extends StatefulWidget {
-  ScaffoldMobile({
-    super.key,
-    required this.child,
-    this.appBar,
-    this.screenName,
-    this.index,
-    this.searchOpened = false,
-  });
+  ScaffoldMobile(
+      {super.key,
+      required this.child,
+      this.appBar,
+      this.screenName,
+      this.index,
+      this.searchOpened = false,
+      this.bottomNavigationBar});
   final Widget child;
   final AppBar? appBar;
   final String? screenName;
   int? index;
   bool searchOpened;
+  Widget? bottomNavigationBar;
 
   @override
   State<ScaffoldMobile> createState() => _ScaffoldMobileState();
@@ -62,50 +63,59 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: isVisible2
-          ? (widget.appBar ?? myAppBar(context, widget.screenName ?? ""))
-          : null,
-      body: Container(
-        color: colors(context).whiteColor,
-        child: ListView(
-          controller: scrollController,
-          children: [
-            widget.child,
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: isVisible2
+            ? (widget.appBar ?? myAppBar(context, widget.screenName ?? ""))
+            : null,
+        body: Container(
+          color: colors(context).whiteColor,
+          child: ListView(
+            controller: scrollController,
+            children: [
+              widget.child,
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: Visibility(
-        visible: !isVisible1,
-        child: GestureDetector(
-          onTap: () {
-            scrollController.animateTo(
-              0,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-            );
-            isVisible1 = true;
-            isVisible2 = true;
+        floatingActionButton: Visibility(
+          visible: !isVisible1,
+          child: GestureDetector(
+            onTap: () {
+              scrollController.animateTo(
+                0,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeIn,
+              );
+              isVisible1 = true;
+              isVisible2 = true;
 
-            setState(() {});
-          },
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: colors(context).kprimaryColor,
-                borderRadius: BorderRadius.circular(50)),
-            child: Icon(
-              Icons.arrow_upward,
-              color: colors(context).whiteColor,
+              setState(() {});
+            },
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: colors(context).kprimaryColor,
+                  borderRadius: BorderRadius.circular(50)),
+              child: Icon(
+                Icons.arrow_upward,
+                color: colors(context).whiteColor,
+              ),
             ),
           ),
         ),
+        bottomNavigationBar: widget.bottomNavigationBar == null
+            ? Visibility(
+                visible: isVisible2,
+                child: MyBottomNavigationBar(
+                  index: widget.index ?? 0,
+                ))
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  widget.bottomNavigationBar!,
+                ],
+              ),
       ),
-      bottomNavigationBar: Visibility(
-          visible: isVisible2,
-          child: MyBottomNavigationBar(
-            index: widget.index ?? 0,
-          )),
     );
   }
 
