@@ -6,6 +6,7 @@ import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
+import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
@@ -134,7 +135,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
               String route = "brands/${brand.id}/products/1";
               return Listener(
                 onPointerDown: (event) {
-                  onPointerDown(event, Uri.base.origin + "/#$route");
+                  onPointerDown(event, Uri.base.origin + urlName + "/#$route");
                 },
                 child: InkWell(
                   onTap: () {
@@ -164,7 +165,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                   end: 10, start: mySize(10, 10, 0, 0, 0)!),
               child: Listener(
                 onPointerDown: (event) {
-                  onPointerDown(event, Uri.base.origin + "/#$route");
+                  onPointerDown(event, Uri.base.origin + urlName + "/#$route");
                 },
                 child: InkWell(
                   onTap: () {

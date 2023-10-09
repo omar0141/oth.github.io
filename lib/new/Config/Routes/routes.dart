@@ -82,29 +82,38 @@ class Flurorouter {
       handlerFunc: (context, Map<String, dynamic> params) => FavouriteScreen());
 
   static void setupRouter() {
-    router.define(HomeScreen.routeName, handler: _homeHandler);
+    router.define(HomeScreen.routeName,
+        handler: _homeHandler, transitionDuration: Duration.zero);
     router.define(CategoriesScreen.routeName,
-        handler: _categoriesHandlerWtihId);
-    router.define("categories", handler: _categoriesHandler);
-    router.define(BrandsScreen.routeName, handler: _brandsHandler);
+        handler: _categoriesHandlerWtihId, transitionDuration: Duration.zero);
+    router.define("categories",
+        handler: _categoriesHandler, transitionDuration: Duration.zero);
+    router.define(BrandsScreen.routeName,
+        handler: _brandsHandler, transitionDuration: Duration.zero);
     // products
     router.define(ProductsScreen.productsOnlyRoute,
-        handler: _productsOnlyHandler);
-    router.define(ProductsScreen.productsRoute, handler: _productsHandler);
+        handler: _productsOnlyHandler, transitionDuration: Duration.zero);
+    router.define(ProductsScreen.productsRoute,
+        handler: _productsHandler, transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsSearchRoute,
-        handler: _productsSearchHandler);
+        handler: _productsSearchHandler, transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsCategoriesRoute,
-        handler: _productsCategoriesHandler);
+        handler: _productsCategoriesHandler, transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsCategoriesSearchRoute,
-        handler: _productsCategoriesSearchHandler);
+        handler: _productsCategoriesSearchHandler,
+        transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsBrandsRoute,
-        handler: _productsBrandsHandler);
+        handler: _productsBrandsHandler, transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsBrandsSearchRoute,
-        handler: _productsBrandsSearchHandler);
+        handler: _productsBrandsSearchHandler,
+        transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsCategoriesBrandsRoute,
-        handler: _productsCategoriesBrandsHandler);
+        handler: _productsCategoriesBrandsHandler,
+        transitionDuration: Duration.zero);
     router.define(ProductsScreen.productsCategoriesBrandsSearchRoute,
-        handler: _productsCategoriesBrandsSearchHandler);
-    router.define(FavouriteScreen.routeName, handler: _favouriteHandler);
+        handler: _productsCategoriesBrandsSearchHandler,
+        transitionDuration: Duration.zero);
+    router.define(FavouriteScreen.routeName,
+        handler: _favouriteHandler, transitionDuration: Duration.zero);
   }
 }

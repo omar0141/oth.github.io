@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header1.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header2.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
 
 // ignore: must_be_immutable
@@ -62,7 +63,7 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      endDrawer: Drawer(width: screenWidth * 0.3, child: CartScreen()),
+      endDrawer: Drawer(width: 400, child: CartScreen()),
       floatingActionButton: Visibility(
         visible: !isVisibleHeader2,
         child: GestureDetector(
@@ -102,9 +103,14 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
             scaffoldKey: scaffoldKey,
           ),
           Expanded(
-            child: ListView(
-                controller: scrollController,
-                children: [widget.child, footer(context)]),
+            child: ListView(controller: scrollController, children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: mySize(0, 0, 0, 0, screenWidth * 0.04)!),
+                child: widget.child,
+              ),
+              footer(context)
+            ]),
           ),
         ],
       ),

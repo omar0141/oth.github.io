@@ -72,7 +72,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         return Badge(
-            offset: Offset(-5, -5),
             backgroundColor: colors(context).kprimaryColor,
             textColor: colors(context).whiteColor,
             textStyle: TextStyle(fontWeight: FontWeight.bold),

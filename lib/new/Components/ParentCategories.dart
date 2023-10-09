@@ -5,6 +5,7 @@ import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
+import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
@@ -12,10 +13,12 @@ import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
 class ParentCategories extends StatefulWidget {
-  ParentCategories({super.key, this.parentId, this.expand = false});
+  ParentCategories(
+      {super.key, this.parentId, this.expand = false, this.categories = false});
 
   String? parentId;
   bool expand;
+  bool categories;
 
   @override
   State<ParentCategories> createState() => _ParentCategoriesState();
@@ -132,7 +135,10 @@ class _ParentCategoriesState extends State<ParentCategories> {
               return Listener(
                 onPointerDown: (event) {
                   onPointerDown(
-                      event, Uri.base.origin + "/#categories/${category.id}");
+                      event,
+                      Uri.base.origin +
+                          urlName +
+                          "/#categories/${category.id}");
                 },
                 child: InkWell(
                   onTap: () {
@@ -162,7 +168,10 @@ class _ParentCategoriesState extends State<ParentCategories> {
               child: Listener(
                 onPointerDown: (event) {
                   onPointerDown(
-                      event, Uri.base.origin + "/#categories/${category.id}");
+                      event,
+                      Uri.base.origin +
+                          urlName +
+                          "/#categories/${category.id}");
                 },
                 child: InkWell(
                   onTap: () {
@@ -185,10 +194,16 @@ class _ParentCategoriesState extends State<ParentCategories> {
     if (widget.parentId == null) {
       BlocProvider.of<DependanciesBloc>(context)
           .add(SelectCategoryEvent(selectedParentCatgeoryId: category.id));
-      Navigator.of(context).pushNamed("categories/${category.id}");
+      if (!widget.categories) {
+        Navigator.of(context).pushNamed("categories/${category.id}");
+      } else {
+        html.window.history
+            .replaceState(null, 'categories', "#categories/${category.id}");
+        widget.parentId = category.id;
+      }
     } else {
       html.window.history
-          .pushState(null, 'categories', "#categories/${category.id}");
+          .replaceState(null, 'categories', "#categories/${category.id}");
       widget.parentId = category.id;
       BlocProvider.of<DependanciesBloc>(context)
           .add(SelectCategoryEvent(selectedParentCatgeoryId: widget.parentId!));

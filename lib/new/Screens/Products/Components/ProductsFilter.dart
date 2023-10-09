@@ -4,6 +4,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
+import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
@@ -142,8 +143,12 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     } else {
                       route = "products/1";
                     }
-
-                    Navigator.of(context).pushReplacementNamed(route);
+                    if (screenWidth > 768)
+                      Navigator.of(context).pushReplacementNamed(route);
+                    else
+                      setState(() {
+                        expand[0] = false;
+                      });
                   },
                   child: Icon(
                     Icons.close,
@@ -171,7 +176,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                       String route = "categories/${category.id}/products/1";
                       return Listener(
                         onPointerDown: (event) {
-                          onPointerDown(event, Uri.base.origin + "/#$route");
+                          onPointerDown(
+                              event, Uri.base.origin + urlName + "/#$route");
                         },
                         child: InkWell(
                           onTap: () {
@@ -182,7 +188,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                   "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
                             } else
                               route = "categories/${category.id}/products/1";
-                            html.window.history.pushState(null, '', "#$route");
+                            html.window.history
+                                .replaceState(null, '', "#$route");
                             BlocProvider.of<ProductsBloc>(context).categoryId =
                                 widget.categoryId;
                             BlocProvider.of<ProductsBloc>(context).add(
@@ -252,8 +259,12 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     } else {
                       route = "products/1";
                     }
-
-                    Navigator.of(context).pushReplacementNamed(route);
+                    if (screenWidth > 768)
+                      Navigator.of(context).pushReplacementNamed(route);
+                    else
+                      setState(() {
+                        expand[1] = false;
+                      });
                   },
                   child: Icon(
                     Icons.close,
@@ -281,7 +292,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                       String route = "brands/${brand.id}/products/1";
                       return Listener(
                         onPointerDown: (event) {
-                          onPointerDown(event, Uri.base.origin + "/#$route");
+                          onPointerDown(
+                              event, Uri.base.origin + urlName + "/#$route");
                         },
                         child: InkWell(
                           onTap: () {
@@ -292,7 +304,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                   "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
                             } else
                               route = "brands/${brand.id}/products/1";
-                            html.window.history.pushState(null, '', "#$route");
+                            html.window.history
+                                .replaceState(null, '', "#$route");
                             BlocProvider.of<ProductsBloc>(context).brandId =
                                 widget.brandId;
                             BlocProvider.of<ProductsBloc>(context).add(

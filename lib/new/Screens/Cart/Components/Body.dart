@@ -122,12 +122,8 @@ class Body extends StatelessWidget {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: mySize(
-                                          screenWidth * 0.4,
-                                          screenWidth * 0.4,
-                                          screenWidth * 0.15,
-                                          screenWidth * 0.15,
-                                          screenWidth * 0.15),
+                                      width: mySize(screenWidth * 0.4,
+                                          screenWidth * 0.4, 150, 150, 150),
                                       child: CartWidget(
                                         product: product,
                                         height: 35,

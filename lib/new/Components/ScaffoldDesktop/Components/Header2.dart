@@ -6,7 +6,9 @@ import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
+import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
@@ -22,6 +24,8 @@ class Header2 extends StatelessWidget {
     return Container(
         color: colors(context).kprimaryColor,
         height: 60,
+        padding: EdgeInsets.symmetric(
+            horizontal: mySize(0, 0, 0, 0, screenWidth * 0.04)!),
         child: Row(
           children: [
             Expanded(
@@ -30,7 +34,10 @@ class Header2 extends StatelessWidget {
                   Listener(
                     onPointerDown: (event) {
                       onPointerDown(
-                          event, Uri.base.origin + "/#${HomeScreen.routeName}");
+                          event,
+                          Uri.base.origin +
+                              urlName +
+                              "/#${HomeScreen.routeName}");
                     },
                     child: buildMenuItem(context, "home".tr, Icons.home, () {
                       Navigator.of(context)
@@ -39,7 +46,8 @@ class Header2 extends StatelessWidget {
                   ),
                   Listener(
                       onPointerDown: (event) {
-                        onPointerDown(event, Uri.base.origin + "/#categories");
+                        onPointerDown(
+                            event, Uri.base.origin + urlName + "/#categories");
                       },
                       child: buildMenuItem(context, "categories".tr, Icons.list,
                           () {

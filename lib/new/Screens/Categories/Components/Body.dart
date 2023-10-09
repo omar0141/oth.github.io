@@ -6,6 +6,7 @@ import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Components/ParentCategories.dart';
+import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 
@@ -23,6 +24,7 @@ class Body extends StatelessWidget {
         ),
         ParentCategories(
           parentId: parentId,
+          categories: true,
           expand: parentId == null ? true : false,
         ),
         SizedBox(
@@ -82,7 +84,7 @@ class ChildCategories extends StatelessWidget {
             String route = "categories/${category.id}/products/1";
             return Listener(
               onPointerDown: (event) {
-                onPointerDown(event, Uri.base.origin + "/#$route");
+                onPointerDown(event, Uri.base.origin + urlName + "/#$route");
               },
               child: InkWell(
                 onTap: () {

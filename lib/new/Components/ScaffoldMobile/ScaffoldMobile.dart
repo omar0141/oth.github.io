@@ -65,9 +65,7 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: isVisible2
-            ? (widget.appBar ?? myAppBar(context, widget.screenName ?? ""))
-            : null,
+        appBar: widget.appBar ?? myAppBar(context, widget.screenName ?? ""),
         body: Container(
           color: colors(context).whiteColor,
           child: ListView(
