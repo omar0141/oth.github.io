@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CartWidget.dart';
@@ -15,25 +14,20 @@ import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
 class DesktopBody extends StatelessWidget {
-  DesktopBody({super.key, required this.product});
-
-  ProductModel product;
+  DesktopBody({super.key, required this.state});
+  var state;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductsBloc, ProductsState>(
-      builder: (context, state) {
-        if (state is ProductsDetailsLoading) {
-          return productsDetailsShimmer();
-        } else if (state is ProductsDetailsLoaded) {
-          ProductDetailsModel productDetails = state.productDetails;
-          List<ProductModel> productsSimilars = state.productSimilars;
-          return productsDetails(productDetails, context, productsSimilars);
-        } else {
-          return Container();
-        }
-      },
-    );
+    if (state is ProductsDetailsLoading) {
+      return productsDetailsShimmer();
+    } else if (state is ProductsDetailsLoaded) {
+      ProductDetailsModel productDetails = state.productDetails;
+      List<ProductModel> productsSimilars = state.productSimilars;
+      return productsDetails(productDetails, context, productsSimilars);
+    } else {
+      return Container();
+    }
   }
 
   Column productsDetails(ProductDetailsModel productDetails,
@@ -67,8 +61,8 @@ class DesktopBody extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "language_iso".tr == "ar"
-                                ? product.nameAlt
-                                : product.name,
+                                ? productDetails.nameAlt
+                                : productDetails.name,
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
@@ -112,7 +106,9 @@ class DesktopBody extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            product.netPrice.toStringAsFixed(2) + " " + "le".tr,
+                            productDetails.netPrice.toStringAsFixed(2) +
+                                " " +
+                                "le".tr,
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -130,7 +126,8 @@ class DesktopBody extends StatelessWidget {
                             width: 200,
                             height: 55,
                             child: CartWidget(
-                              product: product,
+                              product: ProductModel.fromJson(
+                                  productDetails.toJson()),
                               fontSize: 18,
                               iconSize: 25,
                             )),
@@ -141,7 +138,8 @@ class DesktopBody extends StatelessWidget {
                           width: 55,
                           height: 55,
                           iconSize: 30,
-                          product: product,
+                          product:
+                              ProductModel.fromJson(productDetails.toJson()),
                         )
                       ],
                     ),
@@ -223,7 +221,7 @@ class DesktopBody extends StatelessWidget {
                         Row(
                           children: [
                             Container(
-                              width: screenWidth * 0.5,
+                              width: screenWidth * 0.4,
                               height: 12,
                               decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -237,7 +235,7 @@ class DesktopBody extends StatelessWidget {
                         Row(
                           children: [
                             Container(
-                              width: screenWidth * 0.55,
+                              width: screenWidth * 0.45,
                               height: 10,
                               decoration: BoxDecoration(
                                   color: Colors.grey,

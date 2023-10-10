@@ -18,8 +18,8 @@ class AddToCartState extends CartState {
   AddToCartState({required super.cart});
 }
 
-class GetLocalCartState extends CartState {
-  GetLocalCartState({required super.cart});
+class GetCartState extends CartState {
+  GetCartState({required super.cart});
 }
 
 class RemoveFromCartState extends CartState {

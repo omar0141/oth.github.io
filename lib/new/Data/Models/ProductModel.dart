@@ -58,19 +58,8 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     var (myNetPrice, newTaxValue) = calcNetPrice(json);
-    double newPrice = double.parse((json['price'] ?? 0).toString());
-    double newDiscountPrice =
-        double.parse((json['discount_price'] ?? 0).toString());
-    double newDiscountValue =
-        newPrice - (newDiscountPrice == 0 ? newPrice : newDiscountPrice);
-    //
-    int newPerOrder = int.parse((json['per_order'] ?? 0).toString());
-    double newStock = 0;
-    if (newPerOrder == 1) {
-      newStock = 999999999999999;
-    } else {
-      newStock = double.parse((json['stock'] ?? 0).toString());
-    }
+    double newDiscountValue = calcDiscountValue(json);
+    double newStock = calcStock(json);
     //
     id = json['id'];
     taxId = json['tax_id'];
@@ -112,7 +101,27 @@ class ProductModel {
     }
   }
 
-  (double, double) calcNetPrice(Map<String, dynamic> json) {
+  static double calcStock(Map<String, dynamic> json) {
+    int newPerOrder = int.parse((json['per_order'] ?? 0).toString());
+    double newStock = 0;
+    if (newPerOrder == 1) {
+      newStock = 999999999999999;
+    } else {
+      newStock = double.parse((json['stock'] ?? 0).toString());
+    }
+    return newStock;
+  }
+
+  static double calcDiscountValue(Map<String, dynamic> json) {
+    double newPrice = double.parse((json['price'] ?? 0).toString());
+    double newDiscountPrice =
+        double.parse((json['discount_price'] ?? 0).toString());
+    double newDiscountValue =
+        newPrice - (newDiscountPrice == 0 ? newPrice : newDiscountPrice);
+    return newDiscountValue;
+  }
+
+  static (double, double) calcNetPrice(Map<String, dynamic> json) {
     // calc tax
     double newTax = 0;
     double newMultiplier =

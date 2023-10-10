@@ -184,7 +184,7 @@
   "contact-us": "كلمنا",
   "search-placeholder": "اكتب ال بتدور عليه هنا",
   "welcome-to-bayt-aleadad": "مرحبا بك في بيت العدد",
-  "bayt-aleadad":"بيت العدد",
+  "bayt-aleadad": "بيت العدد",
   "hi": "مرحبا",
   "more": "المزيد",
   "font-family": "Tajawal",
@@ -192,5 +192,11 @@
   "open-in-new-tab": "فتح في صفحة جديدة",
   "all-categories": "كل التصنيفات",
   "show-all": "عرض الكل",
-  "trending-products": "المنتجات الرائجة"
+  "trending-products": "المنتجات الرائجة",
+  "total-discount": "إجمالى الخصم",
+  "total-tax": "إجمالى الضرائب",
+  "filter-by": "تصفية حسب",
+  "you-need-to-sign-in-first": "أنت بحاجة إلى تسجيل الدخول أولاً",
+  "sorry": "عفوا",
+  "sign-in-with-your-data":"قم بتسجيل الدخول باستخدام البيانات الخاصة بك"
 }

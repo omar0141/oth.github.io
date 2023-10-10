@@ -1,12 +1,18 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Components/dialogs.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
+import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Local/CartLocal.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
+import 'package:universal_html/html.dart' as html;
 part 'cart_event.dart';
 part 'cart_state.dart';
 
-class CartBloc extends Bloc<NewCartEvent, CartState> {
+class CartBloc extends Bloc<CartEvent, CartState> {
   List<ProductModel> cart = [];
 
   double total = 0;
@@ -16,18 +22,47 @@ class CartBloc extends Bloc<NewCartEvent, CartState> {
   CartLocal cartLocal = CartLocal();
 
   CartBloc() : super(CartInitial(cart: [])) {
-    on<NewCartEvent>((event, emit) async {
+    on<CartEvent>((event, emit) async {
       if (event is AddToCartEvent) {
         await addToCart(event, emit);
       } else if (event is RemoveFromCartEvent) {
         await removeFromCart(event, emit);
       } else if (event is GetLocalCartEvent) {
-        emit(CartInitial(cart: []));
-        cart = event.cart;
-        calcNet();
-        emit(GetLocalCartState(cart: cart));
+        getLocalCart(emit, event);
+      } else if (event is GetRemoteCartEvent) {
+        clearCart();
+      } else if (event is CheckoutCartEvent) {
+        if (net > 0) {
+          if (MyApi.UID != "") {
+            clearCart();
+          } else {
+            MyDialogs().showdialog(
+                navigatorKey.currentContext!,
+                DialogType.infoReverse,
+                mySize(320, 320, 400, 400, 400),
+                "you-need-to-sign-in-first".tr,
+                "sorry".tr,
+                () {
+                  
+                },
+                null,
+                buttonOkText: "sign-in".tr);
+          }
+        }
       }
     });
+  }
+
+  void clearCart() {
+    cart.clear();
+    html.window.localStorage['cart'] = "[]";
+  }
+
+  void getLocalCart(Emitter<CartState> emit, GetLocalCartEvent event) {
+    emit(CartInitial(cart: []));
+    cart = event.cart;
+    calcNet();
+    emit(GetCartState(cart: cart));
   }
 
   void calcNet() {

@@ -15,6 +15,7 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Config/Routes/routes.dart';
+import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -147,7 +148,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: Translations.getLocales(),
-        initialRoute: HomeScreen.routeName,
+        initialRoute: LoginScreen.routeName,
         onGenerateRoute: Flurorouter.router.generator,
       ),
     );

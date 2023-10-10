@@ -100,7 +100,10 @@ class TotalCartWidget extends StatelessWidget {
                       height: 50,
                       child: DefaultButton(
                         fontsize: 16,
-                        press: () {},
+                        press: () {
+                          BlocProvider.of<CartBloc>(context)
+                              .add(CheckoutCartEvent());
+                        },
                         text: "checkout".tr,
                       ),
                     ),

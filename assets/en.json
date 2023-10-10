@@ -199,5 +199,11 @@
   "open-in-new-tab": "Open in new tab",
   "all-categories": "All Categories",
   "show-all": "Show All",
-  "trending-products": "Trending Products"
+  "trending-products": "Trending Products",
+  "total-discount": "Total Discount",
+  "total-tax": "Total Taxes",
+  "filter-by": "Filter by",
+  "you-need-to-sign-in-first": "You need to sign in first",
+  "sorry": "Sorry",
+  "sign-in-with-your-data": "Sign in with your data"
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
@@ -13,23 +12,19 @@ import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
 class MobileBody extends StatelessWidget {
-  MobileBody({super.key, required this.product});
-
-  ProductModel product;
-
+  MobileBody({super.key, required this.state});
+  var state;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
-      if (state is ProductsDetailsLoading) {
-        return productsDetailsShimmer();
-      } else if (state is ProductsDetailsLoaded) {
-        ProductDetailsModel productDetails = state.productDetails;
-        List<ProductModel> productsSimilars = state.productSimilars;
-        return productsDetails(productDetails, context, productsSimilars);
-      } else {
-        return Container();
-      }
-    });
+    if (state is ProductsDetailsLoading) {
+      return productsDetailsShimmer();
+    } else if (state is ProductsDetailsLoaded) {
+      ProductDetailsModel productDetails = state.productDetails;
+      List<ProductModel> productsSimilars = state.productSimilars;
+      return productsDetails(productDetails, context, productsSimilars);
+    } else {
+      return Container();
+    }
   }
 
   Column productsDetails(ProductDetailsModel productDetails,
@@ -192,7 +187,9 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "language_iso".tr == "ar" ? product.nameAlt : product.name,
+                  "language_iso".tr == "ar"
+                      ? productDetails.nameAlt
+                      : productDetails.name,
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
               )
@@ -205,7 +202,7 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  product.netPrice.toStringAsFixed(2) + " " + "le".tr,
+                  productDetails.netPrice.toStringAsFixed(2) + " " + "le".tr,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,

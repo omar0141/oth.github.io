@@ -11,7 +11,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   List<ProductModel> trendingProducts = [];
   List<ProductModel> products = [];
   List<ProductModel> productSimilars = [];
-  ProductDetailsModel productDetails = ProductDetailsModel(media: []);
+  late ProductDetailsModel productDetails;
   int pages = 1;
   int currentPage = 1;
   int results = 0;

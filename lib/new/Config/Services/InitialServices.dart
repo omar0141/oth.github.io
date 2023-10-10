@@ -19,7 +19,6 @@ class InitialServices {
       preferences.setString("date", DateTime.now().toString());
     });
     //
-    
     CartLocal().getCart(setState: true);
     FavouriteLocal().getFavourite(setState: true);
     Timer.periodic(Duration(seconds: 10), (Timer timer) async {
