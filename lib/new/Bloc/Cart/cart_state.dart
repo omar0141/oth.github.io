@@ -10,8 +10,8 @@ class CartInitial extends CartState {
 }
 
 class CartLoading extends CartState {
-  String id;
-  CartLoading({required this.id, required super.cart});
+  List<String> cartLoading;
+  CartLoading({required this.cartLoading, required super.cart});
 }
 
 class AddToCartState extends CartState {

@@ -20,14 +20,14 @@ class MyApi {
       MyApi.api + 'public/ecommerce/clients/reset-password';
   static String getAddresses =
       MyApi.api + 'public/ecommerce/clients/addresses/get';
-  static String AddAddress =
+  static String addAddress =
       MyApi.api + 'public/ecommerce/clients/addresses/add';
   static String UpdateAddress =
       MyApi.api + 'public/ecommerce/clients/addresses/update';
   static String deleteAddress =
       MyApi.api + 'public/ecommerce/clients/addresses/delete';
   static String postLogin = MyApi.api + 'public/ecommerce/clients/post-login';
-  static String Dependants = MyApi.api + 'public/ecommerce/dependants';
+  static String dependants = MyApi.api + 'public/ecommerce/dependants';
   static String CategoryProducts =
       MyApi.api + 'public/ecommerce/products/get-categories';
   static String productDetails =
@@ -38,14 +38,14 @@ class MyApi {
       MyApi.api + 'public/ecommerce/products/variants';
   static String products = MyApi.api + 'public/ecommerce/products/get';
   static String home = MyApi.api + 'public/ecommerce/home';
-  static String AddToCart = MyApi.api + 'public/ecommerce/clients/cart/manage';
-  static String AddToWishlist =
+  static String manageCart = MyApi.api + 'public/ecommerce/clients/cart/manage';
+  static String manageWishlist =
       MyApi.api + 'public/ecommerce/clients/wishlist/manage';
-  static String BatchCart = MyApi.api + 'public/ecommerce/clients/cart/batch';
-  static String BatchWishlist =
+  static String batchCart = MyApi.api + 'public/ecommerce/clients/cart/batch';
+  static String batchWishlist =
       MyApi.api + 'public/ecommerce/clients/wishlist/batch';
-  static String GetCart = MyApi.api + 'public/ecommerce/clients/cart/get';
-  static String GetWishlist =
+  static String getCart = MyApi.api + 'public/ecommerce/clients/cart/get';
+  static String getWishlist =
       MyApi.api + 'public/ecommerce/clients/wishlist/get';
   static String ChangePassword =
       MyApi.api + 'public/ecommerce/clients/set-password';

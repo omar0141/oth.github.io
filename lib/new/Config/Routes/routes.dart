@@ -6,6 +6,7 @@ import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
 import 'package:shakosh/new/Screens/ProductDetails/ProductDetailsScreen.dart';
 import 'package:shakosh/new/Screens/Products/ProductsScreen.dart';
+import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
 
 class Flurorouter {
   static final FluroRouter router = FluroRouter();
@@ -91,7 +92,9 @@ class Flurorouter {
   //
   static Handler _loginHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => LoginScreen());
-
+  //
+  static Handler _registerHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) => RegisterScreen());
   static void setupRouter() {
     router.define(HomeScreen.routeName,
         handler: _homeHandler, transitionDuration: Duration.zero);
@@ -128,7 +131,9 @@ class Flurorouter {
         handler: _productDetailsHandler, transitionDuration: Duration.zero);
     router.define(FavouriteScreen.routeName,
         handler: _favouriteHandler, transitionDuration: Duration.zero);
-        router.define(LoginScreen.routeName,
+    router.define(LoginScreen.routeName,
         handler: _loginHandler, transitionDuration: Duration.zero);
+    router.define(RegisterScreen.routeName,
+        handler: _registerHandler, transitionDuration: Duration.zero);
   }
 }

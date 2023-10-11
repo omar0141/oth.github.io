@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Config/Utils/Validator.dart';
 import 'package:shakosh/new/components/default_button.dart';
@@ -9,17 +11,21 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 class LoginForm extends StatelessWidget {
   LoginForm({super.key});
 
-  GlobalKey<FormState> formstate = GlobalKey();
-  TextEditingController phone = TextEditingController();
-  TextEditingController password = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formstate = GlobalKey();
+    TextEditingController phone = BlocProvider.of<UserBloc>(context).phoneLogin;
+    TextEditingController password =
+        BlocProvider.of<UserBloc>(context).passwordLogin;
+    //
     return Form(
         key: formstate,
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: screenWidth > 768
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
               children: [
                 Text(
                   screenWidth > 768
@@ -36,7 +42,7 @@ class LoginForm extends StatelessWidget {
               height: mySize(40, 40, 20, 20, 20),
             ),
             textField(
-                phone, "tel".tr, false, Icons.call, Validators().validEmpty),
+                phone, "tel".tr, false, Icons.call, Validators().validPhone),
             SizedBox(
               height: 20,
             ),
@@ -46,17 +52,30 @@ class LoginForm extends StatelessWidget {
               height: 20,
             ),
             SizedBox(
-              height: 65,
-              child: DefaultButton(
-                fontsize: 18,
-                text: "sign-in".tr,
-                press: () {
-                  var formdata = formstate.currentState!;
-                  if (formdata.validate()) {
-                    print("object");
-                  }
-                },
-              ),
+              height: 55,
+              child:
+                  BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+                if (state is SubmitLoadingState) {
+                  return DefaultButton(
+                    fontsize: 18,
+                    text: "sign-in".tr,
+                    submit: true,
+                    press: () {},
+                  );
+                } else {
+                  return DefaultButton(
+                    fontsize: 18,
+                    text: "sign-in".tr,
+                    press: () {
+                      var formdata = formstate.currentState!;
+                      if (formdata.validate()) {
+                        BlocProvider.of<UserBloc>(context).add(LoginEvent(
+                            password: password.text, username: phone.text));
+                      }
+                    },
+                  );
+                }
+              }),
             )
           ],
         ));

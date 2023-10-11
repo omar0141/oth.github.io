@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Screens/Login/Components/LoginForm.dart';
-import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
+import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
+import 'package:shakosh/new/Screens/Register/Components/RegisterForm.dart';
 
 class MobileBody extends StatelessWidget {
   const MobileBody({super.key});
@@ -39,10 +39,12 @@ class MobileBody extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
             child: Image.asset(
               logo2,
+              width: 100,
+              height: 100,
             ),
           ),
           SizedBox(
-            height: 35,
+            height: 30,
           ),
           Expanded(
             child: ListView(
@@ -51,7 +53,7 @@ class MobileBody extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "welcome-to-bayt-aleadad".tr,
+                      "register-now".tr,
                       style: TextStyle(
                           color: colors(context).kprimaryColor,
                           fontSize: 16,
@@ -62,7 +64,7 @@ class MobileBody extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                LoginForm(),
+                RegisterForm(),
               ],
             ),
           ),
@@ -73,7 +75,7 @@ class MobileBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "sign-in-make-account".tr,
+                "already-have".tr,
                 style: TextStyle(color: colors(context).grey1),
               ),
               SizedBox(
@@ -81,12 +83,12 @@ class MobileBody extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(RegisterScreen.routeName);
+                  Navigator.of(context).pushNamed(LoginScreen.routeName);
                 },
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 hoverColor: Colors.transparent,
-                child: Text("sign-up".tr,
+                child: Text("sign-in".tr,
                     style: TextStyle(
                         color: colors(context).kprimaryColor,
                         fontWeight: FontWeight.bold)),

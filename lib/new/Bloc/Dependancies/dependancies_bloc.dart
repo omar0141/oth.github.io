@@ -3,6 +3,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
 import 'package:shakosh/new/Data/Local/DependanciesLocal.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
+import 'package:shakosh/new/Data/Models/DependantsModel.dart';
 import 'package:shakosh/new/Data/Remote/DependanciesRemote.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/ShippingModel.dart';
@@ -20,15 +21,17 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   List<TagsModel> tags = [];
   List<ShippingModel> shippings = [];
   List<BrandModel> brands = [];
+  late DependantsModel dependantsData;
 
   DependanciesBloc() : super(DependanciesLoading()) {
     on<DependanciesEvent>((event, emit) async {
       if (event is GetDependanciesEvent) {
         if (event.remote) {
           await _dependanciesRemote.getDependancies();
-          await getDependancies(emit);
+          await _dependanciesRemote.getHomeDependancies();
+          await getData(emit);
         } else {
-          await getDependancies(emit);
+          await getData(emit);
         }
       } else if (event is SelectCategoryEvent) {
         selectCategory(event, emit);
@@ -53,19 +56,51 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
           allCategories: allCategories,
           parentCategories: parentCategories,
           childCategories: subCategories,
-          brands: brands));
+          brands: brands,
+          dependantsData: dependantsData));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
       emit(DependanciesFaliure());
     }
   }
 
+  Future<void> getData(Emitter<DependanciesState> emit) async {
+    await getDependancies(emit);
+    await getHomeDependancies(emit);
+    emit(DependanciesLoaded(
+        allCategories: allCategories,
+        parentCategories: parentCategories,
+        childCategories: subCategories,
+        brands: brands,
+        dependantsData: dependantsData));
+  }
+
   Future<void> getDependancies(Emitter<DependanciesState> emit) async {
     try {
-      Map<String, dynamic> dependanciesData =
+      Map<String, dynamic> dependantsJsonData =
           await _dependanciesLocal.getDependancies();
+      if (dependantsJsonData.isEmpty) {
+        await _dependanciesRemote.getDependancies();
+        dependantsJsonData = await _dependanciesLocal.getDependancies();
+      }
+      // Modeling Dependants Data From Api
+      dependantsData = DependantsModel.fromJson(dependantsJsonData);
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+      emit(DependanciesFaliure());
+    }
+  }
+
+  Future<void> getHomeDependancies(Emitter<DependanciesState> emit) async {
+    try {
+      Map<String, dynamic> dependanciesHomeData =
+          await _dependanciesLocal.getHomeDependancies();
+      if (dependanciesHomeData.isEmpty) {
+        await _dependanciesRemote.getHomeDependancies();
+        dependanciesHomeData = await _dependanciesLocal.getHomeDependancies();
+      }
       // Modeling Categories Data From Api
-      for (var element in dependanciesData["categories"]) {
+      for (var element in dependanciesHomeData["categories"]) {
         // Modeling Parent Categories
         if (element["parent_id"] == null) {
           parentCategories.add(CategoreyModel.fromJson(element));
@@ -75,25 +110,20 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       }
       // ==========================================================
       // Modeling Tags Data From Api
-      for (var element in dependanciesData["tags"]) {
+      for (var element in dependanciesHomeData["tags"]) {
         tags.add(TagsModel.fromJson(element));
       }
       // ==========================================================
       // Modeling Tags Data From Api
-      for (var element in dependanciesData["shipping"]) {
+      for (var element in dependanciesHomeData["shipping"]) {
         shippings.add(ShippingModel.fromJson(element));
       }
       // ==========================================================
       // Modeling Brands Data From Api
-      for (var element in dependanciesData["brands"]) {
+      for (var element in dependanciesHomeData["brands"]) {
         brands.add(BrandModel.fromJson(element));
       }
       //
-      emit(DependanciesLoaded(
-          allCategories: allCategories,
-          parentCategories: parentCategories,
-          childCategories: subCategories,
-          brands: brands));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
       emit(DependanciesFaliure());

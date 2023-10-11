@@ -48,14 +48,14 @@ class CartWidget extends StatelessWidget {
       duration: Duration(milliseconds: 250),
       height: i == -1 ? height ?? 45 : 0,
       child: MaterialButton(
-        color: (state is CartLoading && state.id == product.id)
+        color: (state is CartLoading && state.cartLoading.contains(product.id))
             ? colors(context).kprimaryColor!.withOpacity(0.7)
             : colors(context).kprimaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
         onPressed: () {
-          if (state is CartLoading && state.id == product.id) {
+          if (state is CartLoading && state.cartLoading.contains(product.id)) {
           } else {
             if (product.stock > 0) {
               BlocProvider.of<CartBloc>(context)
@@ -63,7 +63,7 @@ class CartWidget extends StatelessWidget {
             }
           }
         },
-        child: (state is CartLoading && state.id == product.id)
+        child: (state is CartLoading && state.cartLoading.contains(product.id))
             ? SizedBox(
                 height: 30,
                 width: 30,
@@ -109,14 +109,16 @@ class CartWidget extends StatelessWidget {
             flex: 2,
             child: MaterialButton(
               height: height ?? 45,
-              color: (state is CartLoading && state.id == product.id)
+              color: (state is CartLoading &&
+                      state.cartLoading.contains(product.id))
                   ? colors(context).kprimaryColor!.withOpacity(0.7)
                   : colors(context).kprimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
               onPressed: () {
-                if (state is CartLoading && state.id == product.id) {
+                if (state is CartLoading &&
+                    state.cartLoading.contains(product.id)) {
                 } else {
                   if (product.stock > 0) {
                     BlocProvider.of<CartBloc>(context)
@@ -124,7 +126,8 @@ class CartWidget extends StatelessWidget {
                   }
                 }
               },
-              child: (state is CartLoading && state.id == product.id)
+              child: (state is CartLoading &&
+                      state.cartLoading.contains(product.id))
                   ? Center(
                       child: SizedBox(
                           width: 25,
@@ -171,20 +174,23 @@ class CartWidget extends StatelessWidget {
             flex: 2,
             child: MaterialButton(
               height: height ?? 45,
-              color: (state is CartLoading && state.id == product.id)
+              color: (state is CartLoading &&
+                      state.cartLoading.contains(product.id))
                   ? colors(context).kprimaryColor!.withOpacity(0.7)
                   : colors(context).kprimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
               onPressed: () {
-                if (state is CartLoading && state.id == product.id) {
+                if (state is CartLoading &&
+                    state.cartLoading.contains(product.id)) {
                 } else {
                   BlocProvider.of<CartBloc>(context)
                       .add(RemoveFromCartEvent(product: product));
                 }
               },
-              child: (state is CartLoading && state.id == product.id)
+              child: (state is CartLoading &&
+                      state.cartLoading.contains(product.id))
                   ? Center(
                       child: SizedBox(
                           width: 25,

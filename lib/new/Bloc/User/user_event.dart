@@ -2,8 +2,24 @@ part of 'user_bloc.dart';
 
 abstract class UserEvent {}
 
-class LoadingEvent extends UserEvent {}
+class LoginEvent extends UserEvent {
+  String username;
+  String password;
+  LoginEvent({required this.password, required this.username});
+}
 
-class LoginEvent extends UserEvent {}
-
-class RegisterEvent extends UserEvent {}
+class RegisterEvent extends UserEvent {
+  String username;
+  String password;
+  String tel;
+  String address;
+  String areaId;
+  String cityId;
+  RegisterEvent(
+      {required this.password,
+      required this.username,
+      required this.address,
+      required this.areaId,
+      required this.cityId,
+      required this.tel});
+}

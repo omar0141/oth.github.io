@@ -96,7 +96,7 @@ class MyAddress with ChangeNotifier {
     if (branch_id != null) {
       data['branch_id'] = branch_id;
     }
-    var url = MyApi.AddAddress;
+    var url = MyApi.addAddress;
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);
     debugPrint(data.toString());

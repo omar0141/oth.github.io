@@ -47,11 +47,19 @@ class FavouriteWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                     border: Border.all(color: colors(context).kprimaryColor!)),
                 child: Center(
-                  child: Icon(
-                    i > -1 ? Icons.favorite : Icons.favorite_outline,
-                    size: iconSize ?? 22,
-                    color: colors(context).kprimaryColor,
-                  ),
+                  child: (state is FavouriteLoading && state.id == product.id)
+                      ? Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: colors(context).kprimaryColor,
+                          ),
+                        )
+                      : Icon(
+                          i > -1 ? Icons.favorite : Icons.favorite_outline,
+                          size: iconSize ?? 22,
+                          color: colors(context).kprimaryColor,
+                        ),
                 ),
               ),
             ),

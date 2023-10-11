@@ -198,5 +198,7 @@
   "filter-by": "تصفية حسب",
   "you-need-to-sign-in-first": "أنت بحاجة إلى تسجيل الدخول أولاً",
   "sorry": "عفوا",
-  "sign-in-with-your-data":"قم بتسجيل الدخول باستخدام البيانات الخاصة بك"
+  "sign-in-with-your-data": "قم بتسجيل الدخول باستخدام البيانات الخاصة بك",
+  "register-now": "أنشئ حسابك الأن",
+  "it-only-takes-a-minute-to-create-your-account": "يستغرق إنشاء حسابك دقيقة واحدة فقط"
 }

@@ -42,23 +42,23 @@ class _MyaddressesState extends State<Myaddresses> {
                         EdgeInsets.symmetric(horizontal: con.maxWidth * 0.1),
                     child: InkWell(
                       onTap: () {
-                        update == true
-                            ? Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                                return GoogleMapScreen(
-                                  update: true,
-                                  address_id: addrss.id,
-                                  coordinate: addrss.coordinates,
-                                  tel1: addrss.tel1,
-                                  title: addrss.name,
-                                );
-                              }))
-                            : Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                                return GoogleMapScreen(
-                                  update: false,
-                                );
-                              }));
+                        // update == true
+                        //     ? Navigator.of(context)
+                        //         .push(MaterialPageRoute(builder: (context) {
+                        //         return GoogleMapScreen(
+                        //           update: true,
+                        //           address_id: addrss.id,
+                        //           coordinate: addrss.coordinates,
+                        //           tel1: addrss.tel1,
+                        //           title: addrss.name,
+                        //         );
+                        //       }))
+                        //     : Navigator.of(context)
+                        //         .push(MaterialPageRoute(builder: (context) {
+                        //         return GoogleMapScreen(
+                        //           update: false,
+                        //         );
+                        //       }));
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

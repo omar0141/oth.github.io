@@ -9,9 +9,12 @@ import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
+import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
+import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
 
 // ignore: must_be_immutable
 class Header2 extends StatelessWidget {
@@ -127,24 +130,7 @@ class Header2 extends StatelessWidget {
             SizedBox(
               width: 5,
             ),
-            Tooltip(
-              message: "profile".tr,
-              child: InkWell(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        color: colors(context).whiteColor,
-                        size: 28,
-                      ),
-                      Icon(
-                        FontAwesomeIcons.solidCircleUser,
-                        color: colors(context).whiteColor,
-                      ),
-                    ],
-                  )),
-            ),
+            profileButton(context),
             SizedBox(
               width: 20,
             ),
@@ -162,14 +148,6 @@ class Header2 extends StatelessWidget {
         message: "language".tr,
         child: Row(
           children: [
-            // Text(
-            //   "language".tr,
-            //   style: TextStyle(
-            //       color: colors(context).whiteColor, fontSize: 18, height: 1),
-            // ),
-            // SizedBox(
-            //   width: 7,
-            // ),
             Image.asset(
               "language_iso".tr == "ar" ? egypt : unitedKingdom,
               width: 35,
@@ -225,6 +203,110 @@ class Header2 extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  Widget profileButton(context) {
+    return PopupMenuButton(
+      child: Tooltip(
+        message: "profile".tr,
+        child: Row(
+          children: [
+            Icon(
+              Icons.keyboard_arrow_down,
+              color: colors(context).whiteColor,
+              size: 28,
+            ),
+            Icon(
+              FontAwesomeIcons.solidCircleUser,
+              color: colors(context).whiteColor,
+            ),
+          ],
+        ),
+      ),
+      position: PopupMenuPosition.under,
+      padding: EdgeInsets.only(top: -10),
+      tooltip: "",
+      itemBuilder: (context) {
+        if (MyApi.UID == "") {
+          return [
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  Text(
+                    "sign-in".tr,
+                    style: TextStyle(color: colors(context).normalTextColor2),
+                  ),
+                ],
+              ),
+              onTap: () async {
+                Navigator.of(context).pushNamed(LoginScreen.routeName);
+              },
+            ),
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  Text(
+                    "sign-up".tr,
+                    style: TextStyle(color: colors(context).normalTextColor2),
+                  ),
+                ],
+              ),
+              onTap: () async {
+                Navigator.of(context).pushNamed(RegisterScreen.routeName);
+              },
+            ),
+          ];
+        } else {
+          return [
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  Icon(Icons.person),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "profile".tr,
+                    style: TextStyle(color: colors(context).normalTextColor2),
+                  ),
+                ],
+              ),
+              onTap: () async {},
+            ),
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  Icon(Icons.local_shipping),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "my-orders".tr,
+                    style: TextStyle(color: colors(context).normalTextColor2),
+                  ),
+                ],
+              ),
+              onTap: () async {},
+            ),
+            PopupMenuItem(
+              child: Row(
+                children: [
+                  Icon(Icons.logout, color: Colors.red),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "logout".tr,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ],
+              ),
+              onTap: () async {},
+            ),
+          ];
+        }
+      },
     );
   }
 

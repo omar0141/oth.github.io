@@ -33,7 +33,7 @@ class DefaultButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        onPressed: submit == true ? null : press,
+        onPressed: press,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Screens/Login/Components/LoginForm.dart';
-import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
+import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
+import 'package:shakosh/new/Screens/Register/Components/RegisterForm.dart';
 
 class DesktopBody extends StatelessWidget {
   const DesktopBody({super.key});
@@ -26,7 +26,7 @@ class DesktopBody extends StatelessWidget {
                   width: 400,
                   child: Column(
                     children: [
-                      LoginForm(),
+                      RegisterForm(),
                       SizedBox(
                         height: 25,
                       ),
@@ -34,7 +34,7 @@ class DesktopBody extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "sign-in-make-account".tr,
+                            "already-have".tr,
                             style: TextStyle(color: colors(context).grey1),
                           ),
                           SizedBox(
@@ -43,12 +43,12 @@ class DesktopBody extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(RegisterScreen.routeName);
+                                  .pushNamed(LoginScreen.routeName);
                             },
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             hoverColor: Colors.transparent,
-                            child: Text("sign-up".tr,
+                            child: Text("sign-in".tr,
                                 style: TextStyle(
                                     color: colors(context).kprimaryColor,
                                     fontWeight: FontWeight.bold)),

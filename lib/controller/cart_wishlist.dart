@@ -35,7 +35,7 @@ class Cart with ChangeNotifier {
   Future add_to_cart(String? product_id, double? cart, int? wishlist) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var user_id = preferences.getString('user_id');
-    var url = MyApi.AddToCart;
+    var url = MyApi.manageCart;
     var data = {
       'SID': MyApi.SID,
       "CID": user_id.toString(),
@@ -52,7 +52,7 @@ class Cart with ChangeNotifier {
   Future add_to_wishlist(String? product_id, int wishlist) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var user_id = preferences.getString('user_id');
-    var url = MyApi.AddToWishlist;
+    var url = MyApi.manageWishlist;
     var data = {
       'SID': MyApi.SID,
       "CID": user_id.toString(),
@@ -80,7 +80,7 @@ class Cart with ChangeNotifier {
       'product_id': items_id,
       'quantity': items_qty,
     };
-    EbXhr xhr = EbXhr("POST", MyApi.BatchCart, data: data);
+    EbXhr xhr = EbXhr("POST", MyApi.batchCart, data: data);
     debugPrint(data.toString());
     EbXhrReponse response = await (xhr.send());
     var responsebody = response.bodyJson;
@@ -107,9 +107,9 @@ class Cart with ChangeNotifier {
       'product_id': items_id,
       'wishlist': items_fav,
     };
-    EbXhr xhr = EbXhr("POST", MyApi.BatchWishlist, data: data);
+    EbXhr xhr = EbXhr("POST", MyApi.batchWishlist, data: data);
     debugPrint(data.toString());
-    EbXhrReponse response = await (xhr.send() as FutureOr<EbXhrReponse>);
+    EbXhrReponse response = await (xhr.send());
     var responsebody = response.bodyJson;
     _favourites = [];
     debugPrint(responsebody.toString());
@@ -119,7 +119,7 @@ class Cart with ChangeNotifier {
   Future getcart() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var user_id = preferences.getString('user_id');
-    var url = MyApi.GetCart;
+    var url = MyApi.getCart;
     var data = {'SID': MyApi.SID, 'CID': user_id};
 
     var response = await http.post(Uri.parse(url), body: data);
@@ -179,7 +179,7 @@ class Cart with ChangeNotifier {
   Future getwishlist() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var user_id = preferences.getString('user_id');
-    var url = MyApi.GetWishlist;
+    var url = MyApi.getWishlist;
     var data = {'SID': MyApi.SID, 'CID': user_id};
 
     var response = await http.post(Uri.parse(url), body: data);

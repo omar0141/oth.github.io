@@ -34,9 +34,10 @@ class CartLocal {
         }
         if (setState) {
           BlocProvider.of<CartBloc>(navigatorKey.currentContext!)
-              .add(GetLocalCartEvent(cart: cart));
+              .add(GetLocalCartEvent(cart: cart,setState: setState));
         } else {
-          BlocProvider.of<CartBloc>(navigatorKey.currentContext!).cart = cart;
+          BlocProvider.of<CartBloc>(navigatorKey.currentContext!)
+              .add(GetLocalCartEvent(cart: cart, setState: setState));
         }
         log("Local Get Cart Success");
       }

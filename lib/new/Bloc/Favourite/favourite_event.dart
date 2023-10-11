@@ -16,3 +16,7 @@ class GetLocalFavouriteEvent extends FavouriteEvent {
   List<ProductModel> favourite;
   GetLocalFavouriteEvent({required this.favourite});
 }
+
+class GetRemoteFavouriteEvent extends FavouriteEvent {
+  GetRemoteFavouriteEvent();
+}

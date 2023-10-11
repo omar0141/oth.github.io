@@ -20,7 +20,7 @@ class GetDependants extends ChangeNotifier {
   List areas = [];
 
   Future getDependants() async {
-    var url = MyApi.Dependants;
+    var url = MyApi.dependants;
     var data = {'SID': MyApi.SID};
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);

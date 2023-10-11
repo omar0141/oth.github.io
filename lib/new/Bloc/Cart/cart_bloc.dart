@@ -7,6 +7,7 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Local/CartLocal.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
+import 'package:shakosh/new/Data/Remote/CartRemote.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:universal_html/html.dart' as html;
 part 'cart_event.dart';
@@ -14,12 +15,13 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   List<ProductModel> cart = [];
-
+  List<String> cartLoading = [];
   double total = 0;
   double totalDiscount = 0;
   double totalTax = 0;
   double net = 0;
   CartLocal cartLocal = CartLocal();
+  CartRemote cartRemote = CartRemote();
 
   CartBloc() : super(CartInitial(cart: [])) {
     on<CartEvent>((event, emit) async {
@@ -30,7 +32,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } else if (event is GetLocalCartEvent) {
         getLocalCart(emit, event);
       } else if (event is GetRemoteCartEvent) {
-        clearCart();
+        await getRemoteCart(emit);
       } else if (event is CheckoutCartEvent) {
         if (net > 0) {
           if (MyApi.UID != "") {
@@ -42,9 +44,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 mySize(320, 320, 400, 400, 400),
                 "you-need-to-sign-in-first".tr,
                 "sorry".tr,
-                () {
-                  
-                },
+                () {},
                 null,
                 buttonOkText: "sign-in".tr);
           }
@@ -53,16 +53,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
   }
 
+  Future<void> getRemoteCart(Emitter<CartState> emit) async {
+    List<dynamic> cartJson = await cartRemote.getCart();
+    clearCart();
+    for (var item in cartJson) {
+      item["cart"] = double.parse((item['quantity'] ?? 0).toString());
+      cart.add(ProductModel.fromJson(item));
+    }
+    cartLocal.postCart(cart);
+    emit(GetCartState(cart: cart));
+  }
+
   void clearCart() {
     cart.clear();
     html.window.localStorage['cart'] = "[]";
   }
 
   void getLocalCart(Emitter<CartState> emit, GetLocalCartEvent event) {
-    emit(CartInitial(cart: []));
-    cart = event.cart;
-    calcNet();
-    emit(GetCartState(cart: cart));
+    if (event.setState) {
+      emit(CartInitial(cart: []));
+      cart = event.cart;
+      calcNet();
+      emit(GetCartState(cart: cart));
+    } else {
+      cart = event.cart;
+    }
   }
 
   void calcNet() {
@@ -84,18 +99,28 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     try {
       int i = cart.indexWhere((e) => e.id == event.product.id);
-      emit(CartLoading(cart: cart, id: event.product.id!));
+      cartLoading.add(event.product.id!);
+      emit(CartLoading(cart: cart, cartLoading: cartLoading));
       cartLocal.getCart();
+      bool mangeCartSuccess = false;
       if (i > -1) {
         double newCartQty = cart[i].cart + cart[i].stepOrderQuantity;
         if (newCartQty <= cart[i].maxOrderQuantity) {
-          cart[i].cart = newCartQty;
+          mangeCartSuccess = await cartRemote.manageCart(
+              productId: event.product.id!, productQty: newCartQty.toString());
+          if (mangeCartSuccess) cart[i].cart = newCartQty;
         }
       } else {
-        cart.add(event.product);
-        cart.last.cart += cart.last.stepOrderQuantity;
+        mangeCartSuccess = await cartRemote.manageCart(
+            productId: event.product.id!,
+            productQty: event.product.stepOrderQuantity.toString());
+        if (mangeCartSuccess) {
+          cart.add(event.product);
+          cart.last.cart += cart.last.stepOrderQuantity;
+        }
       }
       calcNet();
+      cartLoading.remove(event.product.id!);
       emit(AddToCartState(cart: cart));
       cartLocal.postCart(cart);
     } catch (e) {
@@ -109,18 +134,29 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     try {
       int i = cart.indexWhere((e) => e.id == event.product.id);
-      emit(CartLoading(cart: cart, id: event.product.id!));
+      cartLoading.add(event.product.id!);
+      emit(CartLoading(cart: cart, cartLoading: cartLoading));
       cartLocal.getCart();
+      bool mangeCartSuccess = false;
       if (i > -1) {
         double newCartQty = cart[i].cart - cart[i].stepOrderQuantity;
         if (newCartQty >= cart[i].minOrderQuantity && !event.remove) {
-          cart[i].cart = newCartQty;
+          mangeCartSuccess = await cartRemote.manageCart(
+              productId: event.product.id!, productQty: newCartQty.toString());
+          if (mangeCartSuccess) {
+            cart[i].cart = newCartQty;
+          }
         } else {
-          cart[i].cart = 0;
-          cart.removeAt(i);
+          mangeCartSuccess = await cartRemote.manageCart(
+              productId: event.product.id!, productQty: "0");
+          if (mangeCartSuccess) {
+            cart[i].cart = 0;
+            cart.removeAt(i);
+          }
         }
       }
       calcNet();
+      cartLoading.remove(event.product.id!);
       emit(RemoveFromCartState(cart: cart));
       cartLocal.postCart(cart);
     } catch (e) {

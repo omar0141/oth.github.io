@@ -8,6 +8,7 @@ import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Config/Colors/AppColors.dart';
 import 'package:shakosh/new/Config/Services/InitialServices.dart';
 import 'package:shakosh/new/Config/Themes/MyTheme.dart';
@@ -15,7 +16,6 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Config/Routes/routes.dart';
-import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -126,12 +126,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               OverlayEntry(
                 builder: (context) => MultiBlocProvider(
                   providers: [
-                    BlocProvider<CartBloc>(
-                        create: (BuildContext context) => CartBloc()),
+                    BlocProvider<UserBloc>(
+                        create: (BuildContext context) => UserBloc()),
                     BlocProvider<DependanciesBloc>(
                         create: (BuildContext context) => DependanciesBloc()),
                     BlocProvider<ProductsBloc>(
                         create: (BuildContext context) => ProductsBloc()),
+                    BlocProvider<CartBloc>(
+                        create: (BuildContext context) => CartBloc()),
                     BlocProvider<FavouriteBloc>(
                         create: (BuildContext context) => FavouriteBloc()),
                   ],
@@ -148,7 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: Translations.getLocales(),
-        initialRoute: LoginScreen.routeName,
+        initialRoute: HomeScreen.routeName,
         onGenerateRoute: Flurorouter.router.generator,
       ),
     );

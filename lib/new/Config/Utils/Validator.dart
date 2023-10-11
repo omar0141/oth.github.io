@@ -17,6 +17,15 @@ class Validators {
     return null;
   }
 
+    String? validPhone(String? val) {
+    if (val!.trim().isEmpty) {
+      return "valid-empty".tr;
+    } else if (val.trim().length < 11) {
+      return "valid-length-11".tr;
+    }
+    return null;
+  }
+
   String? validConfirmPassword(String? val1, String? val2) {
     if (val2!.trim().isEmpty) {
       return "valid-empty".tr;

@@ -163,7 +163,7 @@
   "terms-conditions": "Terms and Conditions",
   "please-accept-terms": "Please accept terms and conditions",
   "sign-up": "Sign up",
-  "already-have": "Already have an account ?",
+  "already-have": "Already have an account?",
   "hello-there-sign-up": "Hello there, sign up to continue.",
   "hello-there-sign-in": "Hello there, sign in to continue.",
   "splash-content": "LOADING, Welcome to Bako Mart",
@@ -205,5 +205,7 @@
   "filter-by": "Filter by",
   "you-need-to-sign-in-first": "You need to sign in first",
   "sorry": "Sorry",
-  "sign-in-with-your-data": "Sign in with your data"
+  "sign-in-with-your-data": "Sign in with your data",
+  "register-now": "Register Now",
+  "it-only-takes-a-minute-to-create-your-account": "It only takes a minute to create your account"
 }
