@@ -47,12 +47,14 @@ class MyApi {
   static String getCart = MyApi.api + 'public/ecommerce/clients/cart/get';
   static String getWishlist =
       MyApi.api + 'public/ecommerce/clients/wishlist/get';
-  static String ChangePassword =
+  static String changePassword =
       MyApi.api + 'public/ecommerce/clients/set-password';
-  static String Checkout = MyApi.api + 'public/ecommerce/clients/checkout';
-  static String EditProfile = MyApi.api + 'public/ecommerce/clients/update';
+  static String checkout = MyApi.api + 'public/ecommerce/clients/checkout';
+  static String updateUser = MyApi.api + 'public/ecommerce/clients/update';
   static String DeleteProfile = MyApi.api + 'public/ecommerce/clients/delete';
-  static String GetOrders = MyApi.api + 'public/ecommerce/clients/orders/get';
+  static String getOrders = MyApi.api + 'public/ecommerce/clients/orders/get';
+  static String getOrderDetails =
+      MyApi.api + 'public/ecommerce/clients/orders/details';
   static String CancelOrders =
       MyApi.api + 'public/ecommerce/clients/orders/cancel';
 }

@@ -130,9 +130,10 @@ class CartWidget extends StatelessWidget {
                       state.cartLoading.contains(product.id))
                   ? Center(
                       child: SizedBox(
-                          width: 25,
-                          height: 25,
+                          width: 15,
+                          height: 15,
                           child: CircularProgressIndicator(
+                            strokeWidth: 2,
                             color: colors(context).whiteColor,
                           )),
                     )
@@ -193,9 +194,10 @@ class CartWidget extends StatelessWidget {
                       state.cartLoading.contains(product.id))
                   ? Center(
                       child: SizedBox(
-                          width: 25,
-                          height: 25,
+                          width: 15,
+                          height: 15,
                           child: CircularProgressIndicator(
+                            strokeWidth: 2,
                             color: colors(context).whiteColor,
                           )),
                     )

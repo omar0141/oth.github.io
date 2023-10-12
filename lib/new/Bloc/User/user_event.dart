@@ -23,3 +23,16 @@ class RegisterEvent extends UserEvent {
       required this.cityId,
       required this.tel});
 }
+
+class GetUserData extends UserEvent {}
+
+class UpdateUserData extends UserEvent {
+  String username;
+  String tel;
+  UpdateUserData({required this.username, required this.tel});
+}
+
+class UpdateUserPassword extends UserEvent {
+  String password;
+  UpdateUserPassword({required this.password});
+}

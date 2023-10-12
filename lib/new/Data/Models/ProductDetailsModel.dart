@@ -6,8 +6,8 @@ class ProductDetailsModel {
   String? dealId;
   String? categoryId;
   String? brandId;
-  late String name;
-  late String nameAlt;
+  String? name;
+  String? nameAlt;
   String? thumbnail;
   String? unitMeasure;
   String? unitMeasureAlt;

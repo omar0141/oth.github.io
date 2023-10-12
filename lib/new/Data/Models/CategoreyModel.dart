@@ -1,8 +1,8 @@
 class CategoreyModel {
   late String id;
   String? parentId;
-  late String name;
-  late String nameAlt;
+  String? name;
+  String? nameAlt;
   String? thumbnail;
   int? stock;
   int? products;

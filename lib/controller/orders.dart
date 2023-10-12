@@ -14,7 +14,7 @@ class OrdersC with ChangeNotifier {
     var user_id;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     user_id = preferences.getString("user_id");
-    var url = MyApi.GetOrders;
+    var url = MyApi.getOrders;
     data = {'SID': MyApi.SID, "CID": user_id};
     var response = await http
         .post(Uri.parse(url), body: data, headers: {"User-Timezone": "120"});

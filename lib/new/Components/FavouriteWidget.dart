@@ -31,12 +31,15 @@ class FavouriteWidget extends StatelessWidget {
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
               onTap: () {
-                if (i > -1) {
-                  BlocProvider.of<FavouriteBloc>(context)
-                      .add(RemoveFromFavouriteEvent(product: product));
+                if (state is FavouriteLoading) {
                 } else {
-                  BlocProvider.of<FavouriteBloc>(context)
-                      .add(AddToFavouriteEvent(product: product));
+                  if (i > -1) {
+                    BlocProvider.of<FavouriteBloc>(context)
+                        .add(RemoveFromFavouriteEvent(product: product));
+                  } else {
+                    BlocProvider.of<FavouriteBloc>(context)
+                        .add(AddToFavouriteEvent(product: product));
+                  }
                 }
               },
               child: Container(

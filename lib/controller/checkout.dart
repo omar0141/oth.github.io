@@ -117,7 +117,7 @@ class CheckoutC with ChangeNotifier {
       return false;
     }
 
-    var url = MyApi.Checkout;
+    var url = MyApi.checkout;
     debugPrint(total.toString());
     var data = {
       'SID': MyApi.SID,

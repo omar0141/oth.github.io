@@ -72,8 +72,8 @@ class Body extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         "language_iso".tr == "ar"
-                                            ? product.nameAlt
-                                            : product.name,
+                                            ? product.nameAlt ?? ""
+                                            : product.name ?? "",
                                         maxLines: 1,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,

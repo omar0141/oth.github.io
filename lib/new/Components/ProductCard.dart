@@ -78,8 +78,8 @@ class _ProductCardState extends State<ProductCard> {
                       Expanded(
                         child: Text(
                           "language_iso".tr == "ar"
-                              ? widget.product.nameAlt
-                              : widget.product.name,
+                              ? widget.product.nameAlt ?? ""
+                              : widget.product.name ?? "",
                           maxLines: 2,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -98,6 +98,7 @@ class _ProductCardState extends State<ProductCard> {
                               " " +
                               "le".tr,
                           style: TextStyle(
+                              height: 0.8,
                               fontWeight: FontWeight.bold,
                               fontSize: mySize(18, 18, 20, 20, 20),
                               color: colors(context).kSecondaryColor),

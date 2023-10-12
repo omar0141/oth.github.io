@@ -16,7 +16,7 @@ class RemoveFromCartEvent extends CartEvent {
 class GetLocalCartEvent extends CartEvent {
   List<ProductModel> cart;
   bool setState;
-  GetLocalCartEvent({required this.cart,required this.setState});
+  GetLocalCartEvent({required this.cart, required this.setState});
 }
 
 class GetRemoteCartEvent extends CartEvent {
@@ -24,5 +24,14 @@ class GetRemoteCartEvent extends CartEvent {
 }
 
 class CheckoutCartEvent extends CartEvent {
-  CheckoutCartEvent();
+  String paymentId;
+  String addressId;
+  String order;
+  String pickup;
+  String? branchId;
+  CheckoutCartEvent(
+      {required this.addressId,
+      required this.paymentId,
+      this.order = "1",
+      this.pickup = "0"});
 }

@@ -4,8 +4,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shakosh/new/Bloc/Address/address_bloc.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
+import 'package:shakosh/new/Bloc/Orders/orders_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Bloc/User/user_bloc.dart';
@@ -136,6 +138,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         create: (BuildContext context) => CartBloc()),
                     BlocProvider<FavouriteBloc>(
                         create: (BuildContext context) => FavouriteBloc()),
+                    BlocProvider<AddressBloc>(
+                        create: (BuildContext context) => AddressBloc()),
+                    BlocProvider<OrdersBloc>(
+                        create: (BuildContext context) => OrdersBloc()),
                   ],
                   child: child!,
                 ),

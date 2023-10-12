@@ -6,7 +6,10 @@ class UserInitial extends UserState {}
 
 class LoadingState extends UserState {}
 
-class LoadedState extends UserState {}
+class LoadedState extends UserState {
+  UserModel user;
+  LoadedState({required this.user});
+}
 
 class SubmitLoadingState extends UserState {}
 

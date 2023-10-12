@@ -1,14 +1,10 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
-import 'package:shakosh/new/Components/dialogs.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
-import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Local/CartLocal.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Data/Remote/CartRemote.dart';
-import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:universal_html/html.dart' as html;
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -34,23 +30,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } else if (event is GetRemoteCartEvent) {
         await getRemoteCart(emit);
       } else if (event is CheckoutCartEvent) {
-        if (net > 0) {
-          if (MyApi.UID != "") {
-            clearCart();
-          } else {
-            MyDialogs().showdialog(
-                navigatorKey.currentContext!,
-                DialogType.infoReverse,
-                mySize(320, 320, 400, 400, 400),
-                "you-need-to-sign-in-first".tr,
-                "sorry".tr,
-                () {},
-                null,
-                buttonOkText: "sign-in".tr);
-          }
-        }
+        await checkout(emit, event);
       }
     });
+  }
+
+  Future<void> checkout(
+      Emitter<CartState> emit, CheckoutCartEvent event) async {
+    if (net > 0) {
+      emit(CheckoutCartLoading(cart: cart));
+      bool checkoutSuccess = await cartRemote.checkout(
+          paymentId: event.paymentId,
+          pickup: event.pickup,
+          addressId: event.addressId,
+          order: event.order);
+      if (checkoutSuccess) {
+        clearCart();
+        calcNet();
+        Navigator.of(navigatorKey.currentContext!).pop();
+      }
+      emit(CheckoutCartLoaded(cart: cart));
+    }
   }
 
   Future<void> getRemoteCart(Emitter<CartState> emit) async {
@@ -60,6 +60,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       item["cart"] = double.parse((item['quantity'] ?? 0).toString());
       cart.add(ProductModel.fromJson(item));
     }
+    calcNet();
     cartLocal.postCart(cart);
     emit(GetCartState(cart: cart));
   }
@@ -70,14 +71,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void getLocalCart(Emitter<CartState> emit, GetLocalCartEvent event) {
-    if (event.setState) {
-      emit(CartInitial(cart: []));
-      cart = event.cart;
-      calcNet();
-      emit(GetCartState(cart: cart));
-    } else {
-      cart = event.cart;
-    }
+    emit(CartInitial(cart: []));
+    cart = event.cart;
+    calcNet();
+    emit(GetCartState(cart: cart));
   }
 
   void calcNet() {
@@ -86,10 +83,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     totalTax = 0;
     net = 0;
     for (var product in cart) {
-      total += product.price;
-      totalDiscount += product.discountValue;
-      totalTax += product.taxValue;
-      net += product.netPrice;
+      total += product.price * product.cart;
+      totalDiscount += product.discountValue * product.cart;
+      totalTax += product.taxValue * product.cart;
+      net += product.netPrice * product.cart;
     }
   }
 
@@ -105,6 +102,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       bool mangeCartSuccess = false;
       if (i > -1) {
         double newCartQty = cart[i].cart + cart[i].stepOrderQuantity;
+
         if (newCartQty <= cart[i].maxOrderQuantity) {
           mangeCartSuccess = await cartRemote.manageCart(
               productId: event.product.id!, productQty: newCartQty.toString());
@@ -115,14 +113,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             productId: event.product.id!,
             productQty: event.product.stepOrderQuantity.toString());
         if (mangeCartSuccess) {
+          event.product.cart = 0;
           cart.add(event.product);
           cart.last.cart += cart.last.stepOrderQuantity;
         }
       }
       calcNet();
       cartLoading.remove(event.product.id!);
-      emit(AddToCartState(cart: cart));
       cartLocal.postCart(cart);
+      emit(AddToCartState(cart: cart));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
     }
@@ -157,8 +156,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
       calcNet();
       cartLoading.remove(event.product.id!);
-      emit(RemoveFromCartState(cart: cart));
       cartLocal.postCart(cart);
+      emit(RemoveFromCartState(cart: cart));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
     }

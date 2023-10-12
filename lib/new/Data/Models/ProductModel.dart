@@ -6,8 +6,8 @@ class ProductModel {
   String? dealId;
   String? categoryId;
   String? brandId;
-  late String name;
-  late String nameAlt;
+  late String? name;
+  late String? nameAlt;
   String? thumbnail;
   String? unitMeasure;
   String? unitMeasureAlt;
@@ -24,6 +24,7 @@ class ProductModel {
   late double stock;
   late double discountValue;
   late double taxValue;
+  late double quantity;
   String? taxEquation;
   late double cart;
   bool? favourite;
@@ -93,6 +94,11 @@ class ProductModel {
       cart = json['cart'];
     } catch (e) {
       cart = 0;
+    }
+    try {
+      quantity = double.parse((json['quantity'] ?? 0).toString());
+    } catch (e) {
+      quantity = 0;
     }
     try {
       favourite = json['favourite'];
@@ -173,6 +179,7 @@ class ProductModel {
     data['tax_equation'] = this.taxEquation;
     data['cart'] = this.cart;
     data['favourite'] = this.favourite;
+    data['quantity'] = this.quantity;
     return data;
   }
 }

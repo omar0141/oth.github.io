@@ -1,7 +1,7 @@
 class BrandModel {
-  late String id;
-  late String name;
-  late String nameAlt;
+  String? id;
+  String? name;
+  String? nameAlt;
   String? thumbnail;
 
   BrandModel({

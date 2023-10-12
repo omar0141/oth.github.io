@@ -61,8 +61,8 @@ class DesktopBody extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "language_iso".tr == "ar"
-                                ? productDetails.nameAlt
-                                : productDetails.name,
+                                ? productDetails.nameAlt ?? ""
+                                : productDetails.name ?? "",
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),

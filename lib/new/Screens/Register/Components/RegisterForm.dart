@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/User/user_bloc.dart';
+import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Config/Utils/Validator.dart';
 import 'package:shakosh/new/components/default_button.dart';
@@ -64,11 +65,11 @@ class RegisterForm extends StatelessWidget {
               if (state is DependanciesLoading) {
                 return Row(
                   children: [
-                    Expanded(child: loadingDropDown()),
+                    Expanded(child: loadingInput()),
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: loadingDropDown()),
+                    Expanded(child: loadingInput()),
                   ],
                 );
               } else if (state is DependanciesLoaded) {
@@ -156,16 +157,6 @@ class RegisterForm extends StatelessWidget {
       validator: validation,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(prefixIcon: Icon(icon), label: Text(text)),
-    );
-  }
-
-  TextFormField loadingDropDown() {
-    return TextFormField(
-      initialValue: "loading".tr,
-      enabled: false,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-          suffix: Icon(Icons.arrow_drop_down)),
     );
   }
 

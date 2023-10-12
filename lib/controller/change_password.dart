@@ -16,7 +16,7 @@ class ChangePasswordC with ChangeNotifier {
     var user_id = preferences.getString('user_id');
     Loading().showloading(context);
     var data = {'SID': MyApi.SID, "CID": user_id, "password": password.text};
-    var url = MyApi.ChangePassword;
+    var url = MyApi.changePassword;
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);
     debugPrint(responsebody.toString());

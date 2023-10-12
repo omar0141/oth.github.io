@@ -56,7 +56,7 @@ class CategoryCard extends StatelessWidget {
                       null, null)
                   : null,
               child: Text(
-                "language_iso".tr == "ar" ? category.nameAlt : category.name,
+                "language_iso".tr == "ar" ? category.nameAlt ?? "" : category.name ?? "",
                 maxLines: 2,
                 textAlign: TextAlign.center,
               )),

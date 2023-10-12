@@ -213,8 +213,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                 Expanded(
                                   child: Text(
                                     "language_iso".tr == "ar"
-                                        ? category.nameAlt
-                                        : category.name,
+                                        ? category.nameAlt ??""
+                                        : category.name ?? "",
                                     style: TextStyle(
                                         color: widget.categoryId == category.id
                                             ? colors(context).whiteColor
@@ -329,8 +329,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                 Expanded(
                                   child: Text(
                                     "language_iso".tr == "ar"
-                                        ? brand.nameAlt
-                                        : brand.name,
+                                        ? brand.nameAlt ?? ""
+                                        : brand.name ?? "",
                                     style: TextStyle(
                                         color: widget.brandId == brand.id
                                             ? colors(context).whiteColor

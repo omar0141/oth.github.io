@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shakosh/new/Bloc/Address/address_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Data/Remote/AddressesRemote.dart';
 import 'package:shakosh/new/Data/Remote/CartRemote.dart';
 import 'package:shakosh/new/Data/Remote/FavouriteRemote.dart';
@@ -65,7 +67,16 @@ class UserRemote {
         } else {
           await FavouriteRemote().batchFavourite();
         }
-        await postLogin();
+        BlocProvider.of<AddressBloc>(navigatorKey.currentContext!)
+            .add(GetAddressesEvent());
+        BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+            .phoneLogin
+            .text = "";
+        BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+            .passwordLogin
+            .text = "";
+        BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+            .add(GetUserData());
         Navigator.of(navigatorKey.currentContext!)
             .pushNamed(HomeScreen.routeName);
       } else {
@@ -123,7 +134,10 @@ class UserRemote {
               .isNotEmpty) {
             await FavouriteRemote().batchFavourite();
           }
-          await postLogin();
+          BlocProvider.of<AddressBloc>(navigatorKey.currentContext!)
+              .add(GetAddressesEvent());
+          BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+              .add(GetUserData());
           Navigator.of(navigatorKey.currentContext!)
               .pushNamed(HomeScreen.routeName);
         }
@@ -136,7 +150,7 @@ class UserRemote {
     }
   }
 
-  Future postLogin() async {
+  Future<Map<String, dynamic>> postLogin() async {
     try {
       var url = MyApi.postLogin;
       var data = {
@@ -153,6 +167,66 @@ class UserRemote {
         log("Post Login Remote Success");
         MyApi.username = responsebody["data"]["clientdata"]["first_name"];
         preferences.setString("username", MyApi.username);
+        return responsebody["data"]["clientdata"];
+      } else {
+        MySnackBar().errorSnack(
+            navigatorKey.currentContext, responsebody.toString(), true);
+      }
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+    }
+    return {};
+  }
+
+  Future updateUser({required String username, required String tel}) async {
+    try {
+      var url = MyApi.updateUser;
+      var data = {
+        "SID": MyApi.SID,
+        "CID": MyApi.UID,
+        "first_name": username,
+        "last_name": "  ",
+        "telephone": tel
+      };
+      var response = await http.post(Uri.parse(url), body: data);
+      var responsebody = jsonDecode(response.body);
+      log("Update User Remote");
+      if (responsebody == null) {
+        MySnackBar()
+            .errorSnack(navigatorKey.currentContext, "Server Error", true);
+      } else if (responsebody["status"] == 200) {
+        log("Update User Remote Success");
+        MyApi.username = username;
+        preferences.setString("username", MyApi.username);
+        MySnackBar()
+            .successSnack(navigatorKey.currentContext, "user-update-success");
+      } else {
+        MySnackBar().errorSnack(
+            navigatorKey.currentContext, responsebody.toString(), true);
+      }
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+    }
+  }
+
+  Future updateUserPassword({required String password}) async {
+    try {
+      var url = MyApi.changePassword;
+      var data = {
+        "SID": MyApi.SID,
+        "CID": MyApi.UID,
+        "password": password,
+      };
+      var response = await http.post(Uri.parse(url), body: data);
+      var responsebody = jsonDecode(response.body);
+      log("Update User Password Remote");
+      if (responsebody == null) {
+        MySnackBar()
+            .errorSnack(navigatorKey.currentContext, "Server Error", true);
+      } else if (responsebody["status"] == 200) {
+        log("Update User Password Remote Success");
+        MySnackBar().successSnack(
+            navigatorKey.currentContext, "password-change-success");
       } else {
         MySnackBar().errorSnack(
             navigatorKey.currentContext, responsebody.toString(), true);

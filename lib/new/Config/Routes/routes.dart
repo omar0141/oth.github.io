@@ -1,9 +1,14 @@
 import 'package:fluro/fluro.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/Categories/CategoriesScreen.dart';
+import 'package:shakosh/new/Screens/ChangePassword/ChangePasswordScreen.dart';
+import 'package:shakosh/new/Screens/EditProfile/EditProfileScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
+import 'package:shakosh/new/Screens/More/MoreScreen.dart';
+import 'package:shakosh/new/Screens/OrderDetails/OrderDetailsScreen.dart';
+import 'package:shakosh/new/Screens/Orders/OrdersScreen.dart';
 import 'package:shakosh/new/Screens/ProductDetails/ProductDetailsScreen.dart';
 import 'package:shakosh/new/Screens/Products/ProductsScreen.dart';
 import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
@@ -95,6 +100,26 @@ class Flurorouter {
   //
   static Handler _registerHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => RegisterScreen());
+  //
+  static Handler _ordersHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) => OrdersScreen());
+  //
+  static Handler _orderDetailsHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) => OrderDetailsScreen(
+            orderId: params["Id"][0],
+          ));
+  //
+  static Handler _editProfileHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) =>
+          EditProfileScreen());
+  //
+  static Handler _changePasswordHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) =>
+          ChangePasswordScreen());
+  //
+  static Handler _moreHandler = Handler(
+      handlerFunc: (context, Map<String, dynamic> params) => MoreScreen());
+  //
   static void setupRouter() {
     router.define(HomeScreen.routeName,
         handler: _homeHandler, transitionDuration: Duration.zero);
@@ -129,11 +154,22 @@ class Flurorouter {
         transitionDuration: Duration.zero);
     router.define(ProductDetailsScreen.routeName,
         handler: _productDetailsHandler, transitionDuration: Duration.zero);
+    //
     router.define(FavouriteScreen.routeName,
         handler: _favouriteHandler, transitionDuration: Duration.zero);
     router.define(LoginScreen.routeName,
         handler: _loginHandler, transitionDuration: Duration.zero);
     router.define(RegisterScreen.routeName,
         handler: _registerHandler, transitionDuration: Duration.zero);
+    router.define(OrdersScreen.routeName,
+        handler: _ordersHandler, transitionDuration: Duration.zero);
+    router.define(OrderDetailsScreen.routeName,
+        handler: _orderDetailsHandler, transitionDuration: Duration.zero);
+    router.define(EditProfileScreen.routeName,
+        handler: _editProfileHandler, transitionDuration: Duration.zero);
+    router.define(ChangePasswordScreen.routeName,
+        handler: _changePasswordHandler, transitionDuration: Duration.zero);
+    router.define(MoreScreen.routeName,
+        handler: _moreHandler, transitionDuration: Duration.zero);
   }
 }

@@ -8,6 +8,7 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
+import 'package:shakosh/new/Screens/More/MoreScreen.dart';
 
 // ignore: must_be_immutable
 class MyBottomNavigationBar extends StatefulWidget {
@@ -39,6 +40,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           }));
         } else if (value == 2) {
           Navigator.of(context).pushNamed(FavouriteScreen.routeName);
+        } else if (value == 3) {
+          Navigator.of(context).pushNamed(MoreScreen.routeName);
         }
         setState(() {});
       },

@@ -11,9 +11,12 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
+import 'package:shakosh/new/Screens/ChangePassword/ChangePasswordScreen.dart';
+import 'package:shakosh/new/Screens/EditProfile/EditProfileScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
+import 'package:shakosh/new/Screens/Orders/OrdersScreen.dart';
 import 'package:shakosh/new/Screens/Register/RegisterScreen.dart';
 
 // ignore: must_be_immutable
@@ -262,32 +265,71 @@ class Header2 extends StatelessWidget {
             PopupMenuItem(
               child: Row(
                 children: [
-                  Icon(Icons.person),
+                  Icon(
+                    Icons.person,
+                    color: colors(context).normalTextColor2,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "profile".tr,
+                    "edit-profile".tr,
                     style: TextStyle(color: colors(context).normalTextColor2),
                   ),
                 ],
               ),
-              onTap: () async {},
+              onTap: () async {
+                Navigator.of(context).pushNamed(EditProfileScreen.routeName);
+              },
             ),
             PopupMenuItem(
               child: Row(
                 children: [
-                  Icon(Icons.local_shipping),
+                  Icon(
+                    Icons.lock,
+                    color: colors(context).normalTextColor2,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "my-orders".tr,
+                    "password-change".tr,
                     style: TextStyle(color: colors(context).normalTextColor2),
                   ),
                 ],
               ),
-              onTap: () async {},
+              onTap: () async {
+                Navigator.of(context).pushNamed(ChangePasswordScreen.routeName);
+              },
+            ),
+            PopupMenuItem(
+              child: Listener(
+                onPointerDown: (event) {
+                  onPointerDown(
+                      event,
+                      Uri.base.origin +
+                          urlName +
+                          "/#${OrdersScreen.routeName}");
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.local_shipping,
+                      color: colors(context).normalTextColor2,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "my-orders".tr,
+                      style: TextStyle(color: colors(context).normalTextColor2),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed(OrdersScreen.routeName);
+              },
             ),
             PopupMenuItem(
               child: Row(

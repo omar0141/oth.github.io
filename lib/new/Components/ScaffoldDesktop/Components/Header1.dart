@@ -4,6 +4,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
+import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
@@ -69,13 +70,13 @@ class Header1 extends StatelessWidget {
                         child: BlocBuilder<DependanciesBloc, DependanciesState>(
                             builder: (context, state) {
                           if (state is DependanciesLoading) {
-                            return loadingDropDown("loading".tr);
+                            return loadingInput();
                           } else if (state is DependanciesLoaded) {
                             List<CategoreyModel> categories =
                                 state.allCategories;
                             return searchDropDown(categories);
                           } else {
-                            return loadingDropDown("loading-failed".tr);
+                            return loadingInput();
                           }
                         })),
                     Expanded(flex: 3, child: searchTextField(context)),
@@ -114,16 +115,6 @@ class Header1 extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  TextFormField loadingDropDown(text) {
-    return TextFormField(
-      initialValue: text,
-      enabled: false,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-          suffix: Icon(Icons.arrow_drop_down)),
     );
   }
 
@@ -203,8 +194,8 @@ class Header1 extends StatelessWidget {
                     value: category.id,
                     child: Text(
                       "language_iso".tr == "ar"
-                          ? category.nameAlt
-                          : category.name,
+                          ? category.nameAlt ?? ""
+                          : category.name ?? "",
                       style: TextStyle(fontSize: 14),
                       maxLines: 1,
                     )),

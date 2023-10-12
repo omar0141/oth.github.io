@@ -78,7 +78,7 @@ class EditProfileC with ChangeNotifier {
     if (mydate != null) {
       data['birthdate'] = DateFormat('yyyy-MM-dd').format(mydate);
     }
-    var url = MyApi.EditProfile;
+    var url = MyApi.updateUser;
     var response = await http.post(Uri.parse(url), body: data);
     var responsebody = jsonDecode(response.body);
     debugPrint(responsebody.toString());

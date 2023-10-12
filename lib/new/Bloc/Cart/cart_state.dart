@@ -25,3 +25,11 @@ class GetCartState extends CartState {
 class RemoveFromCartState extends CartState {
   RemoveFromCartState({required super.cart});
 }
+
+class CheckoutCartLoading extends CartState {
+  CheckoutCartLoading({required super.cart});
+}
+
+class CheckoutCartLoaded extends CartState {
+  CheckoutCartLoaded({required super.cart});
+}

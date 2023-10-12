@@ -3,6 +3,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Home/Components/Body.dart';
 import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 
@@ -39,7 +40,9 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                      "hi".tr + " " + "Username",
+                      "hi".tr +
+                          " " +
+                          (MyApi.UID != "" ? MyApi.username : "Username"),
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
