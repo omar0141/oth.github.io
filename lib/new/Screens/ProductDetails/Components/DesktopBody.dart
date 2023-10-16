@@ -112,7 +112,7 @@ class DesktopBody extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                color: colors(context).kSecondaryColor),
+                                color: (productDetails.perOrder == 1 || productDetails.stock == 0) ? colors(context).kprimaryColor :  colors(context).kSecondaryColor),
                           ),
                         )
                       ],

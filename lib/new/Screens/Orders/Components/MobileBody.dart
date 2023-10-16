@@ -34,8 +34,9 @@ class MobileBody extends StatelessWidget {
             ),
             SizedBox(
               width: screenWidth * 0.95,
-              height: screenHeight * 0.8,
+                     height: screenHeight *0.73,
               child: ListView(
+               
                 children: [
                   for (var order in orders) orderWidget(context, order)
                 ],

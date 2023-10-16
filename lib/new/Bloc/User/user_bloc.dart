@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/controller/controllers.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
+import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Data/Models/UserModel.dart';
 import 'package:shakosh/new/Data/Remote/UserRemote.dart';
+import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 part 'user_event.dart';
 part 'user_state.dart';
 
@@ -14,8 +18,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   TextEditingController addressRegister = TextEditingController();
   TextEditingController phoneRegister = TextEditingController();
   TextEditingController passwordRegister = TextEditingController();
-  String areaId = "";
-  String cityId = "";
   UserRemote _userRemote = UserRemote();
   late UserModel user;
 
@@ -23,7 +25,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserEvent>((event, emit) async {
       if (event is LoginEvent) {
         await login(emit, event);
-        
       } else if (event is RegisterEvent) {
         await register(emit, event);
       } else if (event is GetUserData) {
@@ -32,8 +33,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await updateUserData(emit, event);
       } else if (event is UpdateUserPassword) {
         await updateUserPassword(emit, event);
+      } else if (event is LogoutEvent) {
+        logout();
       }
     });
+  }
+
+  void logout() {
+    MyApi.UID = "";
+    MyApi.username = "";
+    preferences.remove("id");
+    preferences.remove("username");
+    BlocProvider.of<CartBloc>(navigatorKey.currentContext!).clearCart();
+    BlocProvider.of<FavouriteBloc>(navigatorKey.currentContext!).clearFavourite();
+    Navigator.of(navigatorKey.currentContext!).pushReplacementNamed(HomeScreen.routeName);
   }
 
   Future<void> updateUserPassword(
@@ -70,8 +83,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         password: event.password,
         telephone: event.tel,
         countryID: countryId,
-        cityID: cityId,
-        areaID: areaId,
+        cityID: event.cityId,
+        areaID: event.areaId,
         address: event.address);
     emit(SubmitLoadedState());
   }

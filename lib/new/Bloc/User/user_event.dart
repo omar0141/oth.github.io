@@ -36,3 +36,5 @@ class UpdateUserPassword extends UserEvent {
   String password;
   UpdateUserPassword({required this.password});
 }
+
+class LogoutEvent extends UserEvent {}

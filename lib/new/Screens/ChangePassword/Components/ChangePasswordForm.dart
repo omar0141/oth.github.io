@@ -8,12 +8,22 @@ import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
 // ignore: must_be_immutable
-class ChangePasswordForm extends StatelessWidget {
+class ChangePasswordForm extends StatefulWidget {
   ChangePasswordForm({super.key});
 
   @override
+  State<ChangePasswordForm> createState() => _ChangePasswordFormState();
+}
+
+class _ChangePasswordFormState extends State<ChangePasswordForm> {
+   late GlobalKey<FormState> formstate;
+  @override
+  void initState() {
+    formstate = GlobalKey();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formstate = GlobalKey();
     TextEditingController password =
         BlocProvider.of<UserBloc>(context).passwordLogin;
     TextEditingController confirmPassword =
@@ -41,7 +51,7 @@ class ChangePasswordForm extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: mySize(40, 40, 20, 20, 20),
+              height: 20,
             ),
             textField(password, "password".tr, true, Icons.lock, (value) {
               Validators().validEmpty(value);

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
@@ -344,7 +345,9 @@ class Header2 extends StatelessWidget {
                   ),
                 ],
               ),
-              onTap: () async {},
+              onTap: () async {
+                BlocProvider.of<UserBloc>(navigatorKey.currentContext!).logout();
+              },
             ),
           ];
         }

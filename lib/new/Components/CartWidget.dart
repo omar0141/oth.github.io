@@ -24,21 +24,20 @@ class CartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-      if (state is CartInitial) {
-        return Container();
-      } else {
+      
         List<ProductModel> cart = state.cart;
         int i = cart.indexWhere((e) => e.id == product.id);
         return SizedBox(
           height: 45,
           child: ListView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               addedToCartWidget(i, context, cart, state),
               notInCartWidget(i, context, cart, state)
             ],
           ),
         );
-      }
+      
     });
   }
 
@@ -140,17 +139,17 @@ class CartWidget extends StatelessWidget {
                   : Center(
                       child: Icon(
                         FontAwesomeIcons.plus,
-                        size: iconSize ?? 18,
+                        size: iconSize ?? mySize(12, 15, 18, 18, 18),
                         color: colors(context).whiteColor,
                       ),
                     ),
             ),
           ),
           SizedBox(
-            width: 10,
+            width: mySize(5, 5, 10, 10, 10),
           ),
           Expanded(
-              flex: 4,
+              flex: mySize(3, 4, 4, 4, 4)!.toInt(),
               child: Container(
                 height: height ?? 45,
                 decoration: BoxDecoration(
@@ -158,7 +157,7 @@ class CartWidget extends StatelessWidget {
                     color: colors(context).grey2),
                 child: Center(
                   child: Text(
-                    i > -1 ? cart[i].cart.toString() : "0",
+                    i > -1 ? cart[i].cart.toStringAsFixed(0) : "0",
                     style: TextStyle(
                       height: "language_iso".tr == "ar" ? 2 : 1,
                       fontWeight: FontWeight.bold,
@@ -169,7 +168,7 @@ class CartWidget extends StatelessWidget {
                 ),
               )),
           SizedBox(
-            width: 10,
+            width: mySize(5, 5, 10, 10, 10),
           ),
           Expanded(
             flex: 2,
@@ -204,7 +203,7 @@ class CartWidget extends StatelessWidget {
                   : Center(
                       child: Icon(
                         FontAwesomeIcons.minus,
-                        size: iconSize ?? 18,
+                        size: iconSize ?? mySize(12, 15, 18, 18, 18),
                         color: colors(context).whiteColor,
                       ),
                     ),

@@ -109,11 +109,9 @@ class ProductModel {
 
   static double calcStock(Map<String, dynamic> json) {
     int newPerOrder = int.parse((json['per_order'] ?? 0).toString());
-    double newStock = 0;
-    if (newPerOrder == 1) {
+    double newStock = double.parse((json['stock'] ?? 0).toString());
+    if (newPerOrder == 1 && newStock == 0) {
       newStock = 999999999999999;
-    } else {
-      newStock = double.parse((json['stock'] ?? 0).toString());
     }
     return newStock;
   }

@@ -114,7 +114,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
         tags.add(TagsModel.fromJson(element));
       }
       // ==========================================================
-      // Modeling Tags Data From Api
+      // Modeling Shipping Data From Api
       for (var element in dependanciesHomeData["shipping"]) {
         shippings.add(ShippingModel.fromJson(element));
       }

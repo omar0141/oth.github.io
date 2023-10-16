@@ -10,12 +10,22 @@ import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
 // ignore: must_be_immutable
-class RegisterForm extends StatelessWidget {
+class RegisterForm extends StatefulWidget {
   RegisterForm({super.key});
 
   @override
+  State<RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+    late GlobalKey<FormState> formstate;
+  @override
+  void initState() {
+    formstate = GlobalKey();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formstate = GlobalKey();
     TextEditingController phone =
         BlocProvider.of<UserBloc>(context).phoneRegister;
     TextEditingController password =
@@ -24,8 +34,8 @@ class RegisterForm extends StatelessWidget {
         BlocProvider.of<UserBloc>(context).usernameRegister;
     TextEditingController address =
         BlocProvider.of<UserBloc>(context).addressRegister;
-    String cityId = BlocProvider.of<UserBloc>(context).cityId;
-    String areaId = BlocProvider.of<UserBloc>(context).areaId;
+    String cityId = "";
+    String areaId = "";
     //
     return Form(
         key: formstate,
@@ -48,7 +58,7 @@ class RegisterForm extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: mySize(40, 40, 20, 20, 20),
+              height:20
             ),
             textField(username, "username".tr, false, Icons.person,
                 Validators().validEmpty),
@@ -82,6 +92,7 @@ class RegisterForm extends StatelessWidget {
                       context,
                       onChange: (value) {
                         cityId = value;
+                        print(cityId);
                       },
                     )),
                     SizedBox(

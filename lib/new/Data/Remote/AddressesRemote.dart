@@ -27,6 +27,7 @@ class AddressesRemote {
         "telephone1": telephone1,
         "address1": address1,
       };
+      print(data);
       if (coordinates != null) {
         data["coordinates"] = coordinates;
       }

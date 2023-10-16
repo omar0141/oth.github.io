@@ -67,6 +67,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   void clearCart() {
     cart.clear();
+    calcNet();
     html.window.localStorage['cart'] = "[]";
   }
 

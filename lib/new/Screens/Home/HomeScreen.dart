@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/controller/controllers.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Home/Components/Body.dart';
 import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 
@@ -39,16 +41,20 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                        child: Text(
-                      "hi".tr +
-                          " " +
-                          (MyApi.UID != "" ? MyApi.username : "Username"),
+                        child: BlocBuilder<UserBloc,UserState>(
+                          builder: (context,state) {
+                            return Text(
+                               "hi".tr +
+                              " " +
+                              ((MyApi.username != "")? MyApi.username : "Username"),
                       style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: colors(context).kprimaryColor,
-                          fontFamily: "font-family".tr),
-                    )),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: colors(context).kprimaryColor,
+                              fontFamily: "font-family".tr),
+                    );
+                          }
+                        )),
                   ],
                 ),
                 SizedBox(

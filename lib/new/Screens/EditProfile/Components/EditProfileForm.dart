@@ -10,12 +10,22 @@ import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
 // ignore: must_be_immutable
-class EditProfileForm extends StatelessWidget {
+class EditProfileForm extends StatefulWidget {
   EditProfileForm({super.key});
 
   @override
+  State<EditProfileForm> createState() => _EditProfileFormState();
+}
+
+class _EditProfileFormState extends State<EditProfileForm> {
+   late GlobalKey<FormState> formstate;
+  @override
+  void initState() {
+    formstate = GlobalKey();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formstate = GlobalKey();
     TextEditingController phone =
         BlocProvider.of<UserBloc>(context).phoneRegister;
     TextEditingController username =
@@ -51,7 +61,7 @@ class EditProfileForm extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: mySize(40, 40, 20, 20, 20),
+                  height: 20,
                 ),
                 (state is LoadingState)
                     ? loadingInput()

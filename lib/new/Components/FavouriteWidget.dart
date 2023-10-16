@@ -22,9 +22,7 @@ class FavouriteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FavouriteBloc, FavouriteState>(
       builder: (context, state) {
-        if (state is FavouriteInitial) {
-          return Container();
-        } else {
+        
           List<ProductModel> favourite = state.favourite;
           int i = favourite.indexWhere((e) => e.id == product.id);
           return MouseRegion(
@@ -67,7 +65,7 @@ class FavouriteWidget extends StatelessWidget {
               ),
             ),
           );
-        }
+        
       },
     );
   }

@@ -1,6 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
 import 'package:shakosh/new/Components/dialogs.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
@@ -51,7 +53,7 @@ class MoreScreen extends StatelessWidget {
             buildMenuItem(MyApi.UID != "" ? Icons.logout : Icons.login,
                 MyApi.UID != "" ? "logout".tr : "sign-in".tr, () {
               if (MyApi.UID != "") {
-                Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                BlocProvider.of<UserBloc>(navigatorKey.currentContext!).logout();
               } else {
                 Navigator.of(context).pushNamed(LoginScreen.routeName);
               }
@@ -95,8 +97,8 @@ class MoreScreen extends StatelessWidget {
     );
   }
 
-  Widget loginDialog() {
-    return MyDialogs().showdialog(
+  void loginDialog() {
+    MyDialogs().showdialog(
         navigatorKey.currentContext!,
         DialogType.infoReverse,
         mySize(screenWidth * 0.95, screenWidth * 0.95, 400, 400, 400),

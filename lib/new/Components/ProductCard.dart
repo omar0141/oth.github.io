@@ -101,7 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                               height: 0.8,
                               fontWeight: FontWeight.bold,
                               fontSize: mySize(18, 18, 20, 20, 20),
-                              color: colors(context).kSecondaryColor),
+                              color: (widget.product.stock == 999999999999999 || widget.product.stock == 0) ? colors(context).kprimaryColor :  colors(context).kSecondaryColor),
                         ),
                       ),
                     ],
@@ -121,10 +121,18 @@ class _ProductCardState extends State<ProductCard> {
                       ? TextDirection.rtl
                       : TextDirection.ltr,
                   top: 5,
-                  start: 5,
+                  end: 5,
                   child: FavouriteWidget(
                     product: widget.product,
                   )),
+              if (widget.product.stock == 999999999999999)
+              Positioned.directional(
+                  textDirection: "language_iso".tr == "ar"
+                      ? TextDirection.rtl
+                      : TextDirection.ltr,
+                  top: 5,
+                  start: 5,
+                  child: Container(padding: EdgeInsets.all(3),decoration: BoxDecoration(color: colors(context).kSecondaryColor,borderRadius: BorderRadius.circular(5)),child: Text("pre-order".tr,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: colors(context).whiteColor),),)),
             ],
           ),
         ),

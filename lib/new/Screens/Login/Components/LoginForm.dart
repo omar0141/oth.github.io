@@ -8,12 +8,22 @@ import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
 // ignore: must_be_immutable
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   LoginForm({super.key});
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  late GlobalKey<FormState> formstate;
+  @override
+  void initState() {
+    formstate = GlobalKey();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formstate = GlobalKey();
     TextEditingController phone = BlocProvider.of<UserBloc>(context).phoneLogin;
     TextEditingController password =
         BlocProvider.of<UserBloc>(context).passwordLogin;
@@ -39,7 +49,7 @@ class LoginForm extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: mySize(40, 40, 20, 20, 20),
+              height: 20,
             ),
             textField(
                 phone, "tel".tr, false, Icons.call, Validators().validPhone),

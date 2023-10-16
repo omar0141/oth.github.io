@@ -38,10 +38,12 @@ class MobileBody extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
             child: Image.asset(
               logo2,
+              width: 100,
+              height: 100,
             ),
           ),
           SizedBox(
-            height: 35,
+            height: 20,
           ),
           Expanded(
             child: ListView(
@@ -59,7 +61,7 @@ class MobileBody extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 ChangePasswordForm(),
               ],

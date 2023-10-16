@@ -154,7 +154,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
       return SizedBox(
         height: mySize(100, 100, 150, 150, 150),
         child: ListView.builder(
-          itemCount: brands.length <= 10 ? brands.length : 10,
+          itemCount: brands.length,
           controller: scrollController,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {

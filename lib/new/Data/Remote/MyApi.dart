@@ -4,7 +4,7 @@ class MyApi {
   static String base = "https://dev.exabytellc.com/_/Exa/BE/ERP/";
   static String api = MyApi.base + "API/";
   static String media = MyApi.api + "_media/";
-  static String SID = "Y0h1QTJCMys4MGRXOnRraXhIdGVYeGRwbnhoNkRCNmlUTkE9PQ==";
+  static String SID = "MHBZM0ZIdldoV1Q0bFE9PTpjK3F6dGtPVk5HZGhSZ29pYUFwMkZBPT0=";
   static String UID = "";
   static String username = "";
   static String BranchId = "";

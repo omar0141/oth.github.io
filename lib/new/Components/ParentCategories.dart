@@ -157,7 +157,7 @@ class _ParentCategoriesState extends State<ParentCategories> {
       return SizedBox(
         height: mySize(100, 100, 150, 150, 150),
         child: ListView.builder(
-          itemCount: categories.length <= 10 ? categories.length : 10,
+          itemCount:categories.length,
           controller: scrollController,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {

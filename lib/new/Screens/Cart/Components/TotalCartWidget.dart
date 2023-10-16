@@ -11,23 +11,44 @@ import 'package:shakosh/new/Components/dialogs.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/AddressModel.dart';
+import 'package:shakosh/new/Data/Models/ShippingModel.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Login/LoginScreen.dart';
 
 // ignore: must_be_immutable
-class TotalCartWidget extends StatelessWidget {
+class TotalCartWidget extends StatefulWidget {
   TotalCartWidget({super.key});
+
+  @override
+  State<TotalCartWidget> createState() => _TotalCartWidgetState();
+}
+
+class _TotalCartWidgetState extends State<TotalCartWidget> {
   late String addressId;
+  double deliveyFees = 0;
+  double total = 0;
+  double totalDiscount = 0;
+  double totalTax = 0;
+  double net = 0;
+
+  @override
+  void initState() {
+    total = BlocProvider.of<CartBloc>(context).total;
+    totalDiscount = BlocProvider.of<CartBloc>(context).totalDiscount;
+    totalTax = BlocProvider.of<CartBloc>(context).totalTax;
+    net = BlocProvider.of<CartBloc>(context).net;
+    List<AddressModel> addresses = BlocProvider.of<AddressBloc>(context).addresses;
+    if (addresses.isNotEmpty) {
+      addressId = addresses.first.id ?? "";
+      calcShipping(addresses, addressId, context);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
-        double total = BlocProvider.of<CartBloc>(context).total;
-        double totalDiscount = BlocProvider.of<CartBloc>(context).totalDiscount;
-        double totalTax = BlocProvider.of<CartBloc>(context).totalTax;
-        double net = BlocProvider.of<CartBloc>(context).net;
-
         return Column(
           children: [
             Padding(
@@ -37,17 +58,25 @@ class TotalCartWidget extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  BlocBuilder<AddressBloc, AddressState>(
+                  if (MyApi.UID != "")
+                  BlocConsumer<AddressBloc, AddressState>(
+                    listener: (context, state) {
+                        if (state.adresses.isNotEmpty) {
+                          addressId = state.adresses.first.id ?? "";
+                          calcShipping(state.adresses, addressId, context);
+                        }
+                      
+                    },
                     builder: (context, state) {
                       if (state is AddressesLoading) {
                         return loadingInput();
                       } else {
                         if (state.adresses.isNotEmpty) {
-                          addressId = state.adresses.first.id ?? "";
                           return addressesDropDown(
                               state.adresses, "delivery-address".tr, context,
                               onChange: (value) {
                             addressId = value.toString();
+                            calcShipping(state.adresses, addressId, context);
                           });
                         } else {
                           return Container();
@@ -55,6 +84,7 @@ class TotalCartWidget extends StatelessWidget {
                       }
                     },
                   ),
+                  if (MyApi.UID != "")
                   SizedBox(
                     height: 20,
                   ),
@@ -105,6 +135,24 @@ class TotalCartWidget extends StatelessWidget {
                       )
                     ],
                   ),
+                  if (MyApi.UID != "")
+                  Divider(),
+                  if (MyApi.UID != "")
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "delivery-fees".tr,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        deliveyFees.toStringAsFixed(2) + " " + "le".tr,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,7 +172,6 @@ class TotalCartWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -177,6 +224,22 @@ class TotalCartWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  calcShipping(List<AddressModel> adresses, String value, BuildContext context) {
+    int i = adresses.indexWhere((element) => element.id.toString() == value.toString());
+    if (i > -1) {
+      List<ShippingModel> shippings = BlocProvider.of<DependanciesBloc>(context).shippings;
+      int d = shippings.indexWhere((element) {
+        return element.cityId.toString().toLowerCase() == adresses[i].cityId.toString().toLowerCase();
+        });
+      if (d > -1) {
+        deliveyFees = double.parse((shippings[d].shippingAmount ?? 0).toString());
+      }
+      net = BlocProvider.of<CartBloc>(context).net;
+      net += deliveyFees;
+      setState(() {});
+    }
   }
 
   DropdownButtonFormField addressesDropDown(
