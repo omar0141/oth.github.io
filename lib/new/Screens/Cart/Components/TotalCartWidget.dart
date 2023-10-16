@@ -37,7 +37,8 @@ class _TotalCartWidgetState extends State<TotalCartWidget> {
     totalDiscount = BlocProvider.of<CartBloc>(context).totalDiscount;
     totalTax = BlocProvider.of<CartBloc>(context).totalTax;
     net = BlocProvider.of<CartBloc>(context).net;
-    List<AddressModel> addresses = BlocProvider.of<AddressBloc>(context).addresses;
+    List<AddressModel> addresses =
+        BlocProvider.of<AddressBloc>(context).addresses;
     if (addresses.isNotEmpty) {
       addressId = addresses.first.id ?? "";
       calcShipping(addresses, addressId, context);
@@ -49,6 +50,10 @@ class _TotalCartWidgetState extends State<TotalCartWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
+        total = BlocProvider.of<CartBloc>(context).total;
+        totalDiscount = BlocProvider.of<CartBloc>(context).totalDiscount;
+        totalTax = BlocProvider.of<CartBloc>(context).totalTax;
+        net = BlocProvider.of<CartBloc>(context).net;
         return Column(
           children: [
             Padding(
@@ -59,35 +64,34 @@ class _TotalCartWidgetState extends State<TotalCartWidget> {
                     height: 10,
                   ),
                   if (MyApi.UID != "")
-                  BlocConsumer<AddressBloc, AddressState>(
-                    listener: (context, state) {
+                    BlocConsumer<AddressBloc, AddressState>(
+                      listener: (context, state) {
                         if (state.adresses.isNotEmpty) {
                           addressId = state.adresses.first.id ?? "";
                           calcShipping(state.adresses, addressId, context);
                         }
-                      
-                    },
-                    builder: (context, state) {
-                      if (state is AddressesLoading) {
-                        return loadingInput();
-                      } else {
-                        if (state.adresses.isNotEmpty) {
-                          return addressesDropDown(
-                              state.adresses, "delivery-address".tr, context,
-                              onChange: (value) {
-                            addressId = value.toString();
-                            calcShipping(state.adresses, addressId, context);
-                          });
+                      },
+                      builder: (context, state) {
+                        if (state is AddressesLoading) {
+                          return loadingInput();
                         } else {
-                          return Container();
+                          if (state.adresses.isNotEmpty) {
+                            return addressesDropDown(
+                                state.adresses, "delivery-address".tr, context,
+                                onChange: (value) {
+                              addressId = value.toString();
+                              calcShipping(state.adresses, addressId, context);
+                            });
+                          } else {
+                            return Container();
+                          }
                         }
-                      }
-                    },
-                  ),
+                      },
+                    ),
                   if (MyApi.UID != "")
-                  SizedBox(
-                    height: 20,
-                  ),
+                    SizedBox(
+                      height: 20,
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -135,24 +139,23 @@ class _TotalCartWidgetState extends State<TotalCartWidget> {
                       )
                     ],
                   ),
+                  if (MyApi.UID != "") Divider(),
                   if (MyApi.UID != "")
-                  Divider(),
-                  if (MyApi.UID != "")
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "delivery-fees".tr,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        deliveyFees.toStringAsFixed(2) + " " + "le".tr,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "delivery-fees".tr,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          deliveyFees.toStringAsFixed(2) + " " + "le".tr,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,15 +229,20 @@ class _TotalCartWidgetState extends State<TotalCartWidget> {
     );
   }
 
-  calcShipping(List<AddressModel> adresses, String value, BuildContext context) {
-    int i = adresses.indexWhere((element) => element.id.toString() == value.toString());
+  calcShipping(
+      List<AddressModel> adresses, String value, BuildContext context) {
+    int i = adresses
+        .indexWhere((element) => element.id.toString() == value.toString());
     if (i > -1) {
-      List<ShippingModel> shippings = BlocProvider.of<DependanciesBloc>(context).shippings;
+      List<ShippingModel> shippings =
+          BlocProvider.of<DependanciesBloc>(context).shippings;
       int d = shippings.indexWhere((element) {
-        return element.cityId.toString().toLowerCase() == adresses[i].cityId.toString().toLowerCase();
-        });
+        return element.cityId.toString().toLowerCase() ==
+            adresses[i].cityId.toString().toLowerCase();
+      });
       if (d > -1) {
-        deliveyFees = double.parse((shippings[d].shippingAmount ?? 0).toString());
+        deliveyFees =
+            double.parse((shippings[d].shippingAmount ?? 0).toString());
       }
       net = BlocProvider.of<CartBloc>(context).net;
       net += deliveyFees;

@@ -24,20 +24,18 @@ class CartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-      
-        List<ProductModel> cart = state.cart;
-        int i = cart.indexWhere((e) => e.id == product.id);
-        return SizedBox(
-          height: 45,
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              addedToCartWidget(i, context, cart, state),
-              notInCartWidget(i, context, cart, state)
-            ],
-          ),
-        );
-      
+      List<ProductModel> cart = state.cart;
+      int i = cart.indexWhere((e) => e.id == product.id);
+      return SizedBox(
+        height: 45,
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            addedToCartWidget(i, context, cart, state),
+            notInCartWidget(i, context, cart, state)
+          ],
+        ),
+      );
     });
   }
 
@@ -77,7 +75,9 @@ class CartWidget extends StatelessWidget {
                     padding:
                         EdgeInsets.only(top: "language_iso".tr == "ar" ? 5 : 0),
                     child: Text(
-                      "add-to-cart".tr,
+                      product.stock == 999999999999999
+                          ? "reserve-in-cart".tr
+                          : "add-to-cart".tr,
                       style: TextStyle(
                         color: colors(context).whiteColor,
                         fontWeight: FontWeight.bold,

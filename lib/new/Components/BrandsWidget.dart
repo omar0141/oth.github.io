@@ -10,6 +10,7 @@ import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
+import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 
 // ignore: must_be_immutable
 class BrandsWidget extends StatefulWidget {
@@ -51,8 +52,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
             if (widget.home)
               InkWell(
                 onTap: () {
-                  expand = !expand;
-                  setState(() {});
+                  Navigator.of(context).pushNamed(BrandsScreen.routeName);
                 },
                 child: Row(
                   children: [
@@ -63,12 +63,30 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                           fontWeight: FontWeight.bold,
                           height: 1),
                     ),
-                    Icon(expand
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down)
+                    Icon(Icons.arrow_forward_ios)
                   ],
                 ),
               ),
+            // InkWell(
+            //   onTap: () {
+            //     expand = !expand;
+            //     setState(() {});
+            //   },
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         "show-all".tr,
+            //         style: TextStyle(
+            //             fontSize: mySize(17, 17, 19, 19, 19),
+            //             fontWeight: FontWeight.bold,
+            //             height: 1),
+            //       ),
+            //       Icon(expand
+            //           ? Icons.keyboard_arrow_up
+            //           : Icons.keyboard_arrow_down)
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               width: mySize(10, 10, 20, 20, 20),
             ),

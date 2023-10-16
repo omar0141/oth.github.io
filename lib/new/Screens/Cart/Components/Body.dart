@@ -46,101 +46,128 @@ class Body extends StatelessWidget {
       physics: screenWidth > 768 ? null : NeverScrollableScrollPhysics(),
       children: [
         for (var product in products)
-          Column(
+          Stack(
             children: [
-              SizedBox(
-                height: 135,
-                child: Card(
-                  elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 2, child: productImage(product.thumbnail)),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
+              Column(
+                children: [
+                  SizedBox(
+                    height: 135,
+                    child: Card(
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child: productImage(product.thumbnail)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        "language_iso".tr == "ar"
-                                            ? product.nameAlt ?? ""
-                                            : product.name ?? "",
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "language_iso".tr == "ar"
+                                                ? product.nameAlt ?? ""
+                                                : product.name ?? "",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        InkWell(
+                                          hoverColor: Colors.transparent,
+                                          onTap: () {
+                                            BlocProvider.of<CartBloc>(context)
+                                                .add(RemoveFromCartEvent(
+                                                    product: product,
+                                                    remove: true));
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color:
+                                                colors(context).kprimaryColor,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          product.netPrice.toStringAsFixed(2) +
+                                              " " +
+                                              "le".tr,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: colors(context)
+                                                  .kSecondaryColor,
+                                              fontSize: 18),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      height: 5,
                                     ),
-                                    InkWell(
-                                      hoverColor: Colors.transparent,
-                                      onTap: () {
-                                        BlocProvider.of<CartBloc>(context).add(
-                                            RemoveFromCartEvent(
-                                                product: product,
-                                                remove: true));
-                                      },
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: colors(context).kprimaryColor,
-                                      ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: mySize(screenWidth * 0.4,
+                                              screenWidth * 0.4, 150, 150, 150),
+                                          child: CartWidget(
+                                            product: product,
+                                            height: 35,
+                                          ),
+                                        ),
+                                      ],
                                     )
                                   ],
-                                ),
-                                Spacer(),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      product.netPrice.toStringAsFixed(2) +
-                                          " " +
-                                          "le".tr,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              colors(context).kSecondaryColor,
-                                          fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: mySize(screenWidth * 0.4,
-                                          screenWidth * 0.4, 150, 150, 150),
-                                      child: CartWidget(
-                                        product: product,
-                                        height: 35,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ))
-                      ],
+                                ))
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
               ),
-              SizedBox(
-                height: 10,
-              )
+              if (product.stock == 999999999999999)
+                Positioned.directional(
+                    textDirection: "language_iso".tr == "ar"
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,
+                    top: 10,
+                    start: 10,
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          color: colors(context).kSecondaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "reserve".tr,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: colors(context).whiteColor),
+                      ),
+                    )),
             ],
           ),
       ],

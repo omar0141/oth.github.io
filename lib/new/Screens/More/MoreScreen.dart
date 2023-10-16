@@ -50,10 +50,30 @@ class MoreScreen extends StatelessWidget {
               else
                 loginDialog();
             }, context),
+            //
+            buildMenuItem(Icons.public, "lang-change".tr, () {}, context,
+                iconWidget: ClipRRect(
+                  borderRadius: BorderRadius.circular(3.5),
+                  child: Container(
+                    color: colors(context).grey2,
+                    child: Row(
+                      children: [
+                        langButton(context, " Eng ", "en", () {
+                          Translations.setLocale("en");
+                        }),
+                        langButton(context, "عربى", "ar", () {
+                          Translations.setLocale("ar");
+                        }),
+                      ],
+                    ),
+                  ),
+                )),
+            //
             buildMenuItem(MyApi.UID != "" ? Icons.logout : Icons.login,
                 MyApi.UID != "" ? "logout".tr : "sign-in".tr, () {
               if (MyApi.UID != "") {
-                BlocProvider.of<UserBloc>(navigatorKey.currentContext!).logout();
+                BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+                    .logout();
               } else {
                 Navigator.of(context).pushNamed(LoginScreen.routeName);
               }
@@ -62,7 +82,33 @@ class MoreScreen extends StatelessWidget {
         ));
   }
 
-  Widget buildMenuItem(icon, text, press, context, {Color? color}) {
+  GestureDetector langButton(context, text, value, onTap) {
+    bool selected = "language_iso".tr == value ? true : false;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            color: selected
+                ? colors(context).kprimaryColor
+                : colors(context).grey2,
+            borderRadius: BorderRadius.circular(3.5)),
+        child: Text(
+          text,
+          style: TextStyle(
+              height: 1,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: selected
+                  ? colors(context).whiteColor
+                  : colors(context).normalTextColor),
+        ),
+      ),
+    );
+  }
+
+  Widget buildMenuItem(icon, text, press, context,
+      {Color? color, Widget? iconWidget}) {
     return InkWell(
       hoverColor: Colors.transparent,
       onTap: press,
@@ -90,7 +136,12 @@ class MoreScreen extends StatelessWidget {
                         colors(context).normalTextColor!.withOpacity(0.7),
                     fontWeight: FontWeight.bold),
               ),
-            )
+            ),
+            iconWidget ??
+                SizedBox(
+                  width: 0,
+                  height: 0,
+                )
           ],
         ),
       ),

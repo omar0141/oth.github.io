@@ -118,6 +118,9 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
       else
         myWidth = myScreenWidth;
     }
+    if (numberPages == 1) {
+      myWidth = mySize(45, 45, 55, 55, 55)! * 3;
+    }
     return SizedBox(
       width: myWidth,
       child: NumberPaginator(

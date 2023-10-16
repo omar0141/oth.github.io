@@ -14,11 +14,16 @@ import 'package:universal_html/html.dart' as html;
 // ignore: must_be_immutable
 class ParentCategories extends StatefulWidget {
   ParentCategories(
-      {super.key, this.parentId, this.expand = false, this.categories = false});
+      {super.key,
+      this.parentId,
+      this.expand = false,
+      this.categories = false,
+      this.home = false});
 
   String? parentId;
   bool expand;
   bool categories;
+  bool home;
 
   @override
   State<ParentCategories> createState() => _ParentCategoriesState();
@@ -51,8 +56,12 @@ class _ParentCategoriesState extends State<ParentCategories> {
             Spacer(),
             InkWell(
               onTap: () {
-                widget.expand = !widget.expand;
-                setState(() {});
+                if (widget.home) {
+                  Navigator.of(context).pushNamed("categories");
+                } else {
+                  widget.expand = !widget.expand;
+                  setState(() {});
+                }
               },
               child: Row(
                 children: [
@@ -63,9 +72,11 @@ class _ParentCategoriesState extends State<ParentCategories> {
                         fontWeight: FontWeight.bold,
                         height: 1),
                   ),
-                  Icon(widget.expand
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down)
+                  Icon(widget.home
+                      ? Icons.arrow_forward_ios
+                      : (widget.expand
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down))
                 ],
               ),
             ),
@@ -157,7 +168,7 @@ class _ParentCategoriesState extends State<ParentCategories> {
       return SizedBox(
         height: mySize(100, 100, 150, 150, 150),
         child: ListView.builder(
-          itemCount:categories.length,
+          itemCount: categories.length,
           controller: scrollController,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {

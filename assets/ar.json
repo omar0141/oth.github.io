@@ -218,5 +218,8 @@
   "edit-profile-with-your-new-data": "قم بتحديث ملفك الشخصي ببياناتك الجديدة",
   "save": "حفظ",
   "user-update-success": "تم تعديل بياناتك بنجاح",
-  "change-password-your-old-password-with-your-new-password": "قم بتغيير كلمة المرور القديمة بكلمة المرور الجديدة"
+  "change-password-your-old-password-with-your-new-password": "قم بتغيير كلمة المرور القديمة بكلمة المرور الجديدة",
+  "search": "بحث",
+  "reserve": "حجز",
+  "reserve-in-cart": "حجز فى السلة"
 }

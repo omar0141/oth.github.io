@@ -16,19 +16,17 @@ class ChangePasswordForm extends StatefulWidget {
 }
 
 class _ChangePasswordFormState extends State<ChangePasswordForm> {
-   late GlobalKey<FormState> formstate;
+  late GlobalKey<FormState> formstate;
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
   @override
   void initState() {
     formstate = GlobalKey();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController password =
-        BlocProvider.of<UserBloc>(context).passwordLogin;
-    TextEditingController confirmPassword =
-        BlocProvider.of<UserBloc>(context).phoneLogin;
-    //
     return Form(
         key: formstate,
         child: Column(
@@ -54,14 +52,14 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
               height: 20,
             ),
             textField(password, "password".tr, true, Icons.lock, (value) {
-              Validators().validEmpty(value);
+              return Validators().validEmpty(value);
             }),
             SizedBox(
               height: 20,
             ),
             textField(confirmPassword, "retype-password".tr, true, Icons.lock,
                 (value) {
-              Validators().validConfirmPassword(value, password.text);
+              return Validators().validConfirmPassword(value, password.text);
             }),
             SizedBox(
               height: 20,

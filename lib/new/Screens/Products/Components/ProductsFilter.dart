@@ -9,6 +9,7 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
+import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
 import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
@@ -72,7 +73,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
         Row(
           children: [
             Text(
-              "fiter-by".tr,
+              "filter-by".tr,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Spacer(),
@@ -146,9 +147,10 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     if (screenWidth > 768)
                       Navigator.of(context).pushReplacementNamed(route);
                     else
-                      setState(() {
-                        expand[0] = false;
-                      });
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return ProductSearchMobileScreen();
+                      }));
                   },
                   child: Icon(
                     Icons.close,
@@ -213,7 +215,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                 Expanded(
                                   child: Text(
                                     "language_iso".tr == "ar"
-                                        ? category.nameAlt ??""
+                                        ? category.nameAlt ?? ""
                                         : category.name ?? "",
                                     style: TextStyle(
                                         color: widget.categoryId == category.id
@@ -262,9 +264,10 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     if (screenWidth > 768)
                       Navigator.of(context).pushReplacementNamed(route);
                     else
-                      setState(() {
-                        expand[1] = false;
-                      });
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return ProductSearchMobileScreen();
+                      }));
                   },
                   child: Icon(
                     Icons.close,

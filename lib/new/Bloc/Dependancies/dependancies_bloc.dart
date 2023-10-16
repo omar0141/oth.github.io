@@ -57,6 +57,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
           parentCategories: parentCategories,
           childCategories: subCategories,
           brands: brands,
+          tags: tags,
           dependantsData: dependantsData));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
@@ -68,6 +69,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
     await getDependancies(emit);
     await getHomeDependancies(emit);
     emit(DependanciesLoaded(
+        tags: tags,
         allCategories: allCategories,
         parentCategories: parentCategories,
         childCategories: subCategories,

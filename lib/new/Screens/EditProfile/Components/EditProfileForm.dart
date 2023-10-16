@@ -18,19 +18,17 @@ class EditProfileForm extends StatefulWidget {
 }
 
 class _EditProfileFormState extends State<EditProfileForm> {
-   late GlobalKey<FormState> formstate;
+  late GlobalKey<FormState> formstate;
+  TextEditingController phone = TextEditingController();
+  TextEditingController username = TextEditingController();
   @override
   void initState() {
     formstate = GlobalKey();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController phone =
-        BlocProvider.of<UserBloc>(context).phoneRegister;
-    TextEditingController username =
-        BlocProvider.of<UserBloc>(context).usernameRegister;
-    //
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         if (state is LoadedState) {

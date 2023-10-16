@@ -225,5 +225,8 @@
   "edit-profile-with-your-new-data": "Edit your profile with your new data",
   "save": "Save",
   "user-update-success": "Your data has been updated successfully",
-  "change-password-your-old-password-with-your-new-password": "Change password your old password with your new password"
+  "change-password-your-old-password-with-your-new-password": "Change password your old password with your new password",
+  "search": "Search",
+  "reserve": "Reserve",
+  "reserve-in-cart": "Reserve in cart"
 }

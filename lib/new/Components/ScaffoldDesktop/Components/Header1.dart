@@ -10,6 +10,7 @@ import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
+import 'package:shakosh/new/Data/Models/TagsModel.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -63,52 +64,65 @@ class Header1 extends StatelessWidget {
                 width: 20,
               ),
               Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: BlocBuilder<DependanciesBloc, DependanciesState>(
-                            builder: (context, state) {
-                          if (state is DependanciesLoading) {
-                            return loadingInput();
-                          } else if (state is DependanciesLoaded) {
-                            List<CategoreyModel> categories =
-                                state.allCategories;
-                            return searchDropDown(categories);
-                          } else {
-                            return loadingInput();
-                          }
-                        })),
-                    Expanded(flex: 3, child: searchTextField(context)),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
+                child: BlocBuilder<DependanciesBloc, DependanciesState>(
+                  builder: (context, state) {
+                    List<CategoreyModel> categories = [];
+                    List<TagsModel> tagsData = [];
+                    List<String> tags = [];
+                    if (state is DependanciesLoaded) {
+                      categories = state.allCategories;
+                      tagsData = state.tags;
+                      for (var tag in tagsData) {
+                        try {
+                          tags.add((tag.tags ?? "").split(',')[0]);
+                        } catch (e) {}
+                        try {
+                          tags.add((tag.tags ?? "").split(',')[1]);
+                        } catch (e) {}
+                      }
+                    }
+                    return Row(
                       children: [
-                        Text(
-                          "client-service".tr,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: colors(context).grey1,
-                          ),
+                        Expanded(
+                            flex: 1,
+                            child: state is DependanciesLoading
+                                ? loadingInput()
+                                : state is DependanciesLoaded
+                                    ? searchDropDown(categories)
+                                    : loadingInput()),
+                        Expanded(
+                            flex: 3, child: searchTextField(context, tags)),
+                        SizedBox(
+                          width: 20,
                         ),
-                        SelectableText(
-                          "(+2) 01023966756",
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: colors(context).kprimaryColor),
-                        ),
-                        SelectableText(
-                          "(+2) 01221722221",
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: colors(context).kprimaryColor),
+                        Column(
+                          children: [
+                            Text(
+                              "client-service".tr,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: colors(context).grey1,
+                              ),
+                            ),
+                            SelectableText(
+                              "(+2) 01023966756",
+                              textDirection: TextDirection.ltr,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: colors(context).kprimaryColor),
+                            ),
+                            SelectableText(
+                              "(+2) 01221722221",
+                              textDirection: TextDirection.ltr,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: colors(context).kprimaryColor),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
               )
             ],
@@ -118,7 +132,7 @@ class Header1 extends StatelessWidget {
     );
   }
 
-  Widget searchTextField(context) {
+  Widget searchTextField(context, tags) {
     TextEditingController searchController =
         TextEditingController(text: search);
     return TextField(
