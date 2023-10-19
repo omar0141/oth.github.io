@@ -48,6 +48,7 @@ double screenHeight = 0;
 AppColors colors(context) => Theme.of(context).extension<AppColors>()!;
 late Timer timer;
 late int newDate;
+late String currentRouteName;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,6 +80,8 @@ class MyApp extends StatefulWidget {
         navigatorKey.currentContext!.findAncestorStateOfType<_MyAppState>();
     // ignore: invalid_use_of_protected_member
     state!.setState(() {});
+    Navigator.of(navigatorKey.currentContext!)
+        .pushReplacementNamed(currentRouteName);
   }
 }
 
@@ -112,53 +115,52 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    return Directionality(
-      textDirection:
-          "language_iso".tr == "ar" ? TextDirection.rtl : TextDirection.ltr,
-      child: MaterialApp(
-        navigatorObservers: [MyApp.routeObserver],
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        scrollBehavior: MyCustomScrollBehavior(),
-        title: 'bayt-aleadad'.tr,
-        theme: myTheme(),
-        builder: (context, child) {
-          return Overlay(
-            initialEntries: [
-              OverlayEntry(
-                builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider<UserBloc>(
-                        create: (BuildContext context) => UserBloc()),
-                    BlocProvider<DependanciesBloc>(
-                        create: (BuildContext context) => DependanciesBloc()),
-                    BlocProvider<ProductsBloc>(
-                        create: (BuildContext context) => ProductsBloc()),
-                    BlocProvider<CartBloc>(
-                        create: (BuildContext context) => CartBloc()),
-                    BlocProvider<FavouriteBloc>(
-                        create: (BuildContext context) => FavouriteBloc()),
-                    BlocProvider<AddressBloc>(
-                        create: (BuildContext context) => AddressBloc()),
-                    BlocProvider<OrdersBloc>(
-                        create: (BuildContext context) => OrdersBloc()),
-                  ],
-                  child: child!,
-                ),
+    return MaterialApp(
+      navigatorObservers: [MyApp.routeObserver],
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      scrollBehavior: MyCustomScrollBehavior(),
+      title: 'bayt-aleadad'.tr,
+      theme: myTheme(),
+      builder: (context, child) {
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>(
+                      create: (BuildContext context) => UserBloc()),
+                  BlocProvider<DependanciesBloc>(
+                      create: (BuildContext context) => DependanciesBloc()),
+                  BlocProvider<ProductsBloc>(
+                      create: (BuildContext context) => ProductsBloc()),
+                  BlocProvider<CartBloc>(
+                      create: (BuildContext context) => CartBloc()),
+                  BlocProvider<FavouriteBloc>(
+                      create: (BuildContext context) => FavouriteBloc()),
+                  BlocProvider<AddressBloc>(
+                      create: (BuildContext context) => AddressBloc()),
+                  BlocProvider<OrdersBloc>(
+                      create: (BuildContext context) => OrdersBloc()),
+                ],
+                child: child!,
               ),
-            ],
-          );
-        },
-        locale: Translations.getLocale(),
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: Translations.getLocales(),
-        initialRoute: HomeScreen.routeName,
-        onGenerateRoute: Flurorouter.router.generator,
-      ),
+            ),
+          ],
+        );
+      },
+      locale: Translations.getLocale(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: Translations.getLocales(),
+      initialRoute: HomeScreen.routeName,
+      onGenerateRoute: (settings) {
+        currentRouteName = settings.name ?? HomeScreen.routeName;
+        return Flurorouter.router.generator(settings);
+      },
     );
   }
 }
