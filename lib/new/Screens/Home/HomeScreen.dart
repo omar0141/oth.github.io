@@ -5,6 +5,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
+import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Screens/Home/Components/Body.dart';
 import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
@@ -33,63 +34,68 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: colors(context).whiteColor,
       titleTextStyle: TextStyle(fontFamily: "font-family".tr),
       automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Row(
+      title: BlocBuilder<UserBloc,UserState>(
+          builder: (context,state) {
+          return Row(
+            children: [
+              Image.asset(logo2,width: 50,height: 50,),
+              SizedBox(width: 20,),
+              Expanded(
+                child: Column(
                   children: [
-                    Expanded(
-                        child: BlocBuilder<UserBloc,UserState>(
-                          builder: (context,state) {
-                            return Text(
-                               "hi".tr +
-                              " " +
-                              ((MyApi.username != "")? MyApi.username : "Username"),
-                      style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: colors(context).kprimaryColor,
-                              fontFamily: "font-family".tr),
-                    );
-                          }
-                        )),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "welcome-to-bayt-aleadad".tr,
-                      style:
-                          TextStyle(color: colors(context).grey1, fontSize: 14),
+                     if (MyApi.username != "")
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                                   "hi".tr +
+                                  " " +
+                                  (MyApi.username),
+                          style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: colors(context).kprimaryColor,
+                                  fontFamily: "font-family".tr),
+                        ))
+                      ],
                     ),
+                    if (MyApi.username != "")
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "welcome-to-bayt-aleadad".tr,
+                          style:
+                              TextStyle(color:(MyApi.username != "") ?  colors(context).grey1: colors(context).normalTextColor, fontSize: (MyApi.username != "") ? 14 : 18,
+                              fontWeight:(MyApi.username != "") ? FontWeight.normal : FontWeight.bold,),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return ProductSearchMobileScreen();
-              }));
-            },
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 236, 236, 236),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Icon(
-                Icons.search,
-                color: colors(context).normalTextColor,
+                ),
               ),
-            ),
-          ),
-        ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return ProductSearchMobileScreen();
+                  }));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 236, 236, 236),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Icon(
+                    Icons.search,
+                    color: colors(context).normalTextColor,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
       ),
     );
   }

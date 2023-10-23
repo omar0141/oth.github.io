@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CartWidget.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Components/FavouriteWidget.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
@@ -16,6 +18,7 @@ import 'package:shimmer/shimmer.dart';
 class DesktopBody extends StatelessWidget {
   DesktopBody({super.key, required this.state});
   var state;
+  String copiedText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +78,11 @@ class DesktopBody extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
+                          child: Html(data:
                             "language_iso".tr == "ar"
                                 ? productDetails.briefAlt ?? ""
                                 : productDetails.brief ?? "",
-                            style: TextStyle(fontSize: 17),
+                       
                           ),
                         )
                       ],
@@ -90,11 +93,22 @@ class DesktopBody extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            "language_iso".tr == "ar"
-                                ? productDetails.descriptionAlt ?? ""
-                                : productDetails.description ?? "",
-                            style: TextStyle(fontSize: 15),
+                          child: SelectionArea(
+                            onSelectionChanged: (value) {
+                              copiedText = value?.plainText ?? "";
+                            },
+                            child: Listener(
+                              onPointerDown: (event){
+                                copyTextMenu(event, copiedText);
+                              },
+                              child: Html(
+                                data:
+                                "language_iso".tr == "ar"
+                                    ? productDetails.descriptionAlt ?? ""
+                                    : productDetails.description ?? "",
+                                             
+                              ),
+                            ),
                           ),
                         )
                       ],

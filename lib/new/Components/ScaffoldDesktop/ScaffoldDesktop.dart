@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header1.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/Components/Header2.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
 
 // ignore: must_be_immutable
@@ -103,14 +102,14 @@ class _ScaffoldDesktopState extends State<ScaffoldDesktop> {
             scaffoldKey: scaffoldKey,
           ),
           Expanded(
-            child: ListView(controller: scrollController, children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: mySize(0, 0, 0, 0, screenWidth * 0.04)!),
-                child: widget.child,
+            child: Center(
+              child: SizedBox(
+                width: (screenWidth > 1500) ? 1500 : null,
+                child: ListView(
+                    controller: scrollController,
+                    children: [widget.child, footer(context)]),
               ),
-              footer(context)
-            ]),
+            ),
           ),
         ],
       ),

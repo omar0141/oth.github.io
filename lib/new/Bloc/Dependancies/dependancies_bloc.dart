@@ -27,8 +27,8 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
     on<DependanciesEvent>((event, emit) async {
       if (event is GetDependanciesEvent) {
         if (event.remote) {
-          await _dependanciesRemote.getDependancies();
           await _dependanciesRemote.getHomeDependancies();
+          await _dependanciesRemote.getDependancies();
           await getData(emit);
         } else {
           await getData(emit);
@@ -66,8 +66,8 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   }
 
   Future<void> getData(Emitter<DependanciesState> emit) async {
-    await getDependancies(emit);
     await getHomeDependancies(emit);
+    await getDependancies(emit);
     emit(DependanciesLoaded(
         tags: tags,
         allCategories: allCategories,

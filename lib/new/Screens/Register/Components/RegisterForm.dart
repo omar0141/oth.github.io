@@ -6,6 +6,7 @@ import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Config/Utils/Validator.dart';
+import 'package:shakosh/new/Config/settings/settings.dart';
 import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
@@ -121,11 +122,13 @@ class _RegisterFormState extends State<RegisterForm> {
             SizedBox(
               height: 20,
             ),
-            textField(password, "password".tr, true, Icons.lock,
+            if (showPassword)
+              textField(password, "password".tr, true, Icons.lock,
                 Validators().validPassword),
-            SizedBox(
-              height: 20,
-            ),
+            if (showPassword)
+              SizedBox(
+                height: 20,
+              ),
             SizedBox(
               height: 55,
               child:
@@ -145,7 +148,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       var formdata = formstate.currentState!;
                       if (formdata.validate()) {
                         BlocProvider.of<UserBloc>(context).add(RegisterEvent(
-                            password: password.text,
+                            password: showPassword ? password.text : phone.text,
                             username: username.text,
                             address: address.text,
                             tel: phone.text,

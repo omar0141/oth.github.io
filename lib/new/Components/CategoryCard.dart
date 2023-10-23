@@ -46,7 +46,6 @@ class CategoryCard extends StatelessWidget {
                       height: mySize(65, 65, 100, 100, 100),
                     )),
           ),
-          if (expand)
             SizedBox(
               height: mySize(5, 5, 15, 15, 15),
             ),

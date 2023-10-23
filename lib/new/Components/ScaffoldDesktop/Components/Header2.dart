@@ -9,7 +9,6 @@ import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
 import 'package:shakosh/new/Screens/Brands/BrandsScreen.dart';
 import 'package:shakosh/new/Screens/ChangePassword/ChangePasswordScreen.dart';
@@ -31,41 +30,45 @@ class Header2 extends StatelessWidget {
     return Container(
         color: colors(context).kprimaryColor,
         height: 60,
-        padding: EdgeInsets.symmetric(
-            horizontal: mySize(0, 0, 0, 0, screenWidth * 0.04)!),
         child: Row(
+          mainAxisAlignment: (screenWidth > 1500)
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             Expanded(
-              child: Row(
-                children: [
-                  Listener(
-                    onPointerDown: (event) {
-                      onPointerDown(
-                          event,
-                          Uri.base.origin +
-                              urlName +
-                              "/#${HomeScreen.routeName}");
-                    },
-                    child: buildMenuItem(context, "home".tr, Icons.home, () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.routeName);
-                    }),
-                  ),
-                  Listener(
+              child: SizedBox(
+                width: (screenWidth > 1300) ? 1300 : null,
+                child: Row(
+                  children: [
+                    Listener(
                       onPointerDown: (event) {
                         onPointerDown(
-                            event, Uri.base.origin + urlName + "/#categories");
+                            event,
+                            Uri.base.origin +
+                                urlName +
+                                "/#${HomeScreen.routeName}");
                       },
-                      child: buildMenuItem(context, "categories".tr, Icons.list,
-                          () {
-                        Navigator.of(context).pushNamed("categories");
-                      })),
-                  buildMenuItem(context, "brands".tr, Icons.local_offer, () {
-                    Navigator.of(context).pushNamed(BrandsScreen.routeName);
-                  }),
-                  buildMenuItem(context, "about-us".tr, Icons.info, () {}),
-                  // buildMenuItem(context, "contact-us".tr, Icons.call, () {}),
-                ],
+                      child: buildMenuItem(context, "home".tr, Icons.home, () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(HomeScreen.routeName);
+                      }),
+                    ),
+                    Listener(
+                        onPointerDown: (event) {
+                          onPointerDown(event,
+                              Uri.base.origin + urlName + "/#categories");
+                        },
+                        child: buildMenuItem(
+                            context, "categories".tr, Icons.list, () {
+                          Navigator.of(context).pushNamed("categories");
+                        })),
+                    buildMenuItem(context, "brands".tr, Icons.local_offer, () {
+                      Navigator.of(context).pushNamed(BrandsScreen.routeName);
+                    }),
+                    buildMenuItem(context, "about-us".tr, Icons.info, () {}),
+                    // buildMenuItem(context, "contact-us".tr, Icons.call, () {}),
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -346,7 +349,8 @@ class Header2 extends StatelessWidget {
                 ],
               ),
               onTap: () async {
-                BlocProvider.of<UserBloc>(navigatorKey.currentContext!).logout();
+                BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
+                    .logout();
               },
             ),
           ];

@@ -4,6 +4,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/User/user_bloc.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Config/Utils/Validator.dart';
+import 'package:shakosh/new/Config/settings/settings.dart';
 import 'package:shakosh/new/components/default_button.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 
@@ -56,11 +57,13 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(
               height: 20,
             ),
-            textField(password, "password".tr, true, Icons.lock,
-                Validators().validPassword),
-            SizedBox(
-              height: 20,
-            ),
+            if(showPassword)
+              textField(password, "password".tr, true, Icons.lock,
+                  Validators().validPassword),
+            if(showPassword)
+              SizedBox(
+                height: 20,
+              ),
             SizedBox(
               height: 55,
               child:
@@ -80,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                       var formdata = formstate.currentState!;
                       if (formdata.validate()) {
                         BlocProvider.of<UserBloc>(context).add(LoginEvent(
-                            password: password.text, username: phone.text));
+                            password: showPassword ? password.text: phone.text, username: phone.text));
                       }
                     },
                   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
@@ -187,10 +188,13 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
+                            
                   "language_iso".tr == "ar"
                       ? productDetails.nameAlt ?? ""
                       : productDetails.name ?? "",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                 
                 ),
               )
             ],
@@ -217,11 +221,12 @@ class MobileBody extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
+                child: Html(data:
                   "language_iso".tr == "ar"
                       ? productDetails.briefAlt ?? ""
                       : productDetails.brief ?? "",
-                  style: TextStyle(fontSize: 17),
+                      
+                  
                 ),
               )
             ],
@@ -232,11 +237,15 @@ class MobileBody extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "language_iso".tr == "ar"
-                      ? productDetails.descriptionAlt ?? ""
-                      : productDetails.description ?? "",
-                  style: TextStyle(fontSize: 15),
+                child: SelectionArea(
+                  
+                  child: Html(
+                    data:
+                    "language_iso".tr == "ar"
+                        ? productDetails.descriptionAlt ?? ""
+                        : productDetails.description ?? "",
+                    
+                  ),
                 ),
               )
             ],

@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
@@ -63,32 +64,40 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                       duration: Duration(milliseconds: 250));
                   setState(() {});
                 },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
+                child: Listener(
+                onPointerDown: (event) {
+                  onPointerDown(event, MyApi.media +
+                              (productDetails.media[index]["filename"]));
+                },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                            color: currentPage == index
+                                ? colors(context).kprimaryColor!
+                                : colors(context).grey2!)),
+                    width: mySize(40, 40, 75, 75, 75),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                          color: currentPage == index
-                              ? colors(context).kprimaryColor!
-                              : colors(context).grey2!)),
-                  width: mySize(40, 40, 75, 75, 75),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: CachedNetworkImage(
-                        imageUrl: MyApi.media +
-                            (productDetails.media[index]["filename"]),
-                        placeholder: (context, url) => Center(
-                              child: SizedBox(
-                                width: mySize(20, 20, 35, 35, 35),
-                                height: mySize(20, 20, 35, 35, 35),
-                                child: CircularProgressIndicator(
-                                    color: colors(context).kprimaryColor),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.contain,
+                          imageUrl: MyApi.media +
+                              (productDetails.media[index]["filename"]),
+                          placeholder: (context, url) => Center(
+                                child: SizedBox(
+                                  width: mySize(20, 20, 35, 35, 35),
+                                  height: mySize(20, 20, 35, 35, 35),
+                                  child: CircularProgressIndicator(
+                                      color: colors(context).kprimaryColor),
+                                ),
                               ),
-                            ),
-                        errorWidget: (context, url, error) => SvgPicture.asset(
-                              unLoadedImage,
-                              height: mySize(40, 40, 75, 75, 75),
-                            )),
+                          errorWidget: (context, url, error) => SvgPicture.asset(
+                                unLoadedImage,
+                                height: mySize(40, 40, 75, 75, 75),
+                              )),
+                    ),
                   ),
                 ),
               ),
@@ -102,6 +111,7 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
   Container carouselImages(List<dynamic> productMedia) {
     return Container(
       decoration: BoxDecoration(
+         color: Colors.white,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: colors(context).grey2!)),
       child: ClipRRect(
@@ -122,35 +132,40 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
           ),
           items: [
             for (var image in productMedia)
-              CachedNetworkImage(
-                  imageUrl: MyApi.media + (image["filename"]),
-                  placeholder: (context, url) => Center(
-                        child: SizedBox(
-                          width: mySize(
-                              screenHeight * 0.15,
-                              screenHeight * 0.15,
-                              screenHeight * 0.25,
-                              screenHeight * 0.25,
-                              screenHeight * 0.25),
-                          height: mySize(
-                              screenHeight * 0.15,
-                              screenHeight * 0.15,
-                              screenHeight * 0.25,
-                              screenHeight * 0.25,
-                              screenHeight * 0.25),
-                          child: CircularProgressIndicator(
-                              color: colors(context).kprimaryColor),
+              Listener(
+                onPointerDown: (event) {
+                  onPointerDown(event, MyApi.media + (image["filename"]));
+                },
+                child: CachedNetworkImage(
+                    imageUrl: MyApi.media + (image["filename"]),
+                    placeholder: (context, url) => Center(
+                          child: SizedBox(
+                            width: mySize(
+                                screenHeight * 0.15,
+                                screenHeight * 0.15,
+                                screenHeight * 0.25,
+                                screenHeight * 0.25,
+                                screenHeight * 0.25),
+                            height: mySize(
+                                screenHeight * 0.15,
+                                screenHeight * 0.15,
+                                screenHeight * 0.25,
+                                screenHeight * 0.25,
+                                screenHeight * 0.25),
+                            child: CircularProgressIndicator(
+                                color: colors(context).kprimaryColor),
+                          ),
                         ),
-                      ),
-                  errorWidget: (context, url, error) => SvgPicture.asset(
-                        unLoadedImage,
-                        height: mySize(
-                            screenHeight * 0.3,
-                            screenHeight * 0.3,
-                            screenHeight * 0.4,
-                            screenHeight * 0.4,
-                            screenHeight * 0.4),
-                      ))
+                    errorWidget: (context, url, error) => SvgPicture.asset(
+                          unLoadedImage,
+                          height: mySize(
+                              screenHeight * 0.3,
+                              screenHeight * 0.3,
+                              screenHeight * 0.4,
+                              screenHeight * 0.4,
+                              screenHeight * 0.4),
+                        )),
+              )
           ],
         ),
       ),

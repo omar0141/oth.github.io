@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shakosh/size_config.dart';
 
+
 //26, 44, 122, 1
 const kPrimaryColor = Color.fromARGB(255, 31, 61, 158);
 const kPrimaryLightColor = Color(0xFFFFECDF);

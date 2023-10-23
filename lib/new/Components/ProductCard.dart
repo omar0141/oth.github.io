@@ -67,7 +67,7 @@ class _ProductCardState extends State<ProductCard> {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: productImage(widget.product.thumbnail)),
+                      Expanded(child: Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(5)),child: productImage(widget.product.thumbnail))),
                     ],
                   ),
                   SizedBox(
@@ -128,26 +128,26 @@ class _ProductCardState extends State<ProductCard> {
                   child: FavouriteWidget(
                     product: widget.product,
                   )),
-              if (widget.product.stock == 999999999999999)
-                Positioned.directional(
-                    textDirection: "language_iso".tr == "ar"
-                        ? TextDirection.rtl
-                        : TextDirection.ltr,
-                    top: 5,
-                    start: 5,
-                    child: Container(
-                      padding: EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                          color: colors(context).kSecondaryColor,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(
-                        "reserve".tr,
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: colors(context).whiteColor),
-                      ),
-                    )),
+              // if (widget.product.stock == 999999999999999)
+              //   Positioned.directional(
+              //       textDirection: "language_iso".tr == "ar"
+              //           ? TextDirection.rtl
+              //           : TextDirection.ltr,
+              //       top: 5,
+              //       start: 5,
+              //       child: Container(
+              //         padding: EdgeInsets.all(7),
+              //         decoration: BoxDecoration(
+              //             color: colors(context).kSecondaryColor,
+              //             borderRadius: BorderRadius.circular(5)),
+              //         child: Text(
+              //           "reserve".tr,
+              //           style: TextStyle(
+              //               fontSize: 12,
+              //               fontWeight: FontWeight.bold,
+              //               color: colors(context).whiteColor),
+              //         ),
+              //       )),
             ],
           ),
         ),
@@ -159,9 +159,10 @@ class _ProductCardState extends State<ProductCard> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: CachedNetworkImage(
+
           height: mySize(100, 100, 150, 150, 150),
           imageUrl: MyApi.media + (image ?? ""),
-          fit: BoxFit.fill,
+          fit: BoxFit.contain,
           placeholder: (context, url) => Center(
                 child: SizedBox(
                   width: 50,

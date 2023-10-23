@@ -8,7 +8,6 @@ import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/TagsModel.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
@@ -31,102 +30,98 @@ class Header1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: SizedBox(
+      child: SizedBox(width: (screenWidth > 1500)?1550:null,
         height: 85,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: mySize(0, 0, 0, 0, screenWidth * 0.04)!),
-          child: Row(
-            children: [
-              Listener(
-                onPointerDown: (event) {
-                  onPointerDown(event,
-                      Uri.base.origin + urlName + "/#${HomeScreen.routeName}");
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.routeName);
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image.asset(
-                        logo,
-                        width: 200,
-                      ),
+        child: Row(
+          children: [
+            Listener(
+              onPointerDown: (event) {
+                onPointerDown(event,
+                    Uri.base.origin + urlName + "/#${HomeScreen.routeName}");
+              },
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(HomeScreen.routeName);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.asset(
+                      logo,
+                      width: 200,
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: BlocBuilder<DependanciesBloc, DependanciesState>(
-                  builder: (context, state) {
-                    List<CategoreyModel> categories = [];
-                    List<TagsModel> tagsData = [];
-                    List<String> tags = [];
-                    if (state is DependanciesLoaded) {
-                      categories = state.allCategories;
-                      tagsData = state.tags;
-                      for (var tag in tagsData) {
-                        try {
-                          tags.add((tag.tags ?? "").split(',')[0]);
-                        } catch (e) {}
-                        try {
-                          tags.add((tag.tags ?? "").split(',')[1]);
-                        } catch (e) {}
-                      }
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: BlocBuilder<DependanciesBloc, DependanciesState>(
+                builder: (context, state) {
+                  List<CategoreyModel> categories = [];
+                  List<TagsModel> tagsData = [];
+                  List<String> tags = [];
+                  if (state is DependanciesLoaded) {
+                    categories = state.allCategories;
+                    tagsData = state.tags;
+                    for (var tag in tagsData) {
+                      try {
+                        tags.add((tag.tags ?? "").split(',')[0]);
+                      } catch (e) {}
+                      try {
+                        tags.add((tag.tags ?? "").split(',')[1]);
+                      } catch (e) {}
                     }
-                    return Row(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: state is DependanciesLoading
-                                ? loadingInput()
-                                : state is DependanciesLoaded
-                                    ? searchDropDown(categories)
-                                    : loadingInput()),
-                        Expanded(
-                            flex: 3, child: searchTextField(context, tags)),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "client-service".tr,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: colors(context).grey1,
-                              ),
+                  }
+                  return Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: state is DependanciesLoading
+                              ? loadingInput()
+                              : state is DependanciesLoaded
+                                  ? searchDropDown(categories)
+                                  : loadingInput()),
+                      Expanded(
+                          flex: 3, child: searchTextField(context, tags)),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "client-service".tr,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: colors(context).grey1,
                             ),
-                            SelectableText(
-                              "(+2) 01023966756",
-                              textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: colors(context).kprimaryColor),
-                            ),
-                            SelectableText(
-                              "(+2) 01221722221",
-                              textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: colors(context).kprimaryColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+                          ),
+                          SelectableText(
+                            "(+2) 01023966756",
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: colors(context).kprimaryColor),
+                          ),
+                          SelectableText(
+                            "(+2) 01221722221",
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: colors(context).kprimaryColor),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -98,18 +98,14 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
               ],
             );
         } else {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text("Something Happened!")],
-          );
+          return SizedBox();
         }
       },
     );
   }
 
   Widget Pagination(context, int numberPages) {
-    double myWidth = (numberPages * 60) + mySize(40, 40, 100, 100, 100)!;
+    double myWidth = (numberPages * 60) + mySize(70, 70, 150, 150, 150)!;
     double myScreenWidth = mySize(screenWidth * 0.94, screenWidth * 0.94,
         screenWidth * 0.6, screenWidth * 0.6, screenWidth * 0.6)!;
     if (myWidth > myScreenWidth) {
@@ -119,47 +115,97 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         myWidth = myScreenWidth;
     }
     if (numberPages == 1) {
-      myWidth = mySize(45, 45, 55, 55, 55)! * 3;
+      myWidth = mySize(65, 65, 80, 80, 80)! * 3;
     }
     return SizedBox(
       width: myWidth,
-      child: NumberPaginator(
-        numberPages: numberPages,
-        onPageChange: (int index) {
-          widget.page = (index + 1).toString();
-          BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-              page: widget.page.toString(),
-              brandId: widget.brandId,
-              categoryId: widget.categoryId));
-          String route;
-          if (widget.brandId != null) {
-            route = "brands/${widget.brandId}/products/${widget.page}";
-          } else if (widget.categoryId != null) {
-            route = "categories/${widget.categoryId}/products/${widget.page}";
-          } else if (widget.brandId != null && widget.categoryId != null) {
-            route =
-                "categories/${widget.categoryId}/brands/${widget.brandId}/products/${widget.page}";
-          } else {
-            route = "products/${widget.page}";
-          }
-          html.window.history.replaceState(null, '', "#$route");
-        },
-        initialPage: (int.parse(widget.page ?? "1") - 1),
-        config: NumberPaginatorUIConfig(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          height: mySize(40, 40, 50, 50, 50)!,
-          buttonShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-              side: BorderSide(
-                width: 1,
-                color: colors(context).kprimaryColor!,
-              )),
-          buttonSelectedForegroundColor: colors(context).whiteColor,
-          buttonUnselectedForegroundColor: colors(context).kprimaryColor,
-          buttonUnselectedBackgroundColor: colors(context).whiteColor,
-          buttonSelectedBackgroundColor: colors(context).kprimaryColor,
-        ),
+      child: Row(
+        children: [
+          InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: widget.page == "1" ? null : () {
+                int currPage = int.parse(widget.page ?? "1") - 5;
+                if (currPage < 1) {
+                  widget.page = "1";
+                } else {
+                  widget.page = currPage.toString();
+                }
+                goToPage(context);
+            },
+            child: Container(
+              
+              padding: EdgeInsets.all(mySize(5, 5, 8, 8, 8)!),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: colors(context).kprimaryColor!)),
+              child: Icon(Icons.keyboard_double_arrow_right_outlined,color: widget.page == "1" ? colors(context).grey1 : colors(context).kprimaryColor,size: mySize(20, 20, 25, 25, 25),),
+              ),
+          ),
+          Expanded(
+            child: NumberPaginator(
+              numberPages: numberPages,
+              onPageChange: (int index) {
+                widget.page = (index + 1).toString();
+                goToPage(context);
+              },
+              initialPage: (int.parse(widget.page ?? "1") - 1),
+              config: NumberPaginatorUIConfig(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                height: mySize(40, 40, 50, 50, 50)!,
+                buttonShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(
+                      width: 1,
+                      color: colors(context).kprimaryColor!,
+                    )),
+                buttonSelectedForegroundColor: colors(context).whiteColor,
+                buttonUnselectedForegroundColor: colors(context).kprimaryColor,
+                buttonUnselectedBackgroundColor: colors(context).whiteColor,
+                buttonSelectedBackgroundColor: colors(context).kprimaryColor,
+              ),
+            ),
+          ),
+          InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: widget.page == numberPages.toString() ? null : () {
+                int currPage = int.parse(widget.page ?? "1") + 5;
+                if (currPage >= numberPages) {
+                  widget.page = numberPages.toString();
+                } else {
+                  widget.page = currPage.toString();
+                }
+                goToPage(context);
+            },
+            child: Container(
+              
+              padding: EdgeInsets.all(mySize(5, 5, 8, 8, 8)!),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: colors(context).kprimaryColor!)),
+              child: Icon(Icons.keyboard_double_arrow_left_outlined,color:  widget.page == numberPages.toString() ? colors(context).grey1 : colors(context).kprimaryColor,size: mySize(20, 20, 25, 25, 25),),
+              ),
+          ),
+        ],
       ),
     );
+  }
+
+  void goToPage(context) {
+    BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+        page: widget.page.toString(),
+        brandId: widget.brandId,
+        categoryId: widget.categoryId));
+    String route;
+    if (widget.brandId != null) {
+      route = "brands/${widget.brandId}/products/${widget.page}";
+    } else if (widget.categoryId != null) {
+      route = "categories/${widget.categoryId}/products/${widget.page}";
+    } else if (widget.brandId != null && widget.categoryId != null) {
+      route =
+          "categories/${widget.categoryId}/brands/${widget.brandId}/products/${widget.page}";
+    } else {
+      route = "products/${widget.page}";
+    }
+    html.window.history.replaceState(null, '', "#$route");
   }
 }

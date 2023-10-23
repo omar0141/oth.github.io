@@ -221,5 +221,6 @@
   "change-password-your-old-password-with-your-new-password": "قم بتغيير كلمة المرور القديمة بكلمة المرور الجديدة",
   "search": "بحث",
   "reserve": "حجز",
-  "reserve-in-cart": "حجز فى السلة"
+  "reserve-in-cart": "حجز فى السلة",
+  "copy-text": "نسخ النص"
 }

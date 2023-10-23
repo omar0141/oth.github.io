@@ -228,5 +228,6 @@
   "change-password-your-old-password-with-your-new-password": "Change password your old password with your new password",
   "search": "Search",
   "reserve": "Reserve",
-  "reserve-in-cart": "Reserve in cart"
+  "reserve-in-cart": "Reserve in cart",
+  "copy-text": "Copy Text"
 }
