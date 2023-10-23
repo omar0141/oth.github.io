@@ -8,8 +8,8 @@ import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
-import 'package:shakosh/new/Data/Models/TagsModel.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -30,7 +30,8 @@ class Header1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: SizedBox(width: (screenWidth > 1500)?1550:null,
+      child: SizedBox(
+        width: (screenWidth > 1500) ? 1550 : null,
         height: 85,
         child: Row(
           children: [
@@ -63,19 +64,19 @@ class Header1 extends StatelessWidget {
               child: BlocBuilder<DependanciesBloc, DependanciesState>(
                 builder: (context, state) {
                   List<CategoreyModel> categories = [];
-                  List<TagsModel> tagsData = [];
+                  // List<TagsModel> tagsData = [];
                   List<String> tags = [];
                   if (state is DependanciesLoaded) {
                     categories = state.allCategories;
-                    tagsData = state.tags;
-                    for (var tag in tagsData) {
-                      try {
-                        tags.add((tag.tags ?? "").split(',')[0]);
-                      } catch (e) {}
-                      try {
-                        tags.add((tag.tags ?? "").split(',')[1]);
-                      } catch (e) {}
-                    }
+                    tags = state.tags;
+                    // for (var tag in tagsData) {
+                    //   try {
+                    //     tags.add((tag.tags ?? "").split(',')[0]);
+                    //   } catch (e) {}
+                    //   try {
+                    //     tags.add((tag.tags ?? "").split(',')[1]);
+                    //   } catch (e) {}
+                    // }
                   }
                   return Row(
                     children: [
@@ -86,8 +87,7 @@ class Header1 extends StatelessWidget {
                               : state is DependanciesLoaded
                                   ? searchDropDown(categories)
                                   : loadingInput()),
-                      Expanded(
-                          flex: 3, child: searchTextField(context, tags)),
+                      Expanded(flex: 3, child: searchTextField(context, tags)),
                       SizedBox(
                         width: 20,
                       ),
@@ -153,6 +153,7 @@ class Header1 extends StatelessWidget {
               BlocProvider.of<ProductsBloc>(context).search = search;
               BlocProvider.of<ProductsBloc>(context).categoryId = categoryId;
               BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+                  count: mySize(8, 8, 12, 12, 16).toString(),
                   page: "1",
                   brandId: brandId,
                   categoryId: categoryId,

@@ -18,8 +18,11 @@ class TrendingProducts extends StatefulWidget {
 class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
   @override
   void didPopNext() {
-    BlocProvider.of<ProductsBloc>(context)
-        .add(GetProductsEvent(trending: true, back: true));
+    BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+      trending: true,
+      back: true,
+      count: mySize(8, 8, 12, 16, 20).toString(),
+    ));
     super.didPopNext();
   }
 
@@ -31,8 +34,10 @@ class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
 
   @override
   void initState() {
-    BlocProvider.of<ProductsBloc>(context)
-        .add(GetProductsEvent(trending: true));
+    BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+      trending: true,
+      count: mySize(8, 8, 12, 16, 20).toString(),
+    ));
     super.initState();
   }
 
@@ -69,7 +74,7 @@ class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
         BlocBuilder<ProductsBloc, ProductsState>(
           builder: (context, state) {
             if (state is ProductsLoading) {
-              return ProductsShimmer();
+              return ProductsShimmer(itemCount: mySize(8, 8, 12, 16, 20)!.toInt(),);
             } else if (state is TrendingProductsLoaded) {
               List<ProductModel> products = state.products;
               return ProductsWidget(products: products);
@@ -85,5 +90,4 @@ class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
       ],
     );
   }
-
 }

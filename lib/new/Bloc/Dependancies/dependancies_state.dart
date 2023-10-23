@@ -9,7 +9,7 @@ class DependanciesLoaded extends DependanciesState {
   List<CategoreyModel> parentCategories;
   List<CategoreyModel> childCategories;
   List<BrandModel> brands;
-  List<TagsModel> tags;
+  List<String> tags;
   DependantsModel? dependantsData;
   DependanciesLoaded(
       {required this.allCategories,

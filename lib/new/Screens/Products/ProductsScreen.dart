@@ -5,6 +5,7 @@ import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Screens/Products/Components/DesktopBody.dart';
 import 'package:shakosh/new/Screens/Products/Components/MobileBody.dart';
 
@@ -41,6 +42,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+        count: mySize(8, 8, 12, 12, 16).toString(),
         search: widget.search,
         categoryId: widget.categoryId,
         brandId: widget.brandId,

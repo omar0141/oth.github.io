@@ -31,6 +31,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         search: widget.search,
         categoryId: widget.categoryId,
         brandId: widget.brandId,
+        count: mySize(8, 8, 12, 12, 16).toString(),
         page: widget.page));
     super.didPopNext();
   }
@@ -55,6 +56,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
         if (state is ProductsLoading) {
           return ProductsShimmer(
+            itemCount: mySize(8, 8, 12, 12, 16)!.toInt(),
             crossAxisCount: mySize(2, 2, 3, 3, 4)!.toInt(),
           );
         } else if (state is ProductsLoaded) {
@@ -105,7 +107,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
   }
 
   Widget Pagination(context, int numberPages) {
-    double myWidth = (numberPages * 60) + mySize(70, 70, 150, 150, 150)!;
+    double myWidth = (numberPages * 60) + mySize(85, 85, 170, 170, 170)!;
     double myScreenWidth = mySize(screenWidth * 0.94, screenWidth * 0.94,
         screenWidth * 0.6, screenWidth * 0.6, screenWidth * 0.6)!;
     if (myWidth > myScreenWidth) {
@@ -125,21 +127,31 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onTap: widget.page == "1" ? null : () {
-                int currPage = int.parse(widget.page ?? "1") - 5;
-                if (currPage < 1) {
-                  widget.page = "1";
-                } else {
-                  widget.page = currPage.toString();
-                }
-                goToPage(context);
-            },
+            onTap: widget.page == "1"
+                ? null
+                : () {
+                    int currPage = int.parse(widget.page ?? "1") - 5;
+                    if (currPage < 1) {
+                      widget.page = "1";
+                    } else {
+                      widget.page = currPage.toString();
+                    }
+                    goToPage(context);
+                  },
             child: Container(
-              
               padding: EdgeInsets.all(mySize(5, 5, 8, 8, 8)!),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: colors(context).kprimaryColor!)),
-              child: Icon(Icons.keyboard_double_arrow_right_outlined,color: widget.page == "1" ? colors(context).grey1 : colors(context).kprimaryColor,size: mySize(20, 20, 25, 25, 25),),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: colors(context).kprimaryColor!)),
+              child: Icon(
+                Icons.keyboard_double_arrow_right_outlined,
+                color: widget.page == "1"
+                    ? colors(context).grey1
+                    : colors(context).kprimaryColor,
+                size: mySize(20, 20, 25, 25, 25),
               ),
+            ),
           ),
           Expanded(
             child: NumberPaginator(
@@ -169,21 +181,31 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onTap: widget.page == numberPages.toString() ? null : () {
-                int currPage = int.parse(widget.page ?? "1") + 5;
-                if (currPage >= numberPages) {
-                  widget.page = numberPages.toString();
-                } else {
-                  widget.page = currPage.toString();
-                }
-                goToPage(context);
-            },
+            onTap: widget.page == numberPages.toString()
+                ? null
+                : () {
+                    int currPage = int.parse(widget.page ?? "1") + 5;
+                    if (currPage >= numberPages) {
+                      widget.page = numberPages.toString();
+                    } else {
+                      widget.page = currPage.toString();
+                    }
+                    goToPage(context);
+                  },
             child: Container(
-              
               padding: EdgeInsets.all(mySize(5, 5, 8, 8, 8)!),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: colors(context).kprimaryColor!)),
-              child: Icon(Icons.keyboard_double_arrow_left_outlined,color:  widget.page == numberPages.toString() ? colors(context).grey1 : colors(context).kprimaryColor,size: mySize(20, 20, 25, 25, 25),),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: colors(context).kprimaryColor!)),
+              child: Icon(
+                Icons.keyboard_double_arrow_left_outlined,
+                color: widget.page == numberPages.toString()
+                    ? colors(context).grey1
+                    : colors(context).kprimaryColor,
+                size: mySize(20, 20, 25, 25, 25),
               ),
+            ),
           ),
         ],
       ),
@@ -194,6 +216,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
     BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
         page: widget.page.toString(),
         brandId: widget.brandId,
+        count: mySize(8, 8, 12, 12, 16).toString(),
         categoryId: widget.categoryId));
     String route;
     if (widget.brandId != null) {

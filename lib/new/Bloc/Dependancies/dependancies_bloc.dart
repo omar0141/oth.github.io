@@ -7,7 +7,6 @@ import 'package:shakosh/new/Data/Models/DependantsModel.dart';
 import 'package:shakosh/new/Data/Remote/DependanciesRemote.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/ShippingModel.dart';
-import 'package:shakosh/new/Data/Models/TagsModel.dart';
 part 'dependancies_event.dart';
 part 'dependancies_state.dart';
 
@@ -18,7 +17,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   List<CategoreyModel> allCategories = [];
   List<CategoreyModel> subCategories = [];
   String? selectedParentCatgeoryId;
-  List<TagsModel> tags = [];
+  List<String> tags = [];
   List<ShippingModel> shippings = [];
   List<BrandModel> brands = [];
   late DependantsModel dependantsData;
@@ -113,7 +112,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       // ==========================================================
       // Modeling Tags Data From Api
       for (var element in dependanciesHomeData["tags"]) {
-        tags.add(TagsModel.fromJson(element));
+        tags.add(element ?? "");
       }
       // ==========================================================
       // Modeling Shipping Data From Api

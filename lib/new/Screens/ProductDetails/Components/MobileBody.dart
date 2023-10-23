@@ -6,6 +6,7 @@ import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
 import 'package:shakosh/new/Config/Colors/ColorPalette.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDetailsImages.dart';
@@ -166,7 +167,9 @@ class MobileBody extends StatelessWidget {
               ],
             ),
           ),
-          ProductsShimmer(),
+          ProductsShimmer(
+            itemCount: mySize(8, 8, 12, 16, 20)!.toInt(),
+          ),
           SizedBox(
             height: 20,
           ),

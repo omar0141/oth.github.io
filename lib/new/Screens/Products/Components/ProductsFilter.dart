@@ -48,7 +48,6 @@ class _ProductsFilterState extends State<ProductsFilter> {
 
   @override
   void initState() {
-    print(widget.categoryId);
     if (BlocProvider.of<ProductsBloc>(context).categoryId == null) {
       BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
     }
@@ -196,6 +195,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                 widget.categoryId;
                             BlocProvider.of<ProductsBloc>(context).add(
                                 GetProductsEvent(
+                                    count: mySize(8, 8, 12, 12, 16).toString(),
                                     categoryId: widget.categoryId,
                                     brandId: widget.brandId));
                             setState(() {});
@@ -313,6 +313,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
                                 widget.brandId;
                             BlocProvider.of<ProductsBloc>(context).add(
                                 GetProductsEvent(
+                                    count: mySize(8, 8, 12, 12, 16).toString(),
                                     categoryId: widget.categoryId,
                                     brandId: widget.brandId));
                             setState(() {});

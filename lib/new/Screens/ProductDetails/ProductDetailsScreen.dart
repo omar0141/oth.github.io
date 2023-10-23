@@ -79,23 +79,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     } else {
       return ScaffoldMobile(
         screenName: "language_iso".tr == "ar" ? nameAlt : name,
-        bottomNavigationBar: (state is ProductsDetailsLoaded) ? SizedBox(height: 75,
-          child: Row(
-           
-            children: [
-            
-            Expanded(flex: 4,child: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 10,end: 10),
-              child: CartWidget(product: ProductModel.fromJson(state.productDetails.toJson())),
-            )),
-            
-            Expanded(flex: 1,child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 10),
-              child: FavouriteWidget(height: 50,product: ProductModel.fromJson(state.productDetails.toJson())),
-            )),
-            
-          ],),
-        ):Container(),
+        bottomNavigationBar: (state is ProductsDetailsLoaded)
+            ? SizedBox(
+                height: 75,
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              start: 10, end: 10),
+                          child: CartWidget(
+                              product: ProductModel.fromJson(
+                                  state.productDetails.toJson())),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 10),
+                          child: FavouriteWidget(
+                              height: 50,
+                              product: ProductModel.fromJson(
+                                  state.productDetails.toJson())),
+                        )),
+                  ],
+                ),
+              )
+            : Container(),
         child: MobileBody(
           state: state,
         ),

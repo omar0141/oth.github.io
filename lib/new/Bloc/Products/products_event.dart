@@ -9,6 +9,7 @@ class GetProductsEvent extends ProductsEvent {
   String? dealId;
   String? brandId;
   String? categoryId;
+  String count;
   String? search;
   bool trending;
   bool back;
@@ -19,6 +20,7 @@ class GetProductsEvent extends ProductsEvent {
       this.dealId,
       this.brandId,
       this.categoryId,
+      required this.count,
       this.search,
       this.trending = false,this.back = false});
 }

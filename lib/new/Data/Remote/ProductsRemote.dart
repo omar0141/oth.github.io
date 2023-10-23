@@ -13,10 +13,11 @@ class ProductsRemote {
       String? dealId,
       String? brandId,
       String? categoryId,
+      required String count,
       String? search}) async {
     try {
       var url = MyApi.products;
-      var data = {"SID": MyApi.SID};
+      var data = {"SID": MyApi.SID, "thresh": count};
       if (page != null) {
         data["page"] = page;
       }

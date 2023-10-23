@@ -62,7 +62,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         trendingProducts = [];
         // Get Trending Products Data From Api
         var (pagesNew, currentPageNew, resultsNew, trendingProductsData) =
-            await _productsRemote.getProducts();
+            await _productsRemote.getProducts(count: event.count);
         // Set my bloc data with requested data from api
         pages = pagesNew;
         currentPage = currentPageNew;
@@ -84,6 +84,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
                 dealId: event.dealId,
                 order: event.order,
                 page: event.page,
+                count: event.count,
                 search: event.search,
                 stockOnly: event.stockOnly);
         // Set my bloc data with requested data from api

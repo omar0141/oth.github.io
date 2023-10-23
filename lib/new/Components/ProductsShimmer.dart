@@ -4,9 +4,10 @@ import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 
 // ignore: must_be_immutable
 class ProductsShimmer extends StatelessWidget {
-  ProductsShimmer({super.key, this.crossAxisCount});
+  ProductsShimmer({super.key, this.crossAxisCount,required this.itemCount});
 
   int? crossAxisCount;
+  int itemCount;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class ProductsShimmer extends StatelessWidget {
             mainAxisSpacing: mySize(10, 10, 20, 20, 20)!,
             crossAxisCount: crossAxisCount ?? mySize(2, 2, 3, 4, 5)!.toInt(),
           ),
-          itemCount: 10,
+          itemCount: itemCount,
           itemBuilder: (context, i) {
             return ProductCardShimmer();
           }),
