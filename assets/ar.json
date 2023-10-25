@@ -222,5 +222,7 @@
   "search": "بحث",
   "reserve": "حجز",
   "reserve-in-cart": "حجز فى السلة",
-  "copy-text": "نسخ النص"
+  "copy-text": "نسخ النص",
+  "model": "الموديل",
+  "part-no": "رقم القطعة"
 }

@@ -174,13 +174,13 @@ class _ScaffoldMobileState extends State<ScaffoldMobile> {
                     BlocProvider.of<ProductsBloc>(context).search ?? "";
                 String? categoryId =
                     BlocProvider.of<ProductsBloc>(context).categoryId;
-                if (brandId != null) {
+                if (brandId != null && categoryId != null) {
+                  route =
+                      "categories/${categoryId}/brands/${brandId}/products/1/$search";
+                } else if (brandId != null) {
                   route = "brands/${brandId}/products/1/$search";
                 } else if (categoryId != null) {
                   route = "categories/${categoryId}/products/1/$search";
-                } else if (brandId != null && categoryId != null) {
-                  route =
-                      "categories/${categoryId}/brands/${brandId}/products/1/$search";
                 } else {
                   route = "products/1/$search";
                 }

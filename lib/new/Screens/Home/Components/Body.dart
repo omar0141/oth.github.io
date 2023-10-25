@@ -17,6 +17,7 @@ class Body extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: ParentCategories(
             home: true,
+            
           ),
         ),
         Padding(

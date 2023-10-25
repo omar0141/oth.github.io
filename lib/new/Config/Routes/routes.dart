@@ -21,12 +21,12 @@ class Flurorouter {
   //
   static Handler _categoriesHandlerWtihId = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => CategoriesScreen(
-            parentId: params["id"][0],
+            categoryId: params["id"][0],
           ));
   //
   static Handler _categoriesHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) =>
-          CategoriesScreen(parentId: null));
+          CategoriesScreen(categoryId: null));
   //
   static Handler _brandsHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) => BrandsScreen());

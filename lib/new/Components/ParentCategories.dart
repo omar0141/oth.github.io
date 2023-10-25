@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
+import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CategoriesShimmer.dart';
 import 'package:shakosh/new/Components/CategoryCard.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
@@ -9,33 +10,54 @@ import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
-import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
 class ParentCategories extends StatefulWidget {
   ParentCategories(
-      {super.key,
-      this.parentId,
-      this.expand = false,
-      this.categories = false,
-      this.home = false});
+      {super.key, this.categoryId, this.expand = false, this.home = false});
 
-  String? parentId;
+  String? categoryId;
   bool expand;
-  bool categories;
   bool home;
 
   @override
   State<ParentCategories> createState() => _ParentCategoriesState();
 }
 
-class _ParentCategoriesState extends State<ParentCategories> {
+class _ParentCategoriesState extends State<ParentCategories> with RouteAware {
   ScrollController scrollController = ScrollController();
+
   double listanimate = 0;
+
+  @override
+  void didPopNext() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      BlocProvider.of<DependanciesBloc>(context).add(
+          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
+    });
+
+    super.didPopNext();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
   @override
   void initState() {
-    BlocProvider.of<DependanciesBloc>(context).subCategories.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      BlocProvider.of<DependanciesBloc>(context).add(
+          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    MyApp.routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
@@ -54,35 +76,28 @@ class _ParentCategoriesState extends State<ParentCategories> {
                   fontWeight: FontWeight.bold),
             ),
             Spacer(),
-            InkWell(
-              onTap: () {
-                if (widget.home) {
+            if (widget.home)
+              InkWell(
+                onTap: () {
                   Navigator.of(context).pushNamed("categories");
-                } else {
-                  widget.expand = !widget.expand;
-                  setState(() {});
-                }
-              },
-              child: Row(
-                children: [
-                  Text(
-                    "show-all".tr,
-                    style: TextStyle(
-                        fontSize: mySize(17, 17, 19, 19, 19),
-                        fontWeight: FontWeight.bold,
-                        height: 1),
-                  ),
-                  Icon(widget.home
-                      ? Icons.arrow_forward_ios
-                      : (widget.expand
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down))
-                ],
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      "show-all".tr,
+                      style: TextStyle(
+                          fontSize: mySize(17, 17, 19, 19, 19),
+                          fontWeight: FontWeight.bold,
+                          height: 1),
+                    ),
+                    Icon(Icons.arrow_forward_ios)
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              width: mySize(10, 10, 20, 20, 20),
-            ),
+            if (widget.home)
+              SizedBox(
+                width: mySize(10, 10, 20, 20, 20),
+              ),
           ],
         ),
         SizedBox(
@@ -97,13 +112,11 @@ class _ParentCategoriesState extends State<ParentCategories> {
                   if (state is DependanciesLoading) {
                     return categoriesShimmer();
                   } else if (state is DependanciesLoaded) {
-                    List<CategoreyModel> categories = state.parentCategories;
-                    return catgeoriesWidget(categories);
+                    List<CategoreyModel> categories = state.categories;
+                    List<CategoreyModel> allCategories = state.allCategories;
+                    return catgeoriesWidget(categories, allCategories);
                   } else {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("Something Happened!")],
-                    );
+                    return SizedBox();
                   }
                 },
               ),
@@ -127,7 +140,8 @@ class _ParentCategoriesState extends State<ParentCategories> {
             }));
   }
 
-  Widget catgeoriesWidget(List<CategoreyModel> categories) {
+  Widget catgeoriesWidget(
+      List<CategoreyModel> categories, List<CategoreyModel> allCategories) {
     if (widget.expand) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: mySize(10, 10, 30, 30, 30)!),
@@ -153,12 +167,12 @@ class _ParentCategoriesState extends State<ParentCategories> {
                 },
                 child: InkWell(
                   onTap: () {
-                    selectCategory(category);
+                    selectCategory(category, allCategories, context);
                   },
                   child: CategoryCard(
                     expand: widget.expand,
                     category: category,
-                    parentId: widget.parentId,
+                    parentId: widget.categoryId,
                   ),
                 ),
               );
@@ -186,12 +200,12 @@ class _ParentCategoriesState extends State<ParentCategories> {
                 },
                 child: InkWell(
                   onTap: () {
-                    selectCategory(category);
+                    selectCategory(category, allCategories, context);
                   },
                   child: CategoryCard(
                     expand: widget.expand,
                     category: category,
-                    parentId: widget.parentId,
+                    parentId: widget.categoryId,
                   ),
                 ),
               ),
@@ -201,23 +215,25 @@ class _ParentCategoriesState extends State<ParentCategories> {
       );
   }
 
-  void selectCategory(CategoreyModel category) {
-    if (widget.parentId == null) {
-      BlocProvider.of<DependanciesBloc>(context)
-          .add(SelectCategoryEvent(selectedParentCatgeoryId: category.id));
-      if (!widget.categories) {
-        Navigator.of(context).pushNamed("categories/${category.id}");
-      } else {
-        html.window.history
-            .replaceState(null, 'categories', "#categories/${category.id}");
-        widget.parentId = category.id;
+  void selectCategory(
+      CategoreyModel mycategory, List<CategoreyModel> allCategories, context) {
+    List<CategoreyModel> categories = [];
+    // Get sub catgeories of parent catgeory
+    for (var category in allCategories) {
+      if (category.parentId == mycategory.id) {
+        categories.add(category);
       }
+    }
+    if (categories.isNotEmpty) {
+      Navigator.of(context).pushNamed("categories/${mycategory.id}");
     } else {
-      html.window.history
-          .replaceState(null, 'categories', "#categories/${category.id}");
-      widget.parentId = category.id;
+      BlocProvider.of<ProductsBloc>(context).searchWithBrands = false;
       BlocProvider.of<DependanciesBloc>(context)
-          .add(SelectCategoryEvent(selectedParentCatgeoryId: widget.parentId!));
+          .add(SelectCategoryEvent(selectedParentCatgeoryId: mycategory.id));
+      String route = "categories/${mycategory.id}/products/1";
+      BlocProvider.of<ProductsBloc>(navigatorKey.currentContext!).categoryId =
+          mycategory.id;
+      Navigator.of(navigatorKey.currentContext!).pushNamed(route);
     }
   }
 

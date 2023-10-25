@@ -7,6 +7,8 @@ class ProductDetailsModel {
   String? categoryId;
   String? brandId;
   String? name;
+  String? model;
+  String? part_no;
   String? nameAlt;
   String? thumbnail;
   String? unitMeasure;
@@ -41,6 +43,8 @@ class ProductDetailsModel {
       this.dealId,
       this.categoryId,
       this.brandId,
+      this.model,
+      this.part_no,
       required this.name,
       required this.nameAlt,
       this.thumbnail,
@@ -80,6 +84,8 @@ class ProductDetailsModel {
     dealId = json['deal_id'];
     categoryId = json['category_id'];
     brandId = json['brand_id'];
+    model = json['model'];
+    part_no = json['part_no'];
     name = json['name'];
     nameAlt = json['name_alt'];
     thumbnail = json['thumbnail'];
@@ -120,6 +126,8 @@ class ProductDetailsModel {
     data['deal_id'] = this.dealId;
     data['category_id'] = this.categoryId;
     data['brand_id'] = this.brandId;
+    data['model'] = this.model;
+    data['part_no'] = this.part_no;
     data['name'] = this.name;
     data['name_alt'] = this.nameAlt;
     data['thumbnail'] = this.thumbnail;

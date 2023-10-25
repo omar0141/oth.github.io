@@ -79,11 +79,66 @@ class DesktopBody extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Html(data:
-                            "language_iso".tr == "ar"
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "model".tr + ": ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: productDetails.model ?? "",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: colors(context).kSecondaryColor),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "part-no".tr + ": ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: productDetails.part_no ?? "",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: colors(context).kSecondaryColor),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Html(
+                            data: "language_iso".tr == "ar"
                                 ? productDetails.briefAlt ?? ""
                                 : productDetails.brief ?? "",
-                       
                           ),
                         )
                       ],
@@ -99,15 +154,13 @@ class DesktopBody extends StatelessWidget {
                               copiedText = value?.plainText ?? "";
                             },
                             child: Listener(
-                              onPointerDown: (event){
+                              onPointerDown: (event) {
                                 copyTextMenu(event, copiedText);
                               },
                               child: Html(
-                                data:
-                                "language_iso".tr == "ar"
+                                data: "language_iso".tr == "ar"
                                     ? productDetails.descriptionAlt ?? ""
                                     : productDetails.description ?? "",
-                                             
                               ),
                             ),
                           ),
@@ -127,7 +180,10 @@ class DesktopBody extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                color: (productDetails.perOrder == 1 || productDetails.stock == 0) ? colors(context).kprimaryColor :  colors(context).kSecondaryColor),
+                                color: (productDetails.perOrder == 1 ||
+                                        productDetails.stock == 0)
+                                    ? colors(context).kprimaryColor
+                                    : colors(context).kSecondaryColor),
                           ),
                         )
                       ],
@@ -238,6 +294,34 @@ class DesktopBody extends StatelessWidget {
                             Container(
                               width: screenWidth * 0.4,
                               height: 12,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(2.5)),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: screenWidth * 0.2,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(2.5)),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: screenWidth * 0.2,
+                              height: 10,
                               decoration: BoxDecoration(
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.circular(2.5)),

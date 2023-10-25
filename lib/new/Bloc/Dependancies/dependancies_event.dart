@@ -9,6 +9,16 @@ class GetDependanciesEvent extends DependanciesEvent {
 }
 
 class SelectCategoryEvent extends DependanciesEvent {
-  SelectCategoryEvent({required this.selectedParentCatgeoryId});
-  String selectedParentCatgeoryId;
+  SelectCategoryEvent({this.selectedParentCatgeoryId});
+  String? selectedParentCatgeoryId;
+}
+
+class SelectBrandsFromCategory extends DependanciesEvent {
+  SelectBrandsFromCategory({this.id});
+  String? id;
+}
+
+class SelectCategoriesFromBrand extends DependanciesEvent {
+  SelectCategoriesFromBrand({this.id});
+  String? id;
 }

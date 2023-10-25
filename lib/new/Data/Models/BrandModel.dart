@@ -3,12 +3,14 @@ class BrandModel {
   String? name;
   String? nameAlt;
   String? thumbnail;
+  List<dynamic>? categories;
 
   BrandModel({
     required this.id,
     required this.name,
     required this.nameAlt,
     this.thumbnail,
+    this.categories
   });
 
   BrandModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ class BrandModel {
     name = json['name'];
     nameAlt = json['name_alt'];
     thumbnail = json['thumbnail'];
+    categories = json['categories'];
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +27,7 @@ class BrandModel {
     data['name'] = this.name;
     data['name_alt'] = this.nameAlt;
     data['thumbnail'] = this.thumbnail;
+    data['categories'] = this.categories;
     return data;
   }
 }

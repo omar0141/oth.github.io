@@ -24,7 +24,9 @@ class ProductsFilter extends StatefulWidget {
 }
 
 class _ProductsFilterState extends State<ProductsFilter> {
-  List<bool> expand = [false, false];
+  List<bool> expand = [true];
+  List categoriesBreadCrumbs = [];
+  bool searchWithBrands = false;
 
   @override
   void deactivate() {
@@ -48,6 +50,14 @@ class _ProductsFilterState extends State<ProductsFilter> {
 
   @override
   void initState() {
+    if (screenWidth > 768) {
+      if (widget.brandId == null)
+        BlocProvider.of<ProductsBloc>(context).brandId = null;
+
+      if (widget.categoryId == null)
+        BlocProvider.of<ProductsBloc>(context).categoryId = null;
+    }
+
     if (BlocProvider.of<ProductsBloc>(context).categoryId == null) {
       BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
     }
@@ -56,12 +66,17 @@ class _ProductsFilterState extends State<ProductsFilter> {
     }
     widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
     widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
+    searchWithBrands = BlocProvider.of<ProductsBloc>(context).searchWithBrands;
+    categoriesBreadCrumbs =
+        BlocProvider.of<DependanciesBloc>(context).categoriesBreadCrumbs;
+
     if (widget.categoryId != null) {
       expand[0] = true;
     }
     if (widget.brandId != null) {
-      expand[1] = true;
+      expand[0] = true;
     }
+
     super.initState();
   }
 
@@ -84,34 +99,21 @@ class _ProductsFilterState extends State<ProductsFilter> {
           ],
         ),
         Divider(),
-        BlocConsumer<ProductsBloc, ProductsState>(
-          listener: (context, state) {
-            widget.categoryId =
-                BlocProvider.of<ProductsBloc>(context).categoryId;
-            if (widget.categoryId == null) {
-              expand[0] = false;
-            } else {
-              expand[0] = true;
-            }
-            setState(() {});
+        ExpansionPanelList(
+          expandedHeaderPadding: EdgeInsets.zero,
+          materialGapSize: 0,
+          elevation: 0,
+          dividerColor: colors(context).grey2,
+          expansionCallback: (panelIndex, isExpanded) {
+            setState(() {
+              expand[panelIndex] = isExpanded;
+            });
           },
-          builder: (context, state) {
-            return ExpansionPanelList(
-              expandedHeaderPadding: EdgeInsets.zero,
-              materialGapSize: 0,
-              elevation: 0,
-              dividerColor: colors(context).grey2,
-              expansionCallback: (panelIndex, isExpanded) {
-                setState(() {
-                  expand[panelIndex] = isExpanded;
-                });
-              },
-              children: [
-                categoryFilter(context, 0),
-                brandFilter(context, 1),
-              ],
-            );
-          },
+          children: [
+            if (widget.brandId != null && searchWithBrands)
+              categoryFilter(context, 0),
+            if (!searchWithBrands) brandFilter(context, 0),
+          ],
         )
       ],
     );
@@ -121,7 +123,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
     return ExpansionPanel(
         canTapOnHeader: true,
         backgroundColor: colors(context).whiteColor,
-        isExpanded: expand[index],
+        isExpanded: expand[0],
         headerBuilder: (context, isExpanded) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,9 +145,10 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     } else {
                       route = "products/1";
                     }
-                    if (screenWidth > 768)
-                      Navigator.of(context).pushReplacementNamed(route);
-                    else
+                    if (screenWidth > 768) {
+                      html.window.history.replaceState(null, '', "#$route");
+                      Navigator.of(context).pushNamed(route);
+                    } else
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
                         return ProductSearchMobileScreen();
@@ -159,80 +162,73 @@ class _ProductsFilterState extends State<ProductsFilter> {
             ],
           );
         },
-        body: SizedBox(
-          height: mySize(null, null, screenHeight * 0.6, screenHeight * 0.6,
-              screenHeight * 0.6),
-          child: BlocBuilder<DependanciesBloc, DependanciesState>(
-            builder: (context, state) {
-              if (state is DependanciesLoaded) {
-                List<CategoreyModel> categories = state.allCategories;
-                return ListView.builder(
-                    itemCount: categories.length,
-                    shrinkWrap: screenWidth < 768 ? true : false,
-                    physics: screenWidth < 768
-                        ? NeverScrollableScrollPhysics()
-                        : null,
-                    itemBuilder: (context, i) {
-                      CategoreyModel category = categories[i];
-                      String route = "categories/${category.id}/products/1";
-                      return Listener(
-                        onPointerDown: (event) {
-                          onPointerDown(
-                              event, Uri.base.origin + urlName + "/#$route");
+        body: BlocBuilder<DependanciesBloc, DependanciesState>(
+          builder: (context, state) {
+            if (state is DependanciesLoaded) {
+              List<CategoreyModel> categories = state.categories;
+              return ListView.builder(
+                  itemCount: categories.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, i) {
+                    CategoreyModel category = categories[i];
+                    String route = "categories/${category.id}/products/1";
+                    return Listener(
+                      onPointerDown: (event) {
+                        onPointerDown(
+                            event, Uri.base.origin + urlName + "/#$route");
+                      },
+                      child: InkWell(
+                        onTap: () {
+                          widget.categoryId = category.id;
+                          if (widget.brandId != null &&
+                              widget.categoryId != null) {
+                            route =
+                                "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+                          } else
+                            route = "categories/${category.id}/products/1";
+                          html.window.history.replaceState(null, '', "#$route");
+                          BlocProvider.of<ProductsBloc>(context).categoryId =
+                              widget.categoryId;
+                          BlocProvider.of<ProductsBloc>(context).add(
+                              GetProductsEvent(
+                                  count: mySize(8, 8, 12, 12, 16).toString(),
+                                  categoryId: widget.categoryId,
+                                  brandId: widget.brandId));
+                          setState(() {});
                         },
-                        child: InkWell(
-                          onTap: () {
-                            widget.categoryId = category.id;
-                            if (widget.brandId != null &&
-                                widget.categoryId != null) {
-                              route =
-                                  "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
-                            } else
-                              route = "categories/${category.id}/products/1";
-                            html.window.history
-                                .replaceState(null, '', "#$route");
-                            BlocProvider.of<ProductsBloc>(context).categoryId =
-                                widget.categoryId;
-                            BlocProvider.of<ProductsBloc>(context).add(
-                                GetProductsEvent(
-                                    count: mySize(8, 8, 12, 12, 16).toString(),
-                                    categoryId: widget.categoryId,
-                                    brandId: widget.brandId));
-                            setState(() {});
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: widget.categoryId == category.id
-                                    ? colors(context).kprimaryColor
-                                    : null),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "language_iso".tr == "ar"
-                                        ? category.nameAlt ?? ""
-                                        : category.name ?? "",
-                                    style: TextStyle(
-                                        color: widget.categoryId == category.id
-                                            ? colors(context).whiteColor
-                                            : null),
-                                  ),
-                                )
-                              ],
-                            ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: widget.categoryId == category.id
+                                  ? colors(context).kprimaryColor
+                                  : null),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "language_iso".tr == "ar"
+                                      ? category.nameAlt ?? ""
+                                      : category.name ?? "",
+                                  style: TextStyle(
+                                      color: widget.categoryId == category.id
+                                          ? colors(context).whiteColor
+                                          : null),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    });
-              } else
-                return Container();
-            },
-          ),
+                      ),
+                    );
+                  });
+            } else
+              return Container();
+          },
         ));
   }
 
@@ -240,7 +236,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
     return ExpansionPanel(
         canTapOnHeader: true,
         backgroundColor: colors(context).whiteColor,
-        isExpanded: expand[index],
+        isExpanded: expand[0],
         headerBuilder: (context, isExpanded) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -261,9 +257,10 @@ class _ProductsFilterState extends State<ProductsFilter> {
                     } else {
                       route = "products/1";
                     }
-                    if (screenWidth > 768)
+                    if (screenWidth > 768) {
+                      html.window.history.replaceState(null, '', "#$route");
                       Navigator.of(context).pushReplacementNamed(route);
-                    else
+                    } else
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
                         return ProductSearchMobileScreen();
@@ -277,80 +274,73 @@ class _ProductsFilterState extends State<ProductsFilter> {
             ],
           );
         },
-        body: SizedBox(
-          height: mySize(null, null, screenHeight * 0.6, screenHeight * 0.6,
-              screenHeight * 0.6),
-          child: BlocBuilder<DependanciesBloc, DependanciesState>(
-            builder: (context, state) {
-              if (state is DependanciesLoaded) {
-                List<BrandModel> brands = state.brands;
-                return ListView.builder(
-                    itemCount: brands.length,
-                    shrinkWrap: screenWidth < 768 ? true : false,
-                    physics: screenWidth < 768
-                        ? NeverScrollableScrollPhysics()
-                        : null,
-                    itemBuilder: (context, i) {
-                      BrandModel brand = brands[i];
-                      String route = "brands/${brand.id}/products/1";
-                      return Listener(
-                        onPointerDown: (event) {
-                          onPointerDown(
-                              event, Uri.base.origin + urlName + "/#$route");
+        body: BlocBuilder<DependanciesBloc, DependanciesState>(
+          builder: (context, state) {
+            if (state is DependanciesLoaded) {
+              List<BrandModel> brands = state.brands;
+              return ListView.builder(
+                  itemCount: brands.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, i) {
+                    BrandModel brand = brands[i];
+                    String route = "brands/${brand.id}/products/1";
+                    return Listener(
+                      onPointerDown: (event) {
+                        onPointerDown(
+                            event, Uri.base.origin + urlName + "/#$route");
+                      },
+                      child: InkWell(
+                        onTap: () {
+                          widget.brandId = brand.id;
+                          if (widget.brandId != null &&
+                              widget.categoryId != null) {
+                            route =
+                                "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+                          } else
+                            route = "brands/${brand.id}/products/1";
+                          html.window.history.replaceState(null, '', "#$route");
+                          BlocProvider.of<ProductsBloc>(context).brandId =
+                              widget.brandId;
+                          BlocProvider.of<ProductsBloc>(context).add(
+                              GetProductsEvent(
+                                  count: mySize(8, 8, 12, 12, 16).toString(),
+                                  categoryId: widget.categoryId,
+                                  brandId: widget.brandId));
+                          setState(() {});
                         },
-                        child: InkWell(
-                          onTap: () {
-                            widget.brandId = brand.id;
-                            if (widget.brandId != null &&
-                                widget.categoryId != null) {
-                              route =
-                                  "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
-                            } else
-                              route = "brands/${brand.id}/products/1";
-                            html.window.history
-                                .replaceState(null, '', "#$route");
-                            BlocProvider.of<ProductsBloc>(context).brandId =
-                                widget.brandId;
-                            BlocProvider.of<ProductsBloc>(context).add(
-                                GetProductsEvent(
-                                    count: mySize(8, 8, 12, 12, 16).toString(),
-                                    categoryId: widget.categoryId,
-                                    brandId: widget.brandId));
-                            setState(() {});
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: widget.brandId == brand.id
-                                    ? colors(context).kprimaryColor
-                                    : null),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "language_iso".tr == "ar"
-                                        ? brand.nameAlt ?? ""
-                                        : brand.name ?? "",
-                                    style: TextStyle(
-                                        color: widget.brandId == brand.id
-                                            ? colors(context).whiteColor
-                                            : null),
-                                  ),
-                                )
-                              ],
-                            ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: widget.brandId == brand.id
+                                  ? colors(context).kprimaryColor
+                                  : null),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "language_iso".tr == "ar"
+                                      ? brand.nameAlt ?? ""
+                                      : brand.name ?? "",
+                                  style: TextStyle(
+                                      color: widget.brandId == brand.id
+                                          ? colors(context).whiteColor
+                                          : null),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    });
-              } else
-                return Container();
-            },
-          ),
+                      ),
+                    );
+                  });
+            } else
+              return Container();
+          },
         ));
   }
 }

@@ -93,7 +93,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
           ],
         ),
         SizedBox(
-          height: mySize(10, 10, 20, 20, 20),
+          height: mySize(10, 10, 15, 15, 15),
         ),
         Row(
           children: [
@@ -104,7 +104,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                   if (state is DependanciesLoading) {
                     return brandsShimmer();
                   } else if (state is DependanciesLoaded) {
-                    List<BrandModel> brands = state.brands;
+                    List<BrandModel> brands = state.allBrands;
                     return brandsWidget(brands);
                   } else {
                     return Row(
@@ -157,6 +157,8 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                 },
                 child: InkWell(
                   onTap: () {
+                    BlocProvider.of<ProductsBloc>(context).searchWithBrands =
+                        true;
                     BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
                     Navigator.of(context).pushNamed(route);
                   },
@@ -187,6 +189,8 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                 },
                 child: InkWell(
                   onTap: () {
+                    BlocProvider.of<ProductsBloc>(context).searchWithBrands =
+                        true;
                     BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
                     Navigator.of(context).pushNamed(route);
                   },

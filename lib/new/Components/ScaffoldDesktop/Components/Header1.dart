@@ -64,19 +64,9 @@ class Header1 extends StatelessWidget {
               child: BlocBuilder<DependanciesBloc, DependanciesState>(
                 builder: (context, state) {
                   List<CategoreyModel> categories = [];
-                  // List<TagsModel> tagsData = [];
                   List<String> tags = [];
                   if (state is DependanciesLoaded) {
                     categories = state.allCategories;
-                    tags = state.tags;
-                    // for (var tag in tagsData) {
-                    //   try {
-                    //     tags.add((tag.tags ?? "").split(',')[0]);
-                    //   } catch (e) {}
-                    //   try {
-                    //     tags.add((tag.tags ?? "").split(',')[1]);
-                    //   } catch (e) {}
-                    // }
                   }
                   return Row(
                     children: [
@@ -172,9 +162,8 @@ class Header1 extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 color: colors(context).kprimaryColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(3),
-                    bottomLeft: Radius.circular(3))),
+                borderRadius: BorderRadiusDirectional.only(
+                    topEnd: Radius.circular(3), bottomEnd: Radius.circular(3))),
           ),
         ),
         hintText: "search-placeholder".tr,

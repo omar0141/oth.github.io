@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
+import 'package:shakosh/new/Components/CatgeoriesBreadCrumbs.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
@@ -33,6 +35,18 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         brandId: widget.brandId,
         count: mySize(8, 8, 12, 12, 16).toString(),
         page: widget.page));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      BlocProvider.of<DependanciesBloc>(context).add(
+          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
+      if (widget.categoryId != null) {
+        BlocProvider.of<DependanciesBloc>(context)
+            .add(SelectBrandsFromCategory(id: widget.categoryId));
+      }
+      if (widget.brandId != null) {
+        BlocProvider.of<DependanciesBloc>(context)
+            .add(SelectCategoriesFromBrand(id: widget.brandId));
+      }
+    });
     super.didPopNext();
   }
 
@@ -47,6 +61,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
     MyApp.routeObserver.unsubscribe(this);
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +90,36 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
             return Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: mySize(10, 10, 30, 30, 25)!),
-                  child: Pagination(context, numberPages),
+                  padding: const EdgeInsetsDirectional.only(start: 10),
+                  child: CatgeoriesBreadCrumbs(),
                 ),
+
+                // BlocBuilder<DependanciesBloc, DependanciesState>(
+                //   builder: (context, state) {
+                //     if (state is DependanciesLoaded) {
+                //       print(widget.categoryId);
+                //       return Column(
+                //         children: [
+                //           if (state.categoriesBreadCrumbs.isNotEmpty)
+                //             BrandsWidget(home: true),
+                //           if (widget.brandId != null &&
+                //               state.categoriesBreadCrumbs.isNotEmpty)
+                //             ParentCategories(home: true),
+                //         ],
+                //       );
+                //     } else {
+                //       return SizedBox();
+                //     }
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(
+                //       horizontal: mySize(10, 10, 30, 30, 25)!),
+                //   child: Pagination(context, numberPages),
+                // ),
                 SizedBox(
                   height: 20,
                 ),

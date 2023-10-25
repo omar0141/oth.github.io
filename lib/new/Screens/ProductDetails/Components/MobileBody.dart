@@ -138,6 +138,34 @@ class MobileBody extends StatelessWidget {
                 Row(
                   children: [
                     Container(
+                      width: 200,
+                      height: 12,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(2.5)),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 200,
+                      height: 12,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(2.5)),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Container(
                       width: screenWidth * 0.55,
                       height: 8,
                       decoration: BoxDecoration(
@@ -191,13 +219,10 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                            
                   "language_iso".tr == "ar"
                       ? productDetails.nameAlt ?? ""
                       : productDetails.name ?? "",
-                      style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                 
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
               )
             ],
@@ -213,7 +238,10 @@ class MobileBody extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: (productDetails.perOrder == 1 || productDetails.stock == 0) ? colors(context).kprimaryColor :  colors(context).kSecondaryColor),
+                      color: (productDetails.perOrder == 1 ||
+                              productDetails.stock == 0)
+                          ? colors(context).kprimaryColor
+                          : colors(context).kSecondaryColor),
                 ),
               )
             ],
@@ -224,12 +252,64 @@ class MobileBody extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Html(data:
-                  "language_iso".tr == "ar"
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "model".tr + ": ",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: productDetails.model ?? "",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: colors(context).kSecondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "part-no".tr + ": ",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: productDetails.part_no ?? "",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: colors(context).kSecondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Html(
+                  data: "language_iso".tr == "ar"
                       ? productDetails.briefAlt ?? ""
                       : productDetails.brief ?? "",
-                      
-                  
                 ),
               )
             ],
@@ -241,13 +321,10 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: SelectionArea(
-                  
                   child: Html(
-                    data:
-                    "language_iso".tr == "ar"
+                    data: "language_iso".tr == "ar"
                         ? productDetails.descriptionAlt ?? ""
                         : productDetails.description ?? "",
-                    
                   ),
                 ),
               )

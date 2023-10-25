@@ -18,6 +18,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   String? categoryId;
   String? brandId;
   String? search;
+  bool searchWithBrands = false;
 
   ProductsBloc() : super(ProductsLoading()) {
     on<ProductsEvent>((event, emit) async {

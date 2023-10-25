@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
+import 'package:shakosh/new/Config/Utils/ExpandFlatList.dart';
 import 'package:shakosh/new/Data/Local/DependanciesLocal.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Models/DependantsModel.dart';
@@ -13,14 +14,15 @@ part 'dependancies_state.dart';
 class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   DependanciesRemote _dependanciesRemote = DependanciesRemote();
   DependanciesLocal _dependanciesLocal = DependanciesLocal();
-  List<CategoreyModel> parentCategories = [];
+  List<CategoreyModel> categories = [];
+  List<CategoreyModel> categoriesBreadCrumbs = [];
   List<CategoreyModel> allCategories = [];
-  List<CategoreyModel> subCategories = [];
+  List<dynamic> allCategoriesJson = [];
   String? selectedParentCatgeoryId;
-  List<String> tags = [];
   List<ShippingModel> shippings = [];
+  List<BrandModel> allBrands = [];
   List<BrandModel> brands = [];
-  late DependantsModel dependantsData;
+  DependantsModel dependantsData = DependantsModel();
 
   DependanciesBloc() : super(DependanciesLoading()) {
     on<DependanciesEvent>((event, emit) async {
@@ -34,6 +36,10 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
         }
       } else if (event is SelectCategoryEvent) {
         selectCategory(event, emit);
+      } else if (event is SelectBrandsFromCategory) {
+        selectBrandsFromCategory(event, emit);
+      } else if (event is SelectCategoriesFromBrand) {
+        selectCategoriesFromBrand(event, emit);
       }
     });
   }
@@ -41,11 +47,24 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   void selectCategory(
       SelectCategoryEvent event, Emitter<DependanciesState> emit) {
     try {
-      subCategories = [];
+      emit(DependanciesLoading());
+      // convert catgeories flat list to tree
+      List expandedCategoriesList =
+          expandFlatList(allCategoriesJson, null, "id", "parent_id");
+      // get catgeories ids for breadcrumbs from catgeories tree
+      List breadCrumbs = getBreadCrumbs(
+          expandedCategoriesList, event.selectedParentCatgeoryId, "");
+      categories = [];
+      categoriesBreadCrumbs.clear();
       // Get sub catgeories of parent catgeory
       for (var category in allCategories) {
         if (category.parentId == event.selectedParentCatgeoryId) {
-          subCategories.add(category);
+          categories.add(category);
+        }
+        // get catgeories breadcrumbs
+        int i = breadCrumbs.indexWhere((e) => e == category.id);
+        if (i > -1) {
+          categoriesBreadCrumbs.add(category);
         }
       }
       // Get selected parent catgeory id
@@ -53,10 +72,71 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       //
       emit(DependanciesLoaded(
           allCategories: allCategories,
-          parentCategories: parentCategories,
-          childCategories: subCategories,
+          categories: categories,
+          categoriesBreadCrumbs: categoriesBreadCrumbs,
+          allBrands: allBrands,
           brands: brands,
-          tags: tags,
+          dependantsData: dependantsData));
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+      emit(DependanciesFaliure());
+    }
+  }
+
+  void selectBrandsFromCategory(
+      SelectBrandsFromCategory event, Emitter<DependanciesState> emit) {
+    try {
+      emit(DependanciesLoading());
+      List categoryBrands = [];
+      int d = allCategories.indexWhere((e) => e.id == event.id);
+      if (d > -1) {
+        categoryBrands = allCategories[d].brands ?? [];
+      }
+      brands = [];
+      // Get brands of catgeory
+      for (var brand in allBrands) {
+        int i = categoryBrands.indexWhere((e) => e == brand.id);
+        if (i > -1) {
+          brands.add(brand);
+        }
+      }
+      emit(DependanciesLoaded(
+          allCategories: allCategories,
+          categories: categories,
+          categoriesBreadCrumbs: categoriesBreadCrumbs,
+          allBrands: allBrands,
+          brands: brands,
+          dependantsData: dependantsData));
+    } catch (e) {
+      MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
+      emit(DependanciesFaliure());
+    }
+  }
+
+  void selectCategoriesFromBrand(
+      SelectCategoriesFromBrand event, Emitter<DependanciesState> emit) {
+    try {
+      emit(DependanciesLoading());
+      List brandCategories = [];
+      int d = allBrands.indexWhere((e) => e.id == event.id);
+      if (d > -1) {
+        brandCategories = allBrands[d].categories ?? [];
+      }
+
+      categories = [];
+      // Get categories of brand
+      for (var category in allCategories) {
+        int i = brandCategories.indexWhere((e) => e == category.id);
+        if (i > -1) {
+          categories.add(category);
+        }
+      }
+      emit(DependanciesLoaded(
+          allCategories: allCategories,
+          categories: categories,
+          categoriesBreadCrumbs: categoriesBreadCrumbs,
+          allBrands: allBrands,
+          brands: brands,
           dependantsData: dependantsData));
     } catch (e) {
       MySnackBar().errorSnack(navigatorKey.currentContext, e.toString(), true);
@@ -68,10 +148,10 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
     await getHomeDependancies(emit);
     await getDependancies(emit);
     emit(DependanciesLoaded(
-        tags: tags,
         allCategories: allCategories,
-        parentCategories: parentCategories,
-        childCategories: subCategories,
+        categories: categories,
+        categoriesBreadCrumbs: categoriesBreadCrumbs,
+        allBrands: allBrands,
         brands: brands,
         dependantsData: dependantsData));
   }
@@ -101,18 +181,14 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
         dependanciesHomeData = await _dependanciesLocal.getHomeDependancies();
       }
       // Modeling Categories Data From Api
-      for (var element in dependanciesHomeData["categories"]) {
-        // Modeling Parent Categories
+      allCategoriesJson = dependanciesHomeData["categories"];
+      for (var element in allCategoriesJson) {
+        // Modeling parent Categories
         if (element["parent_id"] == null) {
-          parentCategories.add(CategoreyModel.fromJson(element));
+          categories.add(CategoreyModel.fromJson(element));
         }
         // Modeling All Categories
         allCategories.add(CategoreyModel.fromJson(element));
-      }
-      // ==========================================================
-      // Modeling Tags Data From Api
-      for (var element in dependanciesHomeData["tags"]) {
-        tags.add(element ?? "");
       }
       // ==========================================================
       // Modeling Shipping Data From Api
@@ -122,6 +198,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       // ==========================================================
       // Modeling Brands Data From Api
       for (var element in dependanciesHomeData["brands"]) {
+        allBrands.add(BrandModel.fromJson(element));
         brands.add(BrandModel.fromJson(element));
       }
       //

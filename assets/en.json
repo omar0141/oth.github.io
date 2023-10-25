@@ -229,5 +229,7 @@
   "search": "Search",
   "reserve": "Reserve",
   "reserve-in-cart": "Reserve in cart",
-  "copy-text": "Copy Text"
+  "copy-text": "Copy Text",
+  "model": "Model",
+  "part-no": "Part Number"
 }

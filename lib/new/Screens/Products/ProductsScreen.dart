@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
+import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ScaffoldDesktop/ScaffoldDesktop.dart';
 import 'package:shakosh/new/Components/ScaffoldMobile/ScaffoldMobile.dart';
@@ -47,6 +48,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
         categoryId: widget.categoryId,
         brandId: widget.brandId,
         page: widget.page));
+    BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
+   
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      BlocProvider.of<DependanciesBloc>(context).add(
+          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
+
+      if (widget.categoryId != null) {
+        BlocProvider.of<DependanciesBloc>(context)
+            .add(SelectBrandsFromCategory(id: widget.categoryId));
+      }
+
+      if (widget.brandId != null) {
+        BlocProvider.of<DependanciesBloc>(context)
+            .add(SelectCategoriesFromBrand(id: widget.brandId));
+      }
+    });
     super.initState();
   }
 
