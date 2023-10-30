@@ -36,7 +36,6 @@ class _RegisterFormState extends State<RegisterForm> {
     TextEditingController address =
         BlocProvider.of<UserBloc>(context).addressRegister;
     String cityId = "";
-    String areaId = "";
     //
     return Form(
         key: formstate,
@@ -84,31 +83,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   ],
                 );
               } else if (state is DependanciesLoaded) {
-                return Row(
-                  children: [
-                    Expanded(
-                        child: dropDown(
-                      state.dependantsData!.cities!,
-                      "select-city".tr,
-                      context,
-                      onChange: (value) {
-                        cityId = value;
-                        print(cityId);
-                      },
-                    )),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: dropDown(
-                      state.dependantsData!.areas!,
-                      "select-area".tr,
-                      context,
-                      onChange: (value) {
-                        areaId = value;
-                      },
-                    )),
-                  ],
+                return dropDown(
+                  state.dependantsData!.cities!,
+                  "select-city".tr,
+                  context,
+                  onChange: (value) {
+                cityId = value;
+                print(cityId);
+                  },
                 );
               } else {
                 return Container();
@@ -152,8 +134,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             username: username.text,
                             address: address.text,
                             tel: phone.text,
-                            cityId: cityId,
-                            areaId: areaId));
+                            cityId: cityId));
                       }
                     },
                   );

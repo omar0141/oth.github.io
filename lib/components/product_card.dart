@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -90,16 +90,7 @@ class _ProductCardState extends State<ProductCard>
                                 height: getProportionateScreenHeight(150),
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget.items.image ?? '',
-                                      fit: BoxFit.contain,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(
-                                              color: kPrimaryColor),
-                                      errorWidget: (context, url, error) =>
-                                          SvgPicture.asset(
-                                              'assets/icons/unloaded.svg'),
-                                    )),
+                                    child: Container()),
                               ),
                             ),
                             if (widget.items.featured == '1')

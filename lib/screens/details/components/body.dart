@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, prefer_const_constructors
 
 import 'package:shakosh/screens/home/home_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -316,21 +315,7 @@ class _BodyState extends State<Body> {
                                               ? SizedBox(
                                                   width: 50,
                                                   height: 50,
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: values
-                                                        .product.image
-                                                        .toString(),
-                                                    fit: BoxFit.fill,
-                                                    placeholder: (context,
-                                                            url) =>
-                                                        CircularProgressIndicator(
-                                                      color: kPrimaryColor,
-                                                    ),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        Image.asset(
-                                                            'assets/images/logo.png'),
-                                                  ),
+                                                  child: Container(),
                                                 )
                                               : Text(
                                                   values.name!,

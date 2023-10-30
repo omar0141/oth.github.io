@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/CartWidget.dart';
-import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Components/FavouriteWidget.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
@@ -12,6 +11,7 @@ import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
+import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDescription.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDetailsImages.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -135,34 +135,10 @@ class DesktopBody extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Html(
-                            data: "language_iso".tr == "ar"
+                          child: HtmlWidget(
+                            "language_iso".tr == "ar"
                                 ? productDetails.briefAlt ?? ""
                                 : productDetails.brief ?? "",
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: "language_iso".tr == "ar" ? 10 : 0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SelectionArea(
-                            onSelectionChanged: (value) {
-                              copiedText = value?.plainText ?? "";
-                            },
-                            child: Listener(
-                              onPointerDown: (event) {
-                                copyTextMenu(event, copiedText);
-                              },
-                              child: Html(
-                                data: "language_iso".tr == "ar"
-                                    ? productDetails.descriptionAlt ?? ""
-                                    : productDetails.description ?? "",
-                              ),
-                            ),
                           ),
                         )
                       ],
@@ -217,6 +193,12 @@ class DesktopBody extends StatelessWidget {
                   ],
                 ))
           ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        ProductDetailsDescription(
+          productDetails: productDetails,
         ),
         SizedBox(
           height: 10,
@@ -339,24 +321,6 @@ class DesktopBody extends StatelessWidget {
                               decoration: BoxDecoration(
                                   color: Colors.grey,
                                   borderRadius: BorderRadius.circular(2.5)),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 75,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20,
                             )
                           ],
                         ),

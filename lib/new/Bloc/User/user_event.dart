@@ -13,13 +13,11 @@ class RegisterEvent extends UserEvent {
   String password;
   String tel;
   String address;
-  String areaId;
   String cityId;
   RegisterEvent(
       {required this.password,
       required this.username,
       required this.address,
-      required this.areaId,
       required this.cityId,
       required this.tel});
 }

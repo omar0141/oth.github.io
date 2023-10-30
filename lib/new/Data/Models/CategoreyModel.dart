@@ -7,7 +7,7 @@ class CategoreyModel {
   List<dynamic>? brands;
   int? stock;
   int? products;
-  List<CategoreyModel>? children;
+  List<dynamic>? breadcrumbs;
 
   CategoreyModel(
       {required this.id,
@@ -18,7 +18,7 @@ class CategoreyModel {
       this.brands,
       this.stock,
       this.products,
-      this.children});
+      this.breadcrumbs});
 
   CategoreyModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -29,7 +29,7 @@ class CategoreyModel {
     brands = json['brands'];
     stock = json['stock'];
     products = json['products'];
-    children = json['children'];
+    breadcrumbs = json['breadcrumbs'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,7 +42,7 @@ class CategoreyModel {
     data['brands'] = this.brands;
     data['stock'] = this.stock;
     data['products'] = this.products;
-    data['children'] = this.children;
+    data['breadcrumbs'] = this.breadcrumbs;
     return data;
   }
 }

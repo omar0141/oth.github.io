@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shakosh/new/Data/Remote/MyApi.dart';
@@ -29,19 +30,23 @@ class CategoryCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
-            child: CachedNetworkImage(
+            child: FastCachedImage(
                 height: mySize(65, 65, 100, 100, 100),
                 width: mySize(65, 65, 100, 100, 100),
-                imageUrl: MyApi.media + (category.thumbnail ?? ""),
-                placeholder: (context, url) => Center(
-                      child: SizedBox(
-                        height: mySize(25, 25, 50, 50, 50),
-                        width: mySize(25, 25, 50, 50, 50),
-                        child: CircularProgressIndicator(
-                            color: colors(context).kprimaryColor),
+                url: MyApi.media + (category.thumbnail ?? ""),
+                loadingBuilder: (context, url) => SizedBox(
+                   height: mySize(65, 65, 100, 100, 100),
+                   width: mySize(65, 65, 100, 100, 100),
+                  child: Center(
+                        child: SizedBox(
+                          height: mySize(25, 25, 50, 50, 50),
+                          width: mySize(25, 25, 50, 50, 50),
+                          child: CircularProgressIndicator(
+                              color: colors(context).kprimaryColor),
+                        ),
                       ),
-                    ),
-                errorWidget: (context, url, error) => SvgPicture.asset(
+                ),
+                errorBuilder: (context, url, error) => SvgPicture.asset(
                       unLoadedImage,
                       height: mySize(65, 65, 100, 100, 100),
                     )),

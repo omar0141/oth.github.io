@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shakosh/new/Bloc/Address/address_bloc.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
@@ -64,6 +67,14 @@ void main() async {
   newDate = DateTime.now()
       .difference(DateTime.parse(date ?? "2023-09-18 21:59"))
       .inMinutes;
+  String storageLocation = "";
+  if (kIsWeb) {
+    storageLocation = "assets/images";
+  } else {
+    storageLocation = (await getApplicationDocumentsDirectory()).path;
+  }
+  await FastCachedImageConfig.init(
+      subDir: storageLocation, clearCacheAfter: const Duration(days: 15));
   runApp(MyApp());
 }
 
@@ -101,8 +112,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
 
     WidgetsBinding.instance.addObserver(this);
-    super.initState();
     Flurorouter.setupRouter();
+    super.initState();
   }
 
   @override

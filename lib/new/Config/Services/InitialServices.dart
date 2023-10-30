@@ -23,7 +23,6 @@ class InitialServices {
     timer = Timer.periodic(Duration(minutes: 3), (Timer timer) {
       preferences.setString("date", DateTime.now().toString());
     });
-    //
     if (MyApi.UID != "") {
       BlocProvider.of<UserBloc>(navigatorKey.currentContext!)
           .add(GetUserData());

@@ -33,7 +33,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   Future<void> getProductDetails(
       Emitter<ProductsState> emit, GetProductDetailsEvent event) async {
     emit(ProductsDetailsLoading());
-    if (!event.back) {
       // Get Product Details Data From Api
       var (mediaNew, productDetailsNew) =
           await _productsRemote.getProductDetails(event.productID);
@@ -49,7 +48,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       for (var product in productSimilarsNew) {
         productSimilars.add(ProductModel.fromJson(product));
       }
-    }
     //
     emit(ProductsDetailsLoaded(
         productDetails: productDetails, productSimilars: productSimilars));

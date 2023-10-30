@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, must_be_immutable
 
 import 'package:shakosh/screens/categories/category_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shakosh/components/product_card.dart';
@@ -171,16 +170,7 @@ class _CategoriesState extends State<Categories> {
                   height: 100,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: MyApi.media + data['thumbnail'],
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(
-                          color: kPrimaryColor,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            Image.asset('assets/images/logo.png'),
-                      ))),
+                      child: Container())),
             );
           },
         );
@@ -256,19 +246,7 @@ class _CategoriesState extends State<Categories> {
                               child: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 40,
-                                child: CachedNetworkImage(
-                                  imageUrl: value.getItems[i].image ?? '',
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(
-                                          color: kPrimaryColor),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    'assets/images/logo.png',
-                                  ),
-                                ),
+                                child: Container(),
                               ),
                             ),
                           ),
@@ -385,19 +363,7 @@ class _CategoriesState extends State<Categories> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CachedNetworkImage(
-                                  imageUrl: value.categories[i].image ?? '',
-                                  fit: BoxFit.contain,
-                                  width: 80,
-                                  height: 80,
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(
-                                          color: kPrimaryColor),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    'assets/images/logo.png',
-                                  ),
-                                ),
+                                Container(),
                                 SizedBox(
                                   height: 5,
                                 ),

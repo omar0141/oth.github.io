@@ -1,7 +1,7 @@
 import 'package:shakosh/screens/categories/category_screen.dart';
 import 'package:shakosh/screens/products/components/body.dart';
 import 'package:shakosh/screens/home/home_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -104,13 +104,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               Expanded(
                   flex: widget.image == null ? 1 : 5,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.image ?? '',
-                    placeholder: (context, url) =>
-                        CircularProgressIndicator(color: kPrimaryColor),
-                    errorWidget: (context, url, error) =>
-                        Image.asset('assets/images/logo.png'),
-                  )),
+                  child: Container()),
             ],
           ),
         ],

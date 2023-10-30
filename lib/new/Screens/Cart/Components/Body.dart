@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -177,19 +178,22 @@ class Body extends StatelessWidget {
   ClipRRect productImage(String? image) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
-      child: CachedNetworkImage(
+      child: FastCachedImage(
           height: mySize(100, 100, 100, 100, 100),
-          imageUrl: MyApi.media + (image ?? ""),
+          url: MyApi.media + (image ?? ""),
           fit: BoxFit.fill,
-          placeholder: (context, url) => Center(
-                child: SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(
-                      color: colors(context).kprimaryColor),
+          loadingBuilder: (context, url) => SizedBox(
+            height: mySize(100, 100, 100, 100, 100),
+            child: Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                        color: colors(context).kprimaryColor),
+                  ),
                 ),
-              ),
-          errorWidget: (context, url, error) => SvgPicture.asset(
+          ),
+          errorBuilder: (context, url, error) => SvgPicture.asset(
                 unLoadedImage,
                 height: mySize(100, 100, 100, 100, 100),
               )),

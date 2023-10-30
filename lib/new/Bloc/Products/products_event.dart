@@ -27,6 +27,5 @@ class GetProductsEvent extends ProductsEvent {
 
 class GetProductDetailsEvent extends ProductsEvent {
   String? productID;
-  bool back;
-  GetProductDetailsEvent({this.productID,this.back = false});
+  GetProductDetailsEvent({this.productID});
 }

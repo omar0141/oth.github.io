@@ -4,10 +4,14 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
 import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
+import 'package:shakosh/new/Components/BrandsBreadCrumbs.dart';
 import 'package:shakosh/new/Components/CatgeoriesBreadCrumbs.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
+import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
+import 'package:shakosh/new/Data/Models/BrandModel.dart';
+import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -26,6 +30,8 @@ class ProductsSection extends StatefulWidget {
 }
 
 class _ProductsSectionState extends State<ProductsSection> with RouteAware {
+  bool searchWithBrands = false;
+
   @override
   void didPopNext() {
     BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
@@ -62,6 +68,17 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    searchWithBrands = BlocProvider.of<ProductsBloc>(context).searchWithBrands;
+    if (widget.brandId != null &&
+        widget.categoryId == null &&
+        !searchWithBrands) {
+      BlocProvider.of<ProductsBloc>(context).searchWithBrands = true;
+      searchWithBrands = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +86,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
       builder: (context, state) {
         widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
         widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
+
         if (state is ProductsLoading) {
           return ProductsShimmer(
             itemCount: mySize(8, 8, 12, 12, 16)!.toInt(),
@@ -89,29 +107,59 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
           } else
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 10),
-                  child: CatgeoriesBreadCrumbs(),
+                BlocBuilder<DependanciesBloc, DependanciesState>(
+                  builder: (context, state) {
+                    if (state is DependanciesLoaded) {
+                      return Column(
+                        children: [
+                          if (widget.brandId != null && searchWithBrands)
+                            BrandsBreadCrumbs(brandId: widget.brandId),
+                          if (!searchWithBrands)
+                            Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(start: 10),
+                              child: CatgeoriesBreadCrumbs(),
+                            ),
+                          if (widget.brandId != null &&
+                              searchWithBrands &&
+                              screenWidth < 768)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              child: Center(
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    for (var categorey in state.categories)
+                                      categoriesFilterWidget(
+                                          context, categorey),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (!searchWithBrands && screenWidth < 768)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: 60,
+                              child: Center(
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    for (var brand in state.brands)
+                                      brandsFilterWidget(context, brand),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  },
                 ),
-
-                // BlocBuilder<DependanciesBloc, DependanciesState>(
-                //   builder: (context, state) {
-                //     if (state is DependanciesLoaded) {
-                //       print(widget.categoryId);
-                //       return Column(
-                //         children: [
-                //           if (state.categoriesBreadCrumbs.isNotEmpty)
-                //             BrandsWidget(home: true),
-                //           if (widget.brandId != null &&
-                //               state.categoriesBreadCrumbs.isNotEmpty)
-                //             ParentCategories(home: true),
-                //         ],
-                //       );
-                //     } else {
-                //       return SizedBox();
-                //     }
-                //   },
-                // ),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -271,5 +319,88 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
       route = "products/${widget.page}";
     }
     html.window.history.replaceState(null, '', "#$route");
+  }
+
+  InkWell brandsFilterWidget(BuildContext context, BrandModel brand) {
+    return InkWell(
+      hoverColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(5),
+      onTap: () {
+        String route = "brands/${brand.id}/products/1";
+        widget.brandId = brand.id;
+        if (widget.brandId != null && widget.categoryId != null) {
+          route =
+              "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+        } else
+          route = "brands/${brand.id}/products/1";
+        html.window.history.replaceState(null, '', "#$route");
+        BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
+        BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+            count: mySize(8, 8, 12, 12, 16).toString(),
+            categoryId: widget.categoryId,
+            brandId: widget.brandId));
+        setState(() {});
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+        decoration: BoxDecoration(
+            color: brand.id == widget.brandId
+                ? colors(context).kprimaryColor
+                : null,
+            borderRadius: BorderRadius.circular(5),
+            border:
+                Border.all(width: 1, color: colors(context).kprimaryColor!)),
+        child: Text(
+          ("language_iso".tr == "ar" ? brand.nameAlt : brand.name) ?? "",
+          style: TextStyle(
+              color: brand.id == widget.brandId
+                  ? colors(context).whiteColor
+                  : colors(context).normalTextColor),
+        ),
+      ),
+    );
+  }
+
+  InkWell categoriesFilterWidget(
+      BuildContext context, CategoreyModel category) {
+    return InkWell(
+      hoverColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(5),
+      onTap: () {
+        String route = "categories/${category.id}/products/1";
+        widget.categoryId = category.id;
+        if (widget.brandId != null && widget.categoryId != null) {
+          route =
+              "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+        } else
+          route = "categories/${category.id}/products/1";
+        html.window.history.replaceState(null, '', "#$route");
+        BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
+        BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
+            count: mySize(8, 8, 12, 12, 16).toString(),
+            categoryId: widget.categoryId,
+            brandId: widget.brandId));
+        setState(() {});
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+        decoration: BoxDecoration(
+            color: category.id == widget.categoryId
+                ? colors(context).kprimaryColor
+                : null,
+            borderRadius: BorderRadius.circular(5),
+            border:
+                Border.all(width: 1, color: colors(context).kprimaryColor!)),
+        child: Text(
+          ("language_iso".tr == "ar" ? category.nameAlt : category.name) ?? "",
+          style: TextStyle(
+              color: category.id == widget.categoryId
+                  ? colors(context).whiteColor
+                  : colors(context).normalTextColor),
+        ),
+      ),
+    );
   }
 }

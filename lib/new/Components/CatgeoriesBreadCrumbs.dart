@@ -27,6 +27,36 @@ class CatgeoriesBreadCrumbs extends StatelessWidget {
               SizedBox(
                 width: 20,
               ),
+              if (categoriesBreadCrumbs.isNotEmpty)
+              Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 10),
+                  child: InkWell(
+                    onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed("categories");
+                          },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "categories".tr,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  colors(context).kSecondaryColor,
+                              fontSize: 17,
+                              height:  "language_iso".tr == "ar" ? 2 : 1),
+                        ),
+                        
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: colors(context).grey1,
+                            size: 17,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
               for (var category in categoriesBreadCrumbs)
                 Padding(
                   padding: const EdgeInsetsDirectional.only(end: 10),
@@ -52,7 +82,7 @@ class CatgeoriesBreadCrumbs extends StatelessWidget {
                                       ? colors(context).normalTextColor
                                       : colors(context).kSecondaryColor,
                               fontSize: 17,
-                              height: 2),
+                              height: "language_iso".tr == "ar" ? 2 : 1),
                         ),
                         if (category.id != categoriesBreadCrumbs.last.id)
                           Icon(

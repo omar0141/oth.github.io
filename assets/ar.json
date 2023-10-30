@@ -224,5 +224,9 @@
   "reserve-in-cart": "حجز فى السلة",
   "copy-text": "نسخ النص",
   "model": "الموديل",
-  "part-no": "رقم القطعة"
+  "part-no": "رقم القطعة",
+  "products": "المنتجات",
+  "description":"وصف المنتج",
+  "content-info":"محتويات العبوة",
+  "tech-info":"معلومات تقنية"
 }

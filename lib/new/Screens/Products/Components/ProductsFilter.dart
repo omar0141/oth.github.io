@@ -67,6 +67,7 @@ class _ProductsFilterState extends State<ProductsFilter> {
     widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
     widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
     searchWithBrands = BlocProvider.of<ProductsBloc>(context).searchWithBrands;
+    
     categoriesBreadCrumbs =
         BlocProvider.of<DependanciesBloc>(context).categoriesBreadCrumbs;
 

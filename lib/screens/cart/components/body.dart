@@ -2,7 +2,6 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shakosh/helper/translation.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shakosh/screens/details/details_screen.dart';
@@ -74,16 +73,7 @@ class _BodyState extends State<Body> {
                                       );
                                     }));
                                   },
-                                  child: CachedNetworkImage(
-                                    imageUrl: cart.basket[i]!.image.toString(),
-                                    fit: BoxFit.fill,
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(
-                                      color: kPrimaryColor,
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset('assets/images/logo.png'),
-                                  ))),
+                                  child: Container())),
                           SizedBox(width: 20),
                           Expanded(
                               flex: 2,

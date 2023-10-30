@@ -2,7 +2,7 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shakosh/screens/cart/cart_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shakosh/components/loading.dart';
 import 'package:flutter_svg/svg.dart';
@@ -236,19 +236,7 @@ class _BodyState extends State<Body> {
                                   margin: EdgeInsets.all(10),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
-                                    child: CachedNetworkImage(
-                                      imageUrl: MyApi.media +
-                                          orders_details['data']['products'][i]
-                                                  ['thumbnail']
-                                              .toString(),
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(
-                                        color: kPrimaryColor,
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset('assets/images/logo.png'),
-                                    ),
+                                    child: Container(),
                                   ),
                                 )
                             ],

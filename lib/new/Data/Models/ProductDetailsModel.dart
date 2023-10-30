@@ -34,6 +34,8 @@ class ProductDetailsModel {
   String? descriptionAlt;
   String? returnPolicyDesc;
   String? returnPolicyDescAlt;
+  String? tech_info;
+  String? content_info;
   String? tags;
   late List<dynamic> media;
 
@@ -72,6 +74,8 @@ class ProductDetailsModel {
       this.returnPolicyDesc,
       this.returnPolicyDescAlt,
       this.tags,
+      this.content_info,
+      this.tech_info,
       required this.media});
 
   ProductDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -116,6 +120,8 @@ class ProductDetailsModel {
     returnPolicyDesc = json['return_policy_desc'];
     returnPolicyDescAlt = json['return_policy_desc_alt'];
     tags = json['tags'];
+    tech_info = json['info_tech'];
+    content_info = json['info_content'];
     media = json['media'] ?? [];
   }
 
@@ -155,6 +161,8 @@ class ProductDetailsModel {
     data['return_policy_desc'] = this.returnPolicyDesc;
     data['return_policy_desc_alt'] = this.returnPolicyDescAlt;
     data['tags'] = this.tags;
+    data['info_tech'] = this.tech_info;
+    data['info_content'] = this.content_info;
     data['media'] = this.media;
     return data;
   }

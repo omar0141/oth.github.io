@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, prefer_const_constructors
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
@@ -38,14 +38,7 @@ class CartCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xFFF5F6F9),
               ),
-              child: CachedNetworkImage(
-                imageUrl: item_image.toString(),
-                fit: BoxFit.fill,
-                placeholder: (context, url) =>
-                    CircularProgressIndicator(color: kPrimaryColor,),
-                errorWidget: (context, url, error) =>
-                   Image.asset('assets/images/logo.png'),
-              ),
+              child: Container(),
             ),
           ),
         ),

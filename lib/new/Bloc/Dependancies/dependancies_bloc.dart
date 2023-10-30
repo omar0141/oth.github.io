@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Components/snakbars.dart';
-import 'package:shakosh/new/Config/Utils/ExpandFlatList.dart';
 import 'package:shakosh/new/Data/Local/DependanciesLocal.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Models/DependantsModel.dart';
@@ -27,6 +26,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
   DependanciesBloc() : super(DependanciesLoading()) {
     on<DependanciesEvent>((event, emit) async {
       if (event is GetDependanciesEvent) {
+        emit(DependanciesLoading());
         if (event.remote) {
           await _dependanciesRemote.getHomeDependancies();
           await _dependanciesRemote.getDependancies();
@@ -48,23 +48,21 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       SelectCategoryEvent event, Emitter<DependanciesState> emit) {
     try {
       emit(DependanciesLoading());
-      // convert catgeories flat list to tree
-      List expandedCategoriesList =
-          expandFlatList(allCategoriesJson, null, "id", "parent_id");
-      // get catgeories ids for breadcrumbs from catgeories tree
-      List breadCrumbs = getBreadCrumbs(
-          expandedCategoriesList, event.selectedParentCatgeoryId, "");
       categories = [];
       categoriesBreadCrumbs.clear();
+
       // Get sub catgeories of parent catgeory
       for (var category in allCategories) {
         if (category.parentId == event.selectedParentCatgeoryId) {
           categories.add(category);
         }
         // get catgeories breadcrumbs
-        int i = breadCrumbs.indexWhere((e) => e == category.id);
-        if (i > -1) {
-          categoriesBreadCrumbs.add(category);
+        if (category.id == event.selectedParentCatgeoryId) {
+          for (var breadcrumb in category.breadcrumbs ?? []) {
+            int i = allCategories.indexWhere((e) => e.id == breadcrumb);
+            if (i > -1) categoriesBreadCrumbs.add(allCategories[i]);
+          }
+          
         }
       }
       // Get selected parent catgeory id
@@ -92,7 +90,8 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       if (d > -1) {
         categoryBrands = allCategories[d].brands ?? [];
       }
-      brands = [];
+      brands.clear();
+      
       // Get brands of catgeory
       for (var brand in allBrands) {
         int i = categoryBrands.indexWhere((e) => e == brand.id);
@@ -100,6 +99,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
           brands.add(brand);
         }
       }
+      print(brands);
       emit(DependanciesLoaded(
           allCategories: allCategories,
           categories: categories,

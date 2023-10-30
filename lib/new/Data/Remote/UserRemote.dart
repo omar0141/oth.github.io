@@ -94,7 +94,6 @@ class UserRemote {
     required String telephone,
     required String countryID,
     required String cityID,
-    required String areaID,
     required String address,
   }) async {
     try {
@@ -120,7 +119,6 @@ class UserRemote {
             name: address,
             countryID: countryID,
             cityID: cityID,
-            areaID: areaID,
             telephone1: telephone,
             address1: address);
         if (addAdressResponse) {

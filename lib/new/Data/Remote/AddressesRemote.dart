@@ -10,7 +10,6 @@ class AddressesRemote {
     required String name,
     String? countryID,
     String? cityID,
-    String? areaID,
     String? telephone1,
     String? address1,
     String? coordinates,
@@ -23,7 +22,6 @@ class AddressesRemote {
         "name": name,
         "country_id": countryID,
         "city_id": cityID,
-        "area_id": areaID,
         "telephone1": telephone1,
         "address1": address1,
       };

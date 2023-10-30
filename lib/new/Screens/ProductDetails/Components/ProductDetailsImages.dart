@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,11 +81,11 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                     width: mySize(40, 40, 75, 75, 75),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: CachedNetworkImage(
+                      child: FastCachedImage(
                         fit: BoxFit.contain,
-                          imageUrl: MyApi.media +
+                          url: MyApi.media +
                               (productDetails.media[index]["filename"]),
-                          placeholder: (context, url) => Center(
+                          loadingBuilder: (context, url) => Center(
                                 child: SizedBox(
                                   width: mySize(20, 20, 35, 35, 35),
                                   height: mySize(20, 20, 35, 35, 35),
@@ -93,7 +93,7 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                                       color: colors(context).kprimaryColor),
                                 ),
                               ),
-                          errorWidget: (context, url, error) => SvgPicture.asset(
+                          errorBuilder: (context, url, error) => SvgPicture.asset(
                                 unLoadedImage,
                                 height: mySize(40, 40, 75, 75, 75),
                               )),
@@ -136,9 +136,9 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                 onPointerDown: (event) {
                   onPointerDown(event, MyApi.media + (image["filename"]));
                 },
-                child: CachedNetworkImage(
-                    imageUrl: MyApi.media + (image["filename"]),
-                    placeholder: (context, url) => Center(
+                child: FastCachedImage(
+                    url: MyApi.media + (image["filename"]),
+                    loadingBuilder: (context, url) => Center(
                           child: SizedBox(
                             width: mySize(
                                 screenHeight * 0.15,
@@ -156,7 +156,7 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                                 color: colors(context).kprimaryColor),
                           ),
                         ),
-                    errorWidget: (context, url, error) => SvgPicture.asset(
+                    errorBuilder: (context, url, error) => SvgPicture.asset(
                           unLoadedImage,
                           height: mySize(
                               screenHeight * 0.3,

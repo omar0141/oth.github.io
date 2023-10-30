@@ -31,119 +31,116 @@ class Header2 extends StatelessWidget {
         color: colors(context).kprimaryColor,
         height: 60,
         child: Row(
-          mainAxisAlignment: (screenWidth > 1500)
-              ? MainAxisAlignment.center
-              : MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: SizedBox(
-                width: (screenWidth > 1300) ? 1300 : null,
-                child: Row(
-                  children: [
-                    Listener(
-                      onPointerDown: (event) {
-                        onPointerDown(
-                            event,
-                            Uri.base.origin +
-                                urlName +
-                                "/#${HomeScreen.routeName}");
-                      },
-                      child: buildMenuItem(context, "home".tr, Icons.home, () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(HomeScreen.routeName);
-                      }),
-                    ),
-                    Listener(
-                        onPointerDown: (event) {
-                          onPointerDown(event,
-                              Uri.base.origin + urlName + "/#categories");
-                        },
-                        child: buildMenuItem(
-                            context, "categories".tr, Icons.list, () {
-                          Navigator.of(context).pushNamed("categories");
-                        })),
-                    buildMenuItem(context, "brands".tr, Icons.local_offer, () {
-                      Navigator.of(context).pushNamed(BrandsScreen.routeName);
+            SizedBox(
+              width: (screenWidth > 1500) ? 1600 : screenWidth,
+              child: Row(
+                
+                children: [
+                  Listener(
+                    onPointerDown: (event) {
+                      onPointerDown(
+                          event,
+                          Uri.base.origin +
+                              urlName +
+                              "/#${HomeScreen.routeName}");
+                    },
+                    child: buildMenuItem(context, "home".tr, Icons.home, () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(HomeScreen.routeName);
                     }),
-                    buildMenuItem(context, "about-us".tr, Icons.info, () {}),
-                    // buildMenuItem(context, "contact-us".tr, Icons.call, () {}),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            BlocBuilder<CartBloc, CartState>(
-              builder: (context, state) {
-                double net = BlocProvider.of<CartBloc>(context).net;
-                return Row(
-                  children: [
-                    Badge(
-                      offset: Offset(1, 0),
-                      backgroundColor: colors(context).whiteColor,
-                      textColor: colors(context).kprimaryColor,
-                      textStyle: TextStyle(fontWeight: FontWeight.bold),
-                      label: Text(state.cart.length.toString()),
-                      child: IconButton(
-                          tooltip: "cart".tr,
-                          onPressed: () {
-                            scaffoldKey.currentState!.openEndDrawer();
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.cartShopping,
-                            color: colors(context).whiteColor,
-                          )),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      net.toStringAsFixed(2) + " " + "le".tr,
-                      style: TextStyle(
-                          color: colors(context).whiteColor,
-                          // fontSize: 18,
-                          height: 2,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                );
-              },
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            BlocBuilder<FavouriteBloc, FavouriteState>(
-              builder: (context, state) {
-                return Badge(
-                  offset: Offset(0, 2),
-                  backgroundColor: colors(context).whiteColor,
-                  textColor: colors(context).kprimaryColor,
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  label: Text(state.favourite.length.toString()),
-                  child: IconButton(
-                      tooltip: "favourite".tr,
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(FavouriteScreen.routeName);
+                  ),
+                  Listener(
+                      onPointerDown: (event) {
+                        onPointerDown(event,
+                            Uri.base.origin + urlName + "/#categories");
                       },
-                      icon: Icon(
-                        FontAwesomeIcons.solidHeart,
-                        color: colors(context).whiteColor,
-                      )),
-                );
-              },
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            profileButton(context),
-            SizedBox(
-              width: 20,
-            ),
-            languageButton(context),
-            SizedBox(
-              width: 20,
+                      child: buildMenuItem(
+                          context, "categories".tr, Icons.list, () {
+                        Navigator.of(context).pushNamed("categories");
+                      })),
+                  buildMenuItem(context, "brands".tr, Icons.local_offer, () {
+                    Navigator.of(context).pushNamed(BrandsScreen.routeName);
+                  }),
+                  buildMenuItem(context, "about-us".tr, Icons.info, () {}),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Spacer(),
+                  BlocBuilder<CartBloc, CartState>(
+                    builder: (context, state) {
+                      double net = BlocProvider.of<CartBloc>(context).net;
+                      return Row(
+                        children: [
+                          Badge(
+                            offset: Offset(1, 0),
+                            backgroundColor: colors(context).whiteColor,
+                            textColor: colors(context).kprimaryColor,
+                            textStyle: TextStyle(fontWeight: FontWeight.bold),
+                            label: Text(state.cart.length.toString()),
+                            child: IconButton(
+                                tooltip: "cart".tr,
+                                onPressed: () {
+                                  scaffoldKey.currentState!.openEndDrawer();
+                                },
+                                icon: Icon(
+                                  FontAwesomeIcons.cartShopping,
+                                  color: colors(context).whiteColor,
+                                )),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            net.toStringAsFixed(2) + " " + "le".tr,
+                            style: TextStyle(
+                                color: colors(context).whiteColor,
+                                // fontSize: 18,
+                                height: 2,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  BlocBuilder<FavouriteBloc, FavouriteState>(
+                    builder: (context, state) {
+                      return Badge(
+                        offset: Offset(0, 2),
+                        backgroundColor: colors(context).whiteColor,
+                        textColor: colors(context).kprimaryColor,
+                        textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        label: Text(state.favourite.length.toString()),
+                        child: IconButton(
+                            tooltip: "favourite".tr,
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(FavouriteScreen.routeName);
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.solidHeart,
+                              color: colors(context).whiteColor,
+                            )),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  profileButton(context),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  languageButton(context),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
             ),
           ],
         ));

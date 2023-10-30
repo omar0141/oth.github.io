@@ -28,7 +28,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   @override
   void didPopNext() {
     BlocProvider.of<ProductsBloc>(context)
-        .add(GetProductDetailsEvent(productID: widget.productId, back: true));
+        .add(GetProductDetailsEvent(productID: widget.productId));
     super.didPopNext();
   }
 

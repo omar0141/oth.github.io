@@ -1,6 +1,6 @@
 import 'package:shakosh/components/product_card.dart';
 import 'package:shakosh/constants.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -404,16 +404,7 @@ class _BodyState extends State<Body> {
                   height: 100,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(
-                        imageUrl: MyApi.media + data['thumbnail'],
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(
-                          color: kPrimaryColor,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            Image.asset('assets/images/logo.png'),
-                      ))),
+                      child: Container())),
             );
           },
         );

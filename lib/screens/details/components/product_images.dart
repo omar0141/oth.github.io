@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,16 +48,7 @@ class _ProductImagesState extends State<ProductImages> {
               aspectRatio: 1,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: CachedNetworkImage(
-                  imageUrl: widget.images!.isEmpty
-                      ? ''
-                      : widget.images![selectedImage].toString(),
-                  fit: BoxFit.contain,
-                  placeholder: (context, url) =>
-                      CircularProgressIndicator(color: kPrimaryColor),
-                  errorWidget: (context, url, error) =>
-                      Image.asset('assets/images/logo.png'),
-                ),
+                child: Container(),
               ),
             ),
 
@@ -117,15 +107,7 @@ class _ProductImagesState extends State<ProductImages> {
                 color:
                     kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
           ),
-          child: CachedNetworkImage(
-            imageUrl: widget.images![index].toString(),
-            fit: BoxFit.fill,
-            placeholder: (context, url) => CircularProgressIndicator(
-              color: kPrimaryColor,
-            ),
-            errorWidget: (context, url, error) =>
-                Image.asset('assets/images/logo.png'),
-          )),
+          child: Container()),
     );
   }
 }

@@ -84,7 +84,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         telephone: event.tel,
         countryID: countryId,
         cityID: event.cityId,
-        areaID: event.areaId,
         address: event.address);
     emit(SubmitLoadedState());
   }

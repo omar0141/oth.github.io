@@ -231,5 +231,9 @@
   "reserve-in-cart": "Reserve in cart",
   "copy-text": "Copy Text",
   "model": "Model",
-  "part-no": "Part Number"
+  "part-no": "Part Number",
+  "products": "Products",
+  "description":"Description",
+  "content-info":"Package Content",
+  "tech-info":"Tech Info"
 }

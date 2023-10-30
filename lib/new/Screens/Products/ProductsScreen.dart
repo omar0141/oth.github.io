@@ -50,7 +50,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         page: widget.page));
     BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
    
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+
       BlocProvider.of<DependanciesBloc>(context).add(
           SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
 
@@ -63,9 +63,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
         BlocProvider.of<DependanciesBloc>(context)
             .add(SelectCategoriesFromBrand(id: widget.brandId));
       }
-    });
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {
