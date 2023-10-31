@@ -223,6 +223,7 @@ class MobileBody extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
+          if (productDetails.price > 0)
           Row(
             children: [
               Expanded(

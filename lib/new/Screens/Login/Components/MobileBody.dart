@@ -46,55 +46,57 @@ class MobileBody extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "welcome-to-bayt-aleadad".tr,
-                      style: TextStyle(
-                          color: colors(context).kprimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                LoginForm(),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          ListView(
+            shrinkWrap: true,
             children: [
-              Text(
-                "sign-in-make-account".tr,
-                style: TextStyle(color: colors(context).grey1),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(RegisterScreen.routeName);
-                },
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                child: Text("sign-up".tr,
+              Row(
+                children: [
+                  Text(
+                    "welcome-to-bayt-aleadad".tr,
                     style: TextStyle(
                         color: colors(context).kprimaryColor,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              LoginForm(),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "sign-in-make-account".tr,
+                    style: TextStyle(
+                      color: colors(context).grey1,
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RegisterScreen.routeName);
+                    },
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    child: Text("sign-up".tr,
+                        style: TextStyle(
+                            color: colors(context).kprimaryColor,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold)),
+                  )
+                ],
               )
             ],
-          )
+          ),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Data/Remote/ProductsRemote.dart';
+import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:universal_html/html.dart' as html;
 part 'products_event.dart';
 part 'products_state.dart';
@@ -58,6 +59,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     // Get Product Details Data From Api
     var (mediaNew, productDetailsNew) =
         await _productsRemote.getProductDetails(event.productID);
+    if (productDetailsNew.isEmpty) {
+      Navigator.of(navigatorKey.currentContext!)
+          .pushReplacementNamed(HomeScreen.routeName);
+    }
     // Modeling Product Details Data From Api
     productDetails = ProductDetailsModel.fromJson(
         Map<String, dynamic>.from(productDetailsNew));

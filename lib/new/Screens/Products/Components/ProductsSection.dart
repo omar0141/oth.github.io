@@ -166,7 +166,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
                   child: Pagination(context, numberPages),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: mySize(60, 60, 20, 20, 20),
                 ),
               ],
             );

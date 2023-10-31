@@ -7,6 +7,7 @@ import 'package:shakosh/new/Bloc/Address/address_bloc.dart';
 import 'package:shakosh/new/Bloc/Cart/cart_bloc.dart';
 import 'package:shakosh/new/Bloc/Favourite/favourite_bloc.dart';
 import 'package:shakosh/new/Bloc/User/user_bloc.dart';
+import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Data/Remote/AddressesRemote.dart';
 import 'package:shakosh/new/Data/Remote/CartRemote.dart';
 import 'package:shakosh/new/Data/Remote/FavouriteRemote.dart';
@@ -79,6 +80,10 @@ class UserRemote {
             .add(GetUserData());
         Navigator.of(navigatorKey.currentContext!)
             .pushNamed(HomeScreen.routeName);
+      } else if (responsebody["status"] == 400 &&
+          responsebody["error"] == "user_doesnt_exist") {
+        MySnackBar().errorSnack(navigatorKey.currentContext,
+            responsebody["error"].toString().tr, true);
       } else {
         MySnackBar().errorSnack(
             navigatorKey.currentContext, responsebody.toString(), true);
@@ -139,6 +144,10 @@ class UserRemote {
           Navigator.of(navigatorKey.currentContext!)
               .pushNamed(HomeScreen.routeName);
         }
+      } else if (responsebody["status"] == 400 &&
+          responsebody["error"] == "user_already_exists") {
+        MySnackBar().errorSnack(navigatorKey.currentContext,
+            responsebody["error"].toString().tr, true);
       } else {
         MySnackBar().errorSnack(
             navigatorKey.currentContext, responsebody.toString(), true);

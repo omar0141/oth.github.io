@@ -31,6 +31,7 @@ class _ParentCategoriesState extends State<ParentCategories> with RouteAware {
 
   @override
   void didPopNext() {
+    BlocProvider.of<DependanciesBloc>(context).categories.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       BlocProvider.of<DependanciesBloc>(context).add(
           SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
@@ -47,6 +48,7 @@ class _ParentCategoriesState extends State<ParentCategories> with RouteAware {
 
   @override
   void initState() {
+    BlocProvider.of<DependanciesBloc>(context).categories.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       BlocProvider.of<DependanciesBloc>(context).add(
           SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));

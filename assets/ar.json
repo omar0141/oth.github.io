@@ -226,7 +226,9 @@
   "model": "الموديل",
   "part-no": "رقم القطعة",
   "products": "المنتجات",
-  "description":"وصف المنتج",
-  "content-info":"محتويات العبوة",
-  "tech-info":"معلومات تقنية"
+  "description": "وصف المنتج",
+  "content-info": "محتويات العبوة",
+  "tech-info": "معلومات تقنية",
+  "user_doesnt_exist": "رقم الهاتف غير مسجل من قبل",
+  "user_already_exists": "رقم الهاتف مسجل من قبل"
 }

@@ -1,4 +1,3 @@
-
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -68,7 +67,12 @@ class _ProductCardState extends State<ProductCard> {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(5)),child: productImage(widget.product.thumbnail))),
+                      Expanded(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: productImage(widget.product.thumbnail))),
                     ],
                   ),
                   SizedBox(
@@ -91,25 +95,27 @@ class _ProductCardState extends State<ProductCard> {
                     ],
                   ),
                   Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.product.netPrice.toStringAsFixed(0) +
-                              " " +
-                              "le".tr,
-                          style: TextStyle(
-                              height: 0.8,
-                              fontWeight: FontWeight.bold,
-                              fontSize: mySize(18, 18, 20, 20, 20),
-                              color: (widget.product.stock == 999999999999999 ||
-                                      widget.product.stock == 0)
-                                  ? colors(context).kprimaryColor
-                                  : colors(context).kSecondaryColor),
+                  if (widget.product.price > 0)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.product.netPrice.toStringAsFixed(0) +
+                                " " +
+                                "le".tr,
+                            style: TextStyle(
+                                height: 0.8,
+                                fontWeight: FontWeight.bold,
+                                fontSize: mySize(18, 18, 20, 20, 20),
+                                color:
+                                    (widget.product.stock == 999999999999999 ||
+                                            widget.product.stock == 0)
+                                        ? colors(context).kprimaryColor
+                                        : colors(context).kSecondaryColor),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   SizedBox(
                     height: 10,
                   ),
@@ -160,13 +166,12 @@ class _ProductCardState extends State<ProductCard> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: FastCachedImage(
-
           height: mySize(100, 100, 150, 150, 150),
           url: MyApi.media + (image ?? ""),
           fit: BoxFit.contain,
           loadingBuilder: (context, url) => SizedBox(
-            height: mySize(100, 100, 150, 150, 150),
-            child: Center(
+                height: mySize(100, 100, 150, 150, 150),
+                child: Center(
                   child: SizedBox(
                     width: 50,
                     height: 50,
@@ -174,7 +179,7 @@ class _ProductCardState extends State<ProductCard> {
                         color: colors(context).kprimaryColor),
                   ),
                 ),
-          ),
+              ),
           errorBuilder: (context, url, error) => SvgPicture.asset(
                 unLoadedImage,
                 height: mySize(100, 100, 150, 150, 150),

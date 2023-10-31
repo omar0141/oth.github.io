@@ -20,9 +20,11 @@ class FavouriteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavouriteBloc, FavouriteState>(
-      builder: (context, state) {
-        
+    if (product.price <= 0) {
+      return SizedBox();
+    } else
+      return BlocBuilder<FavouriteBloc, FavouriteState>(
+        builder: (context, state) {
           List<ProductModel> favourite = state.favourite;
           int i = favourite.indexWhere((e) => e.id == product.id);
           return MouseRegion(
@@ -65,8 +67,7 @@ class FavouriteWidget extends StatelessWidget {
               ),
             ),
           );
-        
-      },
-    );
+        },
+      );
   }
 }

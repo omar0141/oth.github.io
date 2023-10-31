@@ -65,14 +65,16 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                   setState(() {});
                 },
                 child: Listener(
-                onPointerDown: (event) {
-                  onPointerDown(event, MyApi.media +
-                              (productDetails.media[index]["filename"]));
-                },
+                  onPointerDown: (event) {
+                    onPointerDown(
+                        event,
+                        MyApi.media +
+                            (productDetails.media[index]["filename"]));
+                  },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
                             color: currentPage == index
@@ -82,7 +84,7 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
                       child: FastCachedImage(
-                        fit: BoxFit.contain,
+                          fit: BoxFit.contain,
                           url: MyApi.media +
                               (productDetails.media[index]["filename"]),
                           loadingBuilder: (context, url) => Center(
@@ -93,7 +95,8 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                                       color: colors(context).kprimaryColor),
                                 ),
                               ),
-                          errorBuilder: (context, url, error) => SvgPicture.asset(
+                          errorBuilder: (context, url, error) =>
+                              SvgPicture.asset(
                                 unLoadedImage,
                                 height: mySize(40, 40, 75, 75, 75),
                               )),
@@ -111,7 +114,7 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
   Container carouselImages(List<dynamic> productMedia) {
     return Container(
       decoration: BoxDecoration(
-         color: Colors.white,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: colors(context).grey2!)),
       child: ClipRRect(
@@ -132,39 +135,82 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
           ),
           items: [
             for (var image in productMedia)
-              Listener(
-                onPointerDown: (event) {
-                  onPointerDown(event, MyApi.media + (image["filename"]));
-                },
-                child: FastCachedImage(
-                    url: MyApi.media + (image["filename"]),
-                    loadingBuilder: (context, url) => Center(
-                          child: SizedBox(
-                            width: mySize(
-                                screenHeight * 0.15,
-                                screenHeight * 0.15,
-                                screenHeight * 0.25,
-                                screenHeight * 0.25,
-                                screenHeight * 0.25),
-                            height: mySize(
-                                screenHeight * 0.15,
-                                screenHeight * 0.15,
-                                screenHeight * 0.25,
-                                screenHeight * 0.25,
-                                screenHeight * 0.25),
-                            child: CircularProgressIndicator(
-                                color: colors(context).kprimaryColor),
+              InkWell(
+                hoverColor: Colors.transparent,
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: Stack(
+                            children: [
+                              SizedBox(
+                                width: screenWidth * 0.5,
+                                height: screenWidth * 0.5,
+                                child: FastCachedImage(
+                                    url: MyApi.media + (image["filename"]),
+                                    loadingBuilder: (context, url) => Center(
+                                          child: SizedBox(
+                                            width: screenHeight * 0.25,
+                                            height: screenHeight * 0.25,
+                                            child: CircularProgressIndicator(
+                                                color: colors(context)
+                                                    .kprimaryColor),
+                                          ),
+                                        ),
+                                    errorBuilder: (context, url, error) =>
+                                        SvgPicture.asset(
+                                          unLoadedImage,
+                                          height: screenHeight * 0.4,
+                                        )),
+                              ),
+                              Positioned(
+                                  child: IconButton(
+                                hoverColor: Colors.transparent,
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ))
+                            ],
                           ),
-                        ),
-                    errorBuilder: (context, url, error) => SvgPicture.asset(
-                          unLoadedImage,
-                          height: mySize(
-                              screenHeight * 0.3,
-                              screenHeight * 0.3,
-                              screenHeight * 0.4,
-                              screenHeight * 0.4,
-                              screenHeight * 0.4),
-                        )),
+                        );
+                      });
+                },
+                child: Listener(
+                  onPointerDown: (event) {
+                    onPointerDown(event, MyApi.media + (image["filename"]));
+                  },
+                  child: FastCachedImage(
+                      url: MyApi.media + (image["filename"]),
+                      loadingBuilder: (context, url) => Center(
+                            child: SizedBox(
+                              width: mySize(
+                                  screenHeight * 0.15,
+                                  screenHeight * 0.15,
+                                  screenHeight * 0.25,
+                                  screenHeight * 0.25,
+                                  screenHeight * 0.25),
+                              height: mySize(
+                                  screenHeight * 0.15,
+                                  screenHeight * 0.15,
+                                  screenHeight * 0.25,
+                                  screenHeight * 0.25,
+                                  screenHeight * 0.25),
+                              child: CircularProgressIndicator(
+                                  color: colors(context).kprimaryColor),
+                            ),
+                          ),
+                      errorBuilder: (context, url, error) => SvgPicture.asset(
+                            unLoadedImage,
+                            height: mySize(
+                                screenHeight * 0.3,
+                                screenHeight * 0.3,
+                                screenHeight * 0.4,
+                                screenHeight * 0.4,
+                                screenHeight * 0.4),
+                          )),
+                ),
               )
           ],
         ),

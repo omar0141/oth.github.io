@@ -48,7 +48,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       SelectCategoryEvent event, Emitter<DependanciesState> emit) {
     try {
       emit(DependanciesLoading());
-      categories = [];
+      categories.clear();
       categoriesBreadCrumbs.clear();
       // Get sub catgeories of parent catgeory
       for (var category in allCategories) {

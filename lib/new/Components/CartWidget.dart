@@ -23,20 +23,23 @@ class CartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-      List<ProductModel> cart = state.cart;
-      int i = cart.indexWhere((e) => e.id == product.id);
-      return SizedBox(
-        height: 45,
-        child: ListView(
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            addedToCartWidget(i, context, cart, state),
-            notInCartWidget(i, context, cart, state)
-          ],
-        ),
-      );
-    });
+    if (product.price <= 0) {
+      return SizedBox();
+    } else
+      return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+        List<ProductModel> cart = state.cart;
+        int i = cart.indexWhere((e) => e.id == product.id);
+        return SizedBox(
+          height: 45,
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              addedToCartWidget(i, context, cart, state),
+              notInCartWidget(i, context, cart, state)
+            ],
+          ),
+        );
+      });
   }
 
   AnimatedContainer notInCartWidget(

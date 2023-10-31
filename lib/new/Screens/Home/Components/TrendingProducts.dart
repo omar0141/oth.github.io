@@ -74,16 +74,14 @@ class _TrendingProductsState extends State<TrendingProducts> with RouteAware {
         BlocBuilder<ProductsBloc, ProductsState>(
           builder: (context, state) {
             if (state is ProductsLoading) {
-              return ProductsShimmer(itemCount: mySize(8, 8, 12, 16, 20)!.toInt(),);
+              return ProductsShimmer(
+                itemCount: mySize(8, 8, 12, 16, 20)!.toInt(),
+              );
             } else if (state is TrendingProductsLoaded) {
               List<ProductModel> products = state.products;
               return ProductsWidget(products: products);
             } else {
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text("Something Happened!")],
-              );
+              return SizedBox();
             }
           },
         ),

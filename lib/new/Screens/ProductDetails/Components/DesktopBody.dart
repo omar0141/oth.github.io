@@ -146,24 +146,25 @@ class DesktopBody extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            productDetails.netPrice.toStringAsFixed(0) +
-                                " " +
-                                "le".tr,
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: (productDetails.perOrder == 1 ||
-                                        productDetails.stock == 0)
-                                    ? colors(context).kprimaryColor
-                                    : colors(context).kSecondaryColor),
-                          ),
-                        )
-                      ],
-                    ),
+                    if (productDetails.price > 0)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              productDetails.netPrice.toStringAsFixed(0) +
+                                  " " +
+                                  "le".tr,
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: (productDetails.perOrder == 1 ||
+                                          productDetails.stock == 0)
+                                      ? colors(context).kprimaryColor
+                                      : colors(context).kSecondaryColor),
+                            ),
+                          )
+                        ],
+                      ),
                     SizedBox(
                       height: 20,
                     ),

@@ -233,7 +233,9 @@
   "model": "Model",
   "part-no": "Part Number",
   "products": "Products",
-  "description":"Description",
-  "content-info":"Package Content",
-  "tech-info":"Tech Info"
+  "description": "Description",
+  "content-info": "Package Content",
+  "tech-info": "Tech Info",
+  "user_doesnt_exist": "Phone number doesn't exist before",
+  "user_already_exists": "Phone number doesn't exist before"
 }
