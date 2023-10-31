@@ -12,12 +12,14 @@ import 'package:shakosh/new/Data/Local/FavouriteLocal.dart';
 
 class InitialServices {
   Future getDependancies() async {
-    if (newDate > 10) {
-      BlocProvider.of<DependanciesBloc>(navigatorKey.currentContext!)
-          .add(GetDependanciesEvent(remote: true));
-    } else {
-      BlocProvider.of<DependanciesBloc>(navigatorKey.currentContext!)
-          .add(GetDependanciesEvent(remote: false));
+    if (!currentRouteName.contains("products")) {
+      if (newDate > 10) {
+        BlocProvider.of<DependanciesBloc>(navigatorKey.currentContext!)
+            .add(GetDependanciesEvent(remote: true));
+      } else {
+        BlocProvider.of<DependanciesBloc>(navigatorKey.currentContext!)
+            .add(GetDependanciesEvent(remote: false));
+      }
     }
     preferences.setString("date", DateTime.now().toString());
     timer = Timer.periodic(Duration(minutes: 3), (Timer timer) {

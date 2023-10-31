@@ -8,13 +8,21 @@ import 'package:shakosh/new/Screens/Products/Components/ProductsFilter.dart';
 
 // ignore: must_be_immutable
 class ProductSearchMobileScreen extends StatelessWidget {
-  ProductSearchMobileScreen({super.key});
+  ProductSearchMobileScreen(
+      {super.key, this.search, this.categoryId, this.brandId});
+
+  String? search;
+  String? categoryId;
+  String? brandId;
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldMobile(
       screenName: "search".tr,
       searchOpened: true,
+      brandId: brandId,
+      categoryId: categoryId,
+      search: search,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -23,7 +31,11 @@ class ProductSearchMobileScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            ProductsFilter(),
+            ProductsFilter(
+              brandId: brandId,
+              categoryId: categoryId,
+              search: search,
+            ),
           ],
         ),
       ),
@@ -32,52 +44,33 @@ class ProductSearchMobileScreen extends StatelessWidget {
   }
 
   Widget searchTextField(context) {
-    String? search = BlocProvider.of<ProductsBloc>(context).search;
     TextEditingController searchController =
         TextEditingController(text: search);
     return TextField(
-      controller: searchController,
-      decoration: InputDecoration(
-        hintText: "search-placeholder".tr,
-        suffixIcon: InkWell(
-          hoverColor: Colors.transparent,
-          onTap: () {
-            String route;
-            String? brandId = BlocProvider.of<ProductsBloc>(context).brandId;
-            String? search =
-                BlocProvider.of<ProductsBloc>(context).search ?? "";
-            String? categoryId =
-                BlocProvider.of<ProductsBloc>(context).categoryId;
-            if (brandId != null && categoryId != null) {
-              route =
-                  "categories/${categoryId}/brands/${brandId}/products/1/$search";
-            } else if (brandId != null) {
-              route = "brands/${brandId}/products/1/$search";
-            } else if (categoryId != null) {
-              route = "categories/${categoryId}/products/1/$search";
-            } else {
-              route = "products/1/$search";
-            }
-            Navigator.of(context).pushReplacementNamed(route);
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            height: 47,
-            child: Icon(
-              Icons.search,
-              color: colors(context).whiteColor,
+        controller: searchController,
+        decoration: InputDecoration(
+          hintText: "search-placeholder".tr,
+          suffixIcon: InkWell(
+            hoverColor: Colors.transparent,
+            onTap: () {
+              search = searchController.text;
+              BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
+                  brandId: brandId, categoryId: categoryId, search: search));
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              height: 47,
+              child: Icon(
+                Icons.search,
+                color: colors(context).whiteColor,
+              ),
+              decoration: BoxDecoration(
+                  color: colors(context).kprimaryColor,
+                  borderRadius: BorderRadiusDirectional.only(
+                      topEnd: Radius.circular(3),
+                      bottomEnd: Radius.circular(3))),
             ),
-            decoration: BoxDecoration(
-                color: colors(context).kprimaryColor,
-                borderRadius: BorderRadiusDirectional.only(
-                    topEnd: Radius.circular(3), bottomEnd: Radius.circular(3))),
           ),
-        ),
-      ),
-      onChanged: (value) {
-        search = value;
-        BlocProvider.of<ProductsBloc>(context).search = search;
-      },
-    );
+        ));
   }
 }

@@ -159,7 +159,6 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                   onTap: () {
                     BlocProvider.of<ProductsBloc>(context).searchWithBrands =
                         true;
-                    BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
                     Navigator.of(context).pushNamed(route);
                   },
                   child: CategoryCard(
@@ -191,7 +190,6 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                   onTap: () {
                     BlocProvider.of<ProductsBloc>(context).searchWithBrands =
                         true;
-                    BlocProvider.of<ProductsBloc>(context).brandId = brand.id;
                     Navigator.of(context).pushNamed(route);
                   },
                   child: CategoryCard(

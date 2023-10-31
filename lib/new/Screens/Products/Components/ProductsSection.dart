@@ -1,5 +1,7 @@
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Bloc/Dependancies/dependancies_bloc.dart';
@@ -8,12 +10,13 @@ import 'package:shakosh/new/Components/BrandsBreadCrumbs.dart';
 import 'package:shakosh/new/Components/CatgeoriesBreadCrumbs.dart';
 import 'package:shakosh/new/Components/ProductsShimmer.dart';
 import 'package:shakosh/new/Components/ProductsWidget.dart';
+import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:shakosh/new/Data/Remote/MyApi.dart';
 
 // ignore: must_be_immutable
 class ProductsSection extends StatefulWidget {
@@ -41,18 +44,6 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
         brandId: widget.brandId,
         count: mySize(8, 8, 12, 12, 16).toString(),
         page: widget.page));
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      BlocProvider.of<DependanciesBloc>(context).add(
-          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
-      if (widget.categoryId != null) {
-        BlocProvider.of<DependanciesBloc>(context)
-            .add(SelectBrandsFromCategory(id: widget.categoryId));
-      }
-      if (widget.brandId != null) {
-        BlocProvider.of<DependanciesBloc>(context)
-            .add(SelectCategoriesFromBrand(id: widget.brandId));
-      }
-    });
     super.didPopNext();
   }
 
@@ -84,9 +75,6 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductsState>(
       builder: (context, state) {
-        widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
-        widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
-
         if (state is ProductsLoading) {
           return ProductsShimmer(
             itemCount: mySize(8, 8, 12, 12, 16)!.toInt(),
@@ -131,6 +119,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   children: [
+                                    categoriesFilterWidget(context, null),
                                     for (var categorey in state.categories)
                                       categoriesFilterWidget(
                                           context, categorey),
@@ -147,6 +136,7 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   children: [
+                                    brandsFilterWidget(context, null),
                                     for (var brand in state.brands)
                                       brandsFilterWidget(context, brand),
                                   ],
@@ -160,14 +150,6 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
                     }
                   },
                 ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(
-                //       horizontal: mySize(10, 10, 30, 30, 25)!),
-                //   child: Pagination(context, numberPages),
-                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -302,105 +284,135 @@ class _ProductsSectionState extends State<ProductsSection> with RouteAware {
   }
 
   void goToPage(context) {
-    BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-        page: widget.page.toString(),
+    BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
         brandId: widget.brandId,
-        count: mySize(8, 8, 12, 12, 16).toString(),
-        categoryId: widget.categoryId));
-    String route;
-    if (widget.brandId != null) {
-      route = "brands/${widget.brandId}/products/${widget.page}";
-    } else if (widget.categoryId != null) {
-      route = "categories/${widget.categoryId}/products/${widget.page}";
-    } else if (widget.brandId != null && widget.categoryId != null) {
-      route =
-          "categories/${widget.categoryId}/brands/${widget.brandId}/products/${widget.page}";
-    } else {
-      route = "products/${widget.page}";
-    }
-    html.window.history.replaceState(null, '', "#$route");
+        categoryId: widget.categoryId,
+        search: widget.search,
+        page: widget.page));
   }
 
-  InkWell brandsFilterWidget(BuildContext context, BrandModel brand) {
+  InkWell brandsFilterWidget(BuildContext context, BrandModel? brand) {
     return InkWell(
       hoverColor: Colors.transparent,
       borderRadius: BorderRadius.circular(5),
       onTap: () {
-        String route = "brands/${brand.id}/products/1";
-        widget.brandId = brand.id;
-        if (widget.brandId != null && widget.categoryId != null) {
-          route =
-              "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
-        } else
-          route = "brands/${brand.id}/products/1";
-        html.window.history.replaceState(null, '', "#$route");
-        BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
-        BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-            count: mySize(8, 8, 12, 12, 16).toString(),
+        if (brand == null) {
+          widget.brandId = null;
+        } else {
+          widget.brandId = brand.id;
+        }
+        BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
+            brandId: widget.brandId,
             categoryId: widget.categoryId,
-            brandId: widget.brandId));
-        setState(() {});
+            search: widget.search));
       },
-      child: Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
-        decoration: BoxDecoration(
-            color: brand.id == widget.brandId
-                ? colors(context).kprimaryColor
-                : null,
-            borderRadius: BorderRadius.circular(5),
-            border:
-                Border.all(width: 1, color: colors(context).kprimaryColor!)),
-        child: Text(
-          ("language_iso".tr == "ar" ? brand.nameAlt : brand.name) ?? "",
-          style: TextStyle(
-              color: brand.id == widget.brandId
-                  ? colors(context).whiteColor
-                  : colors(context).normalTextColor),
-        ),
-      ),
+      child: brand == null
+          ? Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+              decoration: BoxDecoration(
+                  color: widget.brandId == null
+                      ? colors(context).kprimaryColor
+                      : null,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: colors(context).kprimaryColor!)),
+              child: Text(
+                "all".tr,
+                style: TextStyle(
+                    color: widget.brandId == null
+                        ? colors(context).whiteColor
+                        : colors(context).normalTextColor),
+              ),
+            )
+          : Opacity(
+              opacity: brand.id == widget.brandId ? 1 : 0.25,
+              child: Container(
+                  padding: EdgeInsets.all(0),
+                  margin:
+                      EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: FastCachedImage(
+                        url: MyApi.media + (brand.thumbnail ?? ""),
+                        loadingBuilder: (context, url) => SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Center(
+                                child: SizedBox(
+                                  height: 10,
+                                  width: 10,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                      color: colors(context).kprimaryColor),
+                                ),
+                              ),
+                            ),
+                        errorBuilder: (context, url, error) => SvgPicture.asset(
+                              unLoadedImage,
+                              height: mySize(65, 65, 100, 100, 100),
+                            )),
+                  )),
+            ),
     );
   }
 
   InkWell categoriesFilterWidget(
-      BuildContext context, CategoreyModel category) {
+      BuildContext context, CategoreyModel? category) {
     return InkWell(
       hoverColor: Colors.transparent,
       borderRadius: BorderRadius.circular(5),
       onTap: () {
-        String route = "categories/${category.id}/products/1";
-        widget.categoryId = category.id;
-        if (widget.brandId != null && widget.categoryId != null) {
-          route =
-              "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
-        } else
-          route = "categories/${category.id}/products/1";
-        html.window.history.replaceState(null, '', "#$route");
-        BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
-        BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-            count: mySize(8, 8, 12, 12, 16).toString(),
+        if (category == null) {
+          widget.categoryId = null;
+        } else {
+          widget.categoryId = category.id;
+        }
+        BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
+            brandId: widget.brandId,
             categoryId: widget.categoryId,
-            brandId: widget.brandId));
-        setState(() {});
+            search: widget.search));
       },
-      child: Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
-        decoration: BoxDecoration(
-            color: category.id == widget.categoryId
-                ? colors(context).kprimaryColor
-                : null,
-            borderRadius: BorderRadius.circular(5),
-            border:
-                Border.all(width: 1, color: colors(context).kprimaryColor!)),
-        child: Text(
-          ("language_iso".tr == "ar" ? category.nameAlt : category.name) ?? "",
-          style: TextStyle(
-              color: category.id == widget.categoryId
-                  ? colors(context).whiteColor
-                  : colors(context).normalTextColor),
-        ),
-      ),
+      child: category == null
+          ? Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+              decoration: BoxDecoration(
+                  color: widget.categoryId == null
+                      ? colors(context).kprimaryColor
+                      : null,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: colors(context).kprimaryColor!)),
+              child: Text(
+                "all".tr,
+                style: TextStyle(
+                    color: widget.categoryId == null
+                        ? colors(context).whiteColor
+                        : colors(context).normalTextColor),
+              ),
+            )
+          : Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, end: 10),
+              decoration: BoxDecoration(
+                  color: category.id == widget.categoryId
+                      ? colors(context).kprimaryColor
+                      : null,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      width: 1, color: colors(context).kprimaryColor!)),
+              child: Text(
+                ("language_iso".tr == "ar"
+                        ? category.nameAlt
+                        : category.name) ??
+                    "",
+                style: TextStyle(
+                    color: category.id == widget.categoryId
+                        ? colors(context).whiteColor
+                        : colors(context).normalTextColor),
+              ),
+            ),
     );
   }
 }

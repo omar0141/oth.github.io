@@ -22,10 +22,20 @@ class GetProductsEvent extends ProductsEvent {
       this.categoryId,
       required this.count,
       this.search,
-      this.trending = false,this.back = false});
+      this.trending = false,
+      this.back = false});
 }
 
 class GetProductDetailsEvent extends ProductsEvent {
   String? productID;
   GetProductDetailsEvent({this.productID});
+}
+
+class ProductsNavigate extends ProductsEvent {
+  String? brandId;
+  String? categoryId;
+  String? search;
+  String? page;
+  ProductsNavigate(
+      {this.brandId, this.categoryId, this.search, this.page = "1"});
 }

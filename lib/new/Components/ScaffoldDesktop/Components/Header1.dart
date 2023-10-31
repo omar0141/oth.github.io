@@ -8,10 +8,8 @@ import 'package:shakosh/new/Components/LoadingDropDown.dart';
 import 'package:shakosh/new/Config/Images/Images.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
-import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
 class Header1 extends StatelessWidget {
@@ -122,36 +120,18 @@ class Header1 extends StatelessWidget {
         TextEditingController(text: search);
     return TextField(
       controller: searchController,
+      onSubmitted: (value) {
+        search = searchController.text;
+        BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
+            brandId: brandId, categoryId: categoryId, search: search));
+      },
       decoration: InputDecoration(
         suffixIcon: InkWell(
           hoverColor: Colors.transparent,
           onTap: () {
             search = searchController.text;
-
-            String route;
-            if (brandId != null) {
-              route = "brands/${brandId}/products/1/$search";
-            } else if (categoryId != null) {
-              route = "categories/${categoryId}/products/1/$search";
-            } else if (brandId != null && categoryId != null) {
-              route =
-                  "categories/${categoryId}/brands/${brandId}/products/1/$search";
-            } else {
-              route = "products/1/$search";
-            }
-            if (products) {
-              BlocProvider.of<ProductsBloc>(context).search = search;
-              BlocProvider.of<ProductsBloc>(context).categoryId = categoryId;
-              BlocProvider.of<ProductsBloc>(context).add(GetProductsEvent(
-                  count: mySize(8, 8, 12, 12, 16).toString(),
-                  page: "1",
-                  brandId: brandId,
-                  categoryId: categoryId,
-                  search: search));
-              html.window.history.replaceState(null, '', "#$route");
-            } else {
-              Navigator.of(context).pushNamed(route);
-            }
+            BlocProvider.of<ProductsBloc>(context).add(ProductsNavigate(
+                brandId: brandId, categoryId: categoryId, search: search));
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12),
@@ -174,11 +154,6 @@ class Header1 extends StatelessWidget {
   Widget searchDropDown(List<CategoreyModel> categories) {
     return BlocBuilder<ProductsBloc, ProductsState>(
       builder: (context, state) {
-        if (products) {
-          if (BlocProvider.of<ProductsBloc>(context).categoryId != null) {
-            categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
-          }
-        }
         return DropdownButtonFormField(
             padding: EdgeInsets.all(0),
             value: categoryId,

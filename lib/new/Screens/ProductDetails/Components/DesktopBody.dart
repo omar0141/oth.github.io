@@ -150,7 +150,7 @@ class DesktopBody extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            productDetails.netPrice.toStringAsFixed(2) +
+                            productDetails.netPrice.toStringAsFixed(0) +
                                 " " +
                                 "le".tr,
                             style: TextStyle(

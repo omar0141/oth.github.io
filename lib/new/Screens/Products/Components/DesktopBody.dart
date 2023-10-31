@@ -15,7 +15,6 @@ class DesktopBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -34,6 +33,7 @@ class DesktopBody extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(color: colors(context).grey2!)),
                       child: ProductsFilter(
+                        search: search,
                         categoryId: categoryId,
                         brandId: brandId,
                       )),
@@ -42,15 +42,15 @@ class DesktopBody extends StatelessWidget {
           Expanded(
               flex: 4,
               child: Column(
-            children: [
-              ProductsSection(
-                brandId: brandId,
-                categoryId: categoryId,
-                page: page,
-                search: search,
-              )
-            ],
-          ))
+                children: [
+                  ProductsSection(
+                    brandId: brandId,
+                    categoryId: categoryId,
+                    page: page,
+                    search: search,
+                  )
+                ],
+              ))
         ],
       ),
     );

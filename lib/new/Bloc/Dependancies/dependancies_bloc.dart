@@ -50,7 +50,6 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
       emit(DependanciesLoading());
       categories = [];
       categoriesBreadCrumbs.clear();
-
       // Get sub catgeories of parent catgeory
       for (var category in allCategories) {
         if (category.parentId == event.selectedParentCatgeoryId) {
@@ -62,7 +61,6 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
             int i = allCategories.indexWhere((e) => e.id == breadcrumb);
             if (i > -1) categoriesBreadCrumbs.add(allCategories[i]);
           }
-          
         }
       }
       // Get selected parent catgeory id
@@ -91,7 +89,7 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
         categoryBrands = allCategories[d].brands ?? [];
       }
       brands.clear();
-      
+
       // Get brands of catgeory
       for (var brand in allBrands) {
         int i = categoryBrands.indexWhere((e) => e == brand.id);
@@ -99,7 +97,6 @@ class DependanciesBloc extends Bloc<DependanciesEvent, DependanciesState> {
           brands.add(brand);
         }
       }
-      print(brands);
       emit(DependanciesLoaded(
           allCategories: allCategories,
           categories: categories,

@@ -1,4 +1,3 @@
-
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,32 +34,33 @@ class CategoryCard extends StatelessWidget {
                 width: mySize(65, 65, 100, 100, 100),
                 url: MyApi.media + (category.thumbnail ?? ""),
                 loadingBuilder: (context, url) => SizedBox(
-                   height: mySize(65, 65, 100, 100, 100),
-                   width: mySize(65, 65, 100, 100, 100),
-                  child: Center(
+                      height: mySize(65, 65, 100, 100, 100),
+                      width: mySize(65, 65, 100, 100, 100),
+                      child: Center(
                         child: SizedBox(
                           height: mySize(25, 25, 50, 50, 50),
                           width: mySize(25, 25, 50, 50, 50),
-                          child: CircularProgressIndicator(
-                              color: colors(context).kprimaryColor),
+                          child: CircularProgressIndicator(),
                         ),
                       ),
-                ),
+                    ),
                 errorBuilder: (context, url, error) => SvgPicture.asset(
                       unLoadedImage,
                       height: mySize(65, 65, 100, 100, 100),
                     )),
           ),
-            SizedBox(
-              height: mySize(5, 5, 15, 15, 15),
-            ),
+          SizedBox(
+            height: mySize(4, 4, 15, 15, 15),
+          ),
           SizedBox(
               width: expand
                   ? mySize((screenWidth / 3) - 30, (screenWidth / 3) - 30, null,
                       null, null)
                   : null,
               child: Text(
-                "language_iso".tr == "ar" ? category.nameAlt ?? "" : category.name ?? "",
+                "language_iso".tr == "ar"
+                    ? category.nameAlt ?? ""
+                    : category.name ?? "",
                 maxLines: 2,
                 textAlign: TextAlign.center,
               )),

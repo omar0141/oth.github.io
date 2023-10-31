@@ -231,8 +231,6 @@ class _ParentCategoriesState extends State<ParentCategories> with RouteAware {
       BlocProvider.of<DependanciesBloc>(context)
           .add(SelectCategoryEvent(selectedParentCatgeoryId: mycategory.id));
       String route = "categories/${mycategory.id}/products/1";
-      BlocProvider.of<ProductsBloc>(navigatorKey.currentContext!).categoryId =
-          mycategory.id;
       Navigator.of(navigatorKey.currentContext!).pushNamed(route);
     }
   }

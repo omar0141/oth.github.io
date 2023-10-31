@@ -48,24 +48,27 @@ class _ProductsScreenState extends State<ProductsScreen> {
         categoryId: widget.categoryId,
         brandId: widget.brandId,
         page: widget.page));
-    BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
-   
-
-      BlocProvider.of<DependanciesBloc>(context).add(
-          SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
-
-      if (widget.categoryId != null) {
+    if (BlocProvider.of<DependanciesBloc>(context).allCategories.isEmpty) {
+      if (newDate > 10) {
         BlocProvider.of<DependanciesBloc>(context)
-            .add(SelectBrandsFromCategory(id: widget.categoryId));
-      }
-
-      if (widget.brandId != null) {
+            .add(GetDependanciesEvent(remote: true));
+      } else {
         BlocProvider.of<DependanciesBloc>(context)
-            .add(SelectCategoriesFromBrand(id: widget.brandId));
+            .add(GetDependanciesEvent(remote: false));
       }
+    }
+    BlocProvider.of<DependanciesBloc>(context)
+        .add(SelectCategoryEvent(selectedParentCatgeoryId: widget.categoryId));
+    if (widget.categoryId != null) {
+      BlocProvider.of<DependanciesBloc>(context)
+          .add(SelectBrandsFromCategory(id: widget.categoryId));
+    }
+    if (widget.brandId != null) {
+      BlocProvider.of<DependanciesBloc>(context)
+          .add(SelectCategoriesFromBrand(id: widget.brandId));
+    }
     super.initState();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +87,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
     } else {
       return ScaffoldMobile(
         screenName: "products".tr,
+        brandId: widget.brandId,
+        categoryId: widget.categoryId,
+        search: widget.search,
         child: MobileBody(
             brandId: widget.brandId,
             categoryId: widget.categoryId,

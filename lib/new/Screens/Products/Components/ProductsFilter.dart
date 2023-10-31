@@ -6,18 +6,17 @@ import 'package:shakosh/new/Bloc/Products/products_bloc.dart';
 import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Strings/Strings.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
-import 'package:shakosh/new/Config/Utils/SizeConfig.dart';
 import 'package:shakosh/new/Data/Models/BrandModel.dart';
 import 'package:shakosh/new/Data/Models/CategoreyModel.dart';
 import 'package:shakosh/new/Screens/Products/ProductSearchMobileScreen.dart';
-import 'package:universal_html/html.dart' as html;
 
 // ignore: must_be_immutable
 class ProductsFilter extends StatefulWidget {
-  ProductsFilter({super.key, this.brandId, this.categoryId});
+  ProductsFilter({super.key, this.brandId, this.categoryId, this.search});
 
   String? categoryId;
   String? brandId;
+  String? search;
 
   @override
   State<ProductsFilter> createState() => _ProductsFilterState();
@@ -29,45 +28,9 @@ class _ProductsFilterState extends State<ProductsFilter> {
   bool searchWithBrands = false;
 
   @override
-  void deactivate() {
-    if (screenWidth > 768) {
-      BlocProvider.of<ProductsBloc>(context).categoryId = null;
-      BlocProvider.of<ProductsBloc>(context).brandId = null;
-      BlocProvider.of<ProductsBloc>(context).search = null;
-    }
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    if (screenWidth > 768) {
-      BlocProvider.of<ProductsBloc>(context).categoryId = null;
-      BlocProvider.of<ProductsBloc>(context).brandId = null;
-      BlocProvider.of<ProductsBloc>(context).search = null;
-    }
-    super.dispose();
-  }
-
-  @override
   void initState() {
-    if (screenWidth > 768) {
-      if (widget.brandId == null)
-        BlocProvider.of<ProductsBloc>(context).brandId = null;
-
-      if (widget.categoryId == null)
-        BlocProvider.of<ProductsBloc>(context).categoryId = null;
-    }
-
-    if (BlocProvider.of<ProductsBloc>(context).categoryId == null) {
-      BlocProvider.of<ProductsBloc>(context).categoryId = widget.categoryId;
-    }
-    if (BlocProvider.of<ProductsBloc>(context).brandId == null) {
-      BlocProvider.of<ProductsBloc>(context).brandId = widget.brandId;
-    }
-    widget.categoryId = BlocProvider.of<ProductsBloc>(context).categoryId;
-    widget.brandId = BlocProvider.of<ProductsBloc>(context).brandId;
     searchWithBrands = BlocProvider.of<ProductsBloc>(context).searchWithBrands;
-    
+
     categoriesBreadCrumbs =
         BlocProvider.of<DependanciesBloc>(context).categoriesBreadCrumbs;
 
@@ -111,9 +74,9 @@ class _ProductsFilterState extends State<ProductsFilter> {
             });
           },
           children: [
-            if (widget.brandId != null && searchWithBrands)
+            if (widget.brandId != null && searchWithBrands || screenWidth < 768)
               categoryFilter(context, 0),
-            if (!searchWithBrands) brandFilter(context, 0),
+            if (!searchWithBrands && screenWidth > 768) brandFilter(context, 0),
           ],
         )
       ],
@@ -137,22 +100,20 @@ class _ProductsFilterState extends State<ProductsFilter> {
               if (widget.categoryId != null)
                 GestureDetector(
                   onTap: () {
-                    BlocProvider.of<ProductsBloc>(context).categoryId = null;
-                    widget.categoryId == null;
-
-                    String route;
-                    if (widget.brandId != null) {
-                      route = "brands/${widget.brandId}/products/1";
-                    } else {
-                      route = "products/1";
-                    }
                     if (screenWidth > 768) {
-                      html.window.history.replaceState(null, '', "#$route");
-                      Navigator.of(context).pushNamed(route);
+                      BlocProvider.of<ProductsBloc>(context).add(
+                          ProductsNavigate(
+                              brandId: widget.brandId,
+                              categoryId: null,
+                              search: widget.search));
                     } else
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
-                        return ProductSearchMobileScreen();
+                        return ProductSearchMobileScreen(
+                          brandId: widget.brandId,
+                          categoryId: null,
+                          search: widget.search,
+                        );
                       }));
                   },
                   child: Icon(
@@ -166,7 +127,8 @@ class _ProductsFilterState extends State<ProductsFilter> {
         body: BlocBuilder<DependanciesBloc, DependanciesState>(
           builder: (context, state) {
             if (state is DependanciesLoaded) {
-              List<CategoreyModel> categories = state.categories;
+              List<CategoreyModel> categories =
+                  screenWidth < 768 ? state.allCategories : state.categories;
               return ListView.builder(
                   itemCount: categories.length,
                   shrinkWrap: true,
@@ -182,21 +144,21 @@ class _ProductsFilterState extends State<ProductsFilter> {
                       child: InkWell(
                         onTap: () {
                           widget.categoryId = category.id;
-                          if (widget.brandId != null &&
-                              widget.categoryId != null) {
-                            route =
-                                "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+                          if (screenWidth > 768) {
+                            BlocProvider.of<ProductsBloc>(context).add(
+                                ProductsNavigate(
+                                    brandId: widget.brandId,
+                                    categoryId: widget.categoryId,
+                                    search: widget.search));
                           } else
-                            route = "categories/${category.id}/products/1";
-                          html.window.history.replaceState(null, '', "#$route");
-                          BlocProvider.of<ProductsBloc>(context).categoryId =
-                              widget.categoryId;
-                          BlocProvider.of<ProductsBloc>(context).add(
-                              GetProductsEvent(
-                                  count: mySize(8, 8, 12, 12, 16).toString(),
-                                  categoryId: widget.categoryId,
-                                  brandId: widget.brandId));
-                          setState(() {});
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return ProductSearchMobileScreen(
+                                brandId: widget.brandId,
+                                categoryId: widget.categoryId,
+                                search: widget.search,
+                              );
+                            }));
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -250,21 +212,21 @@ class _ProductsFilterState extends State<ProductsFilter> {
               if (widget.brandId != null)
                 GestureDetector(
                   onTap: () {
-                    BlocProvider.of<ProductsBloc>(context).brandId = null;
-                    widget.brandId == null;
-                    String route;
-                    if (widget.categoryId != null) {
-                      route = "categories/${widget.categoryId}/products/1";
-                    } else {
-                      route = "products/1";
-                    }
+                    print(widget.search);
                     if (screenWidth > 768) {
-                      html.window.history.replaceState(null, '', "#$route");
-                      Navigator.of(context).pushReplacementNamed(route);
+                      BlocProvider.of<ProductsBloc>(context).add(
+                          ProductsNavigate(
+                              brandId: null,
+                              categoryId: widget.categoryId,
+                              search: widget.search));
                     } else
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
-                        return ProductSearchMobileScreen();
+                        return ProductSearchMobileScreen(
+                          brandId: null,
+                          categoryId: widget.categoryId,
+                          search: widget.search,
+                        );
                       }));
                   },
                   child: Icon(
@@ -294,21 +256,21 @@ class _ProductsFilterState extends State<ProductsFilter> {
                       child: InkWell(
                         onTap: () {
                           widget.brandId = brand.id;
-                          if (widget.brandId != null &&
-                              widget.categoryId != null) {
-                            route =
-                                "categories/${widget.categoryId}/brands/${widget.brandId}/products/1";
+                          if (screenWidth > 768) {
+                            BlocProvider.of<ProductsBloc>(context).add(
+                                ProductsNavigate(
+                                    brandId: widget.brandId,
+                                    categoryId: widget.categoryId,
+                                    search: widget.search));
                           } else
-                            route = "brands/${brand.id}/products/1";
-                          html.window.history.replaceState(null, '', "#$route");
-                          BlocProvider.of<ProductsBloc>(context).brandId =
-                              widget.brandId;
-                          BlocProvider.of<ProductsBloc>(context).add(
-                              GetProductsEvent(
-                                  count: mySize(8, 8, 12, 12, 16).toString(),
-                                  categoryId: widget.categoryId,
-                                  brandId: widget.brandId));
-                          setState(() {});
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return ProductSearchMobileScreen(
+                                brandId: widget.brandId,
+                                categoryId: widget.categoryId,
+                                search: widget.search,
+                              );
+                            }));
                         },
                         child: Container(
                           decoration: BoxDecoration(

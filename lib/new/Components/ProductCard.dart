@@ -95,7 +95,7 @@ class _ProductCardState extends State<ProductCard> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.product.netPrice.toStringAsFixed(2) +
+                          widget.product.netPrice.toStringAsFixed(0) +
                               " " +
                               "le".tr,
                           style: TextStyle(

@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/main.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Data/Remote/ProductsRemote.dart';
-
+import 'package:universal_html/html.dart' as html;
 part 'products_event.dart';
 part 'products_state.dart';
 
@@ -15,9 +17,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   int pages = 1;
   int currentPage = 1;
   int results = 0;
-  String? categoryId;
-  String? brandId;
-  String? search;
   bool searchWithBrands = false;
 
   ProductsBloc() : super(ProductsLoading()) {
@@ -26,28 +25,51 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         await getProdcuts(event, emit);
       } else if (event is GetProductDetailsEvent) {
         await getProductDetails(emit, event);
+      } else if (event is ProductsNavigate) {
+        productsNavigate(event);
       }
     });
+  }
+
+  void productsNavigate(ProductsNavigate event) {
+    String route = "";
+    if (event.brandId != null) {
+      route =
+          "brands/${event.brandId}/products/${event.page}/${event.search ?? ""}";
+    }
+    if (event.categoryId != null) {
+      route =
+          "categories/${event.categoryId}/products/${event.page}/${event.search ?? ""}";
+    }
+    if (event.brandId != null && event.categoryId != null) {
+      route =
+          "categories/${event.categoryId}/brands/${event.brandId}/products/${event.page}/${event.search ?? ""}";
+    }
+    if (event.brandId == null && event.categoryId == null) {
+      route = "products/${event.page}/${event.search ?? ""}";
+    }
+    html.window.history.replaceState(null, '', "#$route");
+    Navigator.of(navigatorKey.currentContext!).pushReplacementNamed(route);
   }
 
   Future<void> getProductDetails(
       Emitter<ProductsState> emit, GetProductDetailsEvent event) async {
     emit(ProductsDetailsLoading());
-      // Get Product Details Data From Api
-      var (mediaNew, productDetailsNew) =
-          await _productsRemote.getProductDetails(event.productID);
-      // Modeling Product Details Data From Api
-      productDetails = ProductDetailsModel.fromJson(
-          Map<String, dynamic>.from(productDetailsNew));
-      productDetails.media = mediaNew;
-      // Get Product Similars Data From Api
-      productSimilars.clear();
-      List<dynamic> productSimilarsNew =
-          await _productsRemote.getSimilarProducts(event.productID);
-      // Modeling Product Similars Data From Api
-      for (var product in productSimilarsNew) {
-        productSimilars.add(ProductModel.fromJson(product));
-      }
+    // Get Product Details Data From Api
+    var (mediaNew, productDetailsNew) =
+        await _productsRemote.getProductDetails(event.productID);
+    // Modeling Product Details Data From Api
+    productDetails = ProductDetailsModel.fromJson(
+        Map<String, dynamic>.from(productDetailsNew));
+    productDetails.media = mediaNew;
+    // Get Product Similars Data From Api
+    productSimilars.clear();
+    List<dynamic> productSimilarsNew =
+        await _productsRemote.getSimilarProducts(event.productID);
+    // Modeling Product Similars Data From Api
+    for (var product in productSimilarsNew) {
+      productSimilars.add(ProductModel.fromJson(product));
+    }
     //
     emit(ProductsDetailsLoaded(
         productDetails: productDetails, productSimilars: productSimilars));
