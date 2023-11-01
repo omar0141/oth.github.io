@@ -12,11 +12,15 @@ import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDescription.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDetailsImages.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 
 // ignore: must_be_immutable
 class MobileBody extends StatelessWidget {
   MobileBody({super.key, required this.state});
+
   var state;
+  String copiedText = "";
+
   @override
   Widget build(BuildContext context) {
     if (state is ProductsDetailsLoading) {
@@ -40,31 +44,47 @@ class MobileBody extends StatelessWidget {
                 child: ProductDetailsImages(productDetails: productDetails))
           ],
         ),
-        productDescription(productDetails, context),
-        SizedBox(
-          height: 20,
-        ),
-        ProductDetailsDescription(productDetails: productDetails,),
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Divider(),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          "similar-products".tr,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        ProductsWidget(products: productsSimilars),
-        SizedBox(
-          height: 20,
+        SelectionArea(
+          onSelectionChanged: (value) {
+            copiedText = value?.plainText ?? "";
+          },
+          child: Listener(
+            onPointerDown: (event) {
+              copyTextMenu(event, copiedText);
+            },
+            child: Column(
+              children: [
+                productDescription(productDetails, context),
+                SizedBox(
+                  height: 20,
+                ),
+                ProductDetailsDescription(
+                  productDetails: productDetails,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Divider(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "similar-products".tr,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ProductsWidget(products: productsSimilars),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -224,22 +244,22 @@ class MobileBody extends StatelessWidget {
             height: 20,
           ),
           if (productDetails.price > 0)
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  productDetails.netPrice.toStringAsFixed(0) + " " + "le".tr,
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: (productDetails.perOrder == 1 ||
-                              productDetails.stock == 0)
-                          ? colors(context).kprimaryColor
-                          : colors(context).kSecondaryColor),
-                ),
-              )
-            ],
-          ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    productDetails.netPrice.toStringAsFixed(0) + " " + "le".tr,
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: (productDetails.perOrder == 1 ||
+                                productDetails.stock == 0)
+                            ? colors(context).kprimaryColor
+                            : colors(context).kSecondaryColor),
+                  ),
+                )
+              ],
+            ),
           SizedBox(
             height: 20,
           ),
@@ -301,7 +321,7 @@ class MobileBody extends StatelessWidget {
             children: [
               Expanded(
                 child: HtmlWidget(
-                   "language_iso".tr == "ar"
+                  "language_iso".tr == "ar"
                       ? productDetails.briefAlt ?? ""
                       : productDetails.brief ?? "",
                 ),

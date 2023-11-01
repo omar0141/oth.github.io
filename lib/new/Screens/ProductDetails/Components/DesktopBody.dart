@@ -14,6 +14,7 @@ import 'package:shakosh/new/Data/Models/ProductModel.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDescription.dart';
 import 'package:shakosh/new/Screens/ProductDetails/Components/ProductDetailsImages.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shakosh/new/Components/ContextMenu.dart';
 
 // ignore: must_be_immutable
 class DesktopBody extends StatelessWidget {
@@ -55,151 +56,173 @@ class DesktopBody extends StatelessWidget {
             ),
             Expanded(
                 flex: 3,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "language_iso".tr == "ar"
-                                ? productDetails.nameAlt ?? ""
-                                : productDetails.name ?? "",
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "model".tr + ": ",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: productDetails.model ?? "",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: colors(context).kSecondaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "part-no".tr + ": ",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: productDetails.part_no ?? "",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: colors(context).kSecondaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: HtmlWidget(
-                            "language_iso".tr == "ar"
-                                ? productDetails.briefAlt ?? ""
-                                : productDetails.brief ?? "",
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    if (productDetails.price > 0)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              productDetails.netPrice.toStringAsFixed(0) +
-                                  " " +
-                                  "le".tr,
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: (productDetails.perOrder == 1 ||
-                                          productDetails.stock == 0)
-                                      ? colors(context).kprimaryColor
-                                      : colors(context).kSecondaryColor),
-                            ),
-                          )
-                        ],
-                      ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
+                child: SelectionArea(
+                  onSelectionChanged: (value) {
+                    copiedText = value?.plainText ?? "";
+                  },
+                  child: Listener(
+                    onPointerDown: (event) {
+                      copyTextMenu(event, copiedText);
+                    },
+                    child: Column(
                       children: [
                         SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: CartWidget(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "language_iso".tr == "ar"
+                                    ? productDetails.nameAlt ?? ""
+                                    : productDetails.name ?? "",
+                                style: TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "model".tr + ": ",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: productDetails.model ?? "",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              colors(context).kSecondaryColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "part-no".tr + ": ",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: productDetails.part_no ?? "",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              colors(context).kSecondaryColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: HtmlWidget(
+                                "language_iso".tr == "ar"
+                                    ? productDetails.briefAlt ?? ""
+                                    : productDetails.brief ?? "",
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        if (productDetails.price > 0)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  productDetails.netPrice.toStringAsFixed(0) +
+                                      " " +
+                                      "le".tr,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: (productDetails.perOrder == 1 ||
+                                              productDetails.stock == 0)
+                                          ? colors(context).kprimaryColor
+                                          : colors(context).kSecondaryColor),
+                                ),
+                              )
+                            ],
+                          ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                                width: 200,
+                                height: 55,
+                                child: CartWidget(
+                                  product: ProductModel.fromJson(
+                                      productDetails.toJson()),
+                                  fontSize: 18,
+                                  iconSize: 25,
+                                )),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            FavouriteWidget(
+                              width: 55,
+                              height: 55,
+                              iconSize: 30,
                               product: ProductModel.fromJson(
                                   productDetails.toJson()),
-                              fontSize: 18,
-                              iconSize: 25,
-                            )),
-                        SizedBox(
-                          width: 15,
+                            )
+                          ],
                         ),
-                        FavouriteWidget(
-                          width: 55,
-                          height: 55,
-                          iconSize: 30,
-                          product:
-                              ProductModel.fromJson(productDetails.toJson()),
-                        )
                       ],
                     ),
-                  ],
+                  ),
                 ))
           ],
         ),
         SizedBox(
           height: 20,
         ),
-        ProductDetailsDescription(
-          productDetails: productDetails,
+        SelectionArea(
+          onSelectionChanged: (value) {
+            copiedText = value?.plainText ?? "";
+          },
+          child: Listener(
+            onPointerDown: (event) {
+              copyTextMenu(event, copiedText);
+            },
+            child: ProductDetailsDescription(
+              productDetails: productDetails,
+            ),
+          ),
         ),
         SizedBox(
           height: 10,

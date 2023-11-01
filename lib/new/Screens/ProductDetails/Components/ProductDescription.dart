@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:shakosh/main.dart';
-import 'package:shakosh/new/Components/ContextMenu.dart';
 import 'package:shakosh/new/Config/Translations/Translation.dart';
 import 'package:shakosh/new/Data/Models/ProductDetailsModel.dart';
 
@@ -47,52 +46,22 @@ class _ProductDetailsDescriptionState extends State<ProductDetailsDescription> {
             children: [
               if (selectedText == "description".tr)
                 Expanded(
-                  child: SelectionArea(
-                    onSelectionChanged: (value) {
-                      copiedText = value?.plainText ?? "";
-                    },
-                    child: Listener(
-                      onPointerDown: (event) {
-                        copyTextMenu(event, copiedText);
-                      },
-                      child: HtmlWidget(
-                        "language_iso".tr == "ar"
-                            ? widget.productDetails.descriptionAlt ?? ""
-                            : widget.productDetails.description ?? "",
-                      ),
-                    ),
+                  child: HtmlWidget(
+                    "language_iso".tr == "ar"
+                        ? widget.productDetails.descriptionAlt ?? ""
+                        : widget.productDetails.description ?? "",
                   ),
                 ),
               if (selectedText == "tech-info".tr)
                 Expanded(
-                  child: SelectionArea(
-                    onSelectionChanged: (value) {
-                      copiedText = value?.plainText ?? "";
-                    },
-                    child: Listener(
-                      onPointerDown: (event) {
-                        copyTextMenu(event, copiedText);
-                      },
-                      child: HtmlWidget(
-                        widget.productDetails.tech_info ?? "",
-                      ),
-                    ),
+                  child: HtmlWidget(
+                    widget.productDetails.tech_info ?? "",
                   ),
                 ),
               if (selectedText == "content-info".tr)
                 Expanded(
-                  child: SelectionArea(
-                    onSelectionChanged: (value) {
-                      copiedText = value?.plainText ?? "";
-                    },
-                    child: Listener(
-                      onPointerDown: (event) {
-                        copyTextMenu(event, copiedText);
-                      },
-                      child: HtmlWidget(
-                        widget.productDetails.content_info ?? "",
-                      ),
-                    ),
+                  child: HtmlWidget(
+                    widget.productDetails.content_info ?? "",
                   ),
                 )
             ],
