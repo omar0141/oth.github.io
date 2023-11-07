@@ -260,60 +260,64 @@ class MobileBody extends StatelessWidget {
                 )
               ],
             ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "model".tr + ": ",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(
-                        text: productDetails.model ?? "",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: colors(context).kSecondaryColor),
-                      ),
-                    ],
+          if (productDetails.model != null)
+            SizedBox(
+              height: 20,
+            ),
+          if (productDetails.model != null)
+            Row(
+              children: [
+                Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "model".tr + ": ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: productDetails.model ?? "",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: colors(context).kSecondaryColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "part-no".tr + ": ",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(
-                        text: productDetails.part_no ?? "",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: colors(context).kSecondaryColor),
-                      ),
-                    ],
+              ],
+            ),
+          if (productDetails.part_no != null)
+            SizedBox(
+              height: 20,
+            ),
+          if (productDetails.part_no != null)
+            Row(
+              children: [
+                Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "part-no".tr + ": ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: productDetails.part_no ?? "",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: colors(context).kSecondaryColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           SizedBox(
             height: 20,
           ),

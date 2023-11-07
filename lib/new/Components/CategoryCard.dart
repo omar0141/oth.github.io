@@ -19,12 +19,13 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: mySize(100, 100, 150, 150, 150),
       decoration: BoxDecoration(
           color: parentId == category.id
               ? colors(context).grey2!.withOpacity(0.5)
               : null,
           borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         children: [
           ClipRRect(

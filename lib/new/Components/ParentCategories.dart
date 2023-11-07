@@ -182,7 +182,7 @@ class _ParentCategoriesState extends State<ParentCategories> with RouteAware {
       );
     } else
       return SizedBox(
-        height: mySize(100, 100, 150, 150, 150),
+        height: mySize(118, 118, 168, 168, 168),
         child: ListView.builder(
           itemCount: categories.length,
           controller: scrollController,

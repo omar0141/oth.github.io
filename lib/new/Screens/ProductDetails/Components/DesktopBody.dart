@@ -82,9 +82,11 @@ class DesktopBody extends StatelessWidget {
                             )
                           ],
                         ),
+                        if(productDetails.model != null)
                         SizedBox(
                           height: 20,
                         ),
+                        if(productDetails.model != null)
                         Row(
                           children: [
                             Expanded(
@@ -111,9 +113,11 @@ class DesktopBody extends StatelessWidget {
                             ),
                           ],
                         ),
+                        if(productDetails.part_no != null)
                         SizedBox(
                           height: 20,
                         ),
+                        if(productDetails.part_no != null)
                         Row(
                           children: [
                             Expanded(

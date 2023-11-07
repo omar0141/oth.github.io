@@ -9,6 +9,7 @@ import 'package:shakosh/new/Screens/Cart/CartScreen.dart';
 import 'package:shakosh/new/Screens/Favourite/FavouriteScreen.dart';
 import 'package:shakosh/new/Screens/Home/HomeScreen.dart';
 import 'package:shakosh/new/Screens/More/MoreScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class MyBottomNavigationBar extends StatefulWidget {
@@ -22,6 +23,100 @@ class MyBottomNavigationBar extends StatefulWidget {
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    return test2(context);
+  }
+
+  Widget test2(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: FractionalOffset(.5, 1.0),
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 10),
+          height: 60,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                        child: Icon(Icons.call_outlined),
+                        onTap: () async {
+                          if (await canLaunchUrl(Uri.parse(
+                              "https://api.whatsapp.com/send?phone=+2010239667560"))) {
+                            await launchUrl(Uri.parse(
+                                "https://api.whatsapp.com/send?phone=+201023966756"));
+                          }
+                        }),
+                    Text("contact-us".tr)
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      child: cartIcon(),
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return CartScreen();
+                        }));
+                      },
+                    ),
+                    Text("cart".tr)
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 60,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      child: widget.index == 2
+                          ? favouriteIcon(Icons.favorite)
+                          : favouriteIcon(Icons.favorite_outline),
+                      onTap: () => Navigator.pushNamed(
+                          context, FavouriteScreen.routeName),
+                    ),
+                    Text("favourite".tr)
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      child: widget.index == 3
+                          ? Image.asset(more)
+                          : Image.asset(more_outlined),
+                      onTap: () =>
+                          Navigator.pushNamed(context, MoreScreen.routeName),
+                    ),
+                    Text("more".tr)
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+            bottom: 30,
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, HomeScreen.routeName),
+              child: Image.asset(
+                logo2,
+                width: 60,
+                height: 60,
+              ),
+            ))
+      ],
+    );
+  }
+
+  Widget test() {
     return BottomNavigationBar(
       elevation: 5,
       type: BottomNavigationBarType.fixed,
@@ -38,9 +133,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return CartScreen();
           }));
-        } else if (value == 2) {
-          Navigator.of(context).pushNamed(FavouriteScreen.routeName);
         } else if (value == 3) {
+          Navigator.of(context).pushNamed(FavouriteScreen.routeName);
+        } else if (value == 4) {
           Navigator.of(context).pushNamed(MoreScreen.routeName);
         }
         setState(() {});
@@ -57,6 +152,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           icon: cartIcon(),
           label: "cart".tr,
         ),
+        BottomNavigationBarItem(icon: SizedBox(), label: ""),
         BottomNavigationBarItem(
           activeIcon: favouriteIcon(Icons.favorite),
           icon: favouriteIcon(Icons.favorite_outline),

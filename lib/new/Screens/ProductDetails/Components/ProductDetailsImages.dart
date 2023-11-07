@@ -142,27 +142,44 @@ class _ProductDetailsImagesState extends State<ProductDetailsImages> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
+                          contentPadding: EdgeInsets.zero,
                           content: Stack(
                             children: [
                               SizedBox(
-                                width: screenWidth * 0.5,
-                                height: screenWidth * 0.5,
-                                child: FastCachedImage(
-                                    url: MyApi.media + (image["filename"]),
-                                    loadingBuilder: (context, url) => Center(
-                                          child: SizedBox(
-                                            width: screenHeight * 0.25,
-                                            height: screenHeight * 0.25,
-                                            child: CircularProgressIndicator(
-                                                color: colors(context)
-                                                    .kprimaryColor),
+                                width: mySize(
+                                    screenWidth,
+                                    screenWidth,
+                                    screenWidth * 0.5,
+                                    screenWidth * 0.5,
+                                    screenWidth * 0.5),
+                                height: mySize(
+                                    screenWidth,
+                                    screenWidth,
+                                    screenWidth * 0.5,
+                                    screenWidth * 0.5,
+                                    screenWidth * 0.5),
+                                child: InteractiveViewer(
+                                  // panEnabled: false, // Set it to false
+                                  boundaryMargin: EdgeInsets.all(100),
+                                  minScale: 1,
+                                  maxScale: 8,
+                                  child: FastCachedImage(
+                                      url: MyApi.media + (image["filename"]),
+                                      loadingBuilder: (context, url) => Center(
+                                            child: SizedBox(
+                                              width: screenHeight * 0.25,
+                                              height: screenHeight * 0.25,
+                                              child: CircularProgressIndicator(
+                                                  color: colors(context)
+                                                      .kprimaryColor),
+                                            ),
                                           ),
-                                        ),
-                                    errorBuilder: (context, url, error) =>
-                                        SvgPicture.asset(
-                                          unLoadedImage,
-                                          height: screenHeight * 0.4,
-                                        )),
+                                      errorBuilder: (context, url, error) =>
+                                          SvgPicture.asset(
+                                            unLoadedImage,
+                                            height: screenHeight * 0.4,
+                                          )),
+                                ),
                               ),
                               Positioned(
                                   child: IconButton(

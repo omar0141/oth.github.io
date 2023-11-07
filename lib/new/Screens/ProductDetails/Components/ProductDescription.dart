@@ -50,18 +50,132 @@ class _ProductDetailsDescriptionState extends State<ProductDetailsDescription> {
                     "language_iso".tr == "ar"
                         ? widget.productDetails.descriptionAlt ?? ""
                         : widget.productDetails.description ?? "",
+                    customStylesBuilder: (element) {
+                      if (element.classes.contains('root')) {
+                        return {"--primary": "#333"};
+                      }
+                      if (element.classes.contains('*')) {
+                        return {
+                          "padding": "0",
+                          "margin": "0",
+                          "border": "none",
+                          "box-sizing": "border-box"
+                        };
+                      }
+                      if (element.classes.contains('table')) {
+                        return {"border-collapse": "collapse"};
+                      }
+                      if (element.classes.contains('table td')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('table th')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('ul')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li ul')) {
+                        return {"padding-inline-start": "1rem"};
+                      }
+                      return null;
+                    },
                   ),
                 ),
               if (selectedText == "tech-info".tr)
                 Expanded(
                   child: HtmlWidget(
                     widget.productDetails.tech_info ?? "",
+                    customStylesBuilder: (element) {
+                      if (element.classes.contains('root')) {
+                        return {"--primary": "#333"};
+                      }
+                      if (element.classes.contains('*')) {
+                        return {
+                          "padding": "0",
+                          "margin": "0",
+                          "border": "none",
+                          "box-sizing": "border-box"
+                        };
+                      }
+                      if (element.classes.contains('table')) {
+                        return {"border-collapse": "collapse"};
+                      }
+                      if (element.classes.contains('table td')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('table th')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('ul')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li ul')) {
+                        return {"padding-inline-start": "1rem"};
+                      }
+                      return null;
+                    },
                   ),
                 ),
               if (selectedText == "content-info".tr)
                 Expanded(
                   child: HtmlWidget(
                     widget.productDetails.content_info ?? "",
+                    customStylesBuilder: (element) {
+                      if (element.classes.contains('root')) {
+                        return {"--primary": "#333"};
+                      }
+                      if (element.classes.contains('*')) {
+                        return {
+                          "padding": "0",
+                          "margin": "0",
+                          "border": "none",
+                          "box-sizing": "border-box"
+                        };
+                      }
+                      if (element.classes.contains('table')) {
+                        return {"border-collapse": "collapse"};
+                      }
+                      if (element.classes.contains('table td')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('table th')) {
+                        return {
+                          "border": "1px solid var(--primary)",
+                          "padding": "1rem"
+                        };
+                      }
+                      if (element.classes.contains('ul')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li')) {
+                        return {"padding": "0", "gap": "0"};
+                      }
+                      if (element.classes.contains('li ul')) {
+                        return {"padding-inline-start": "1rem"};
+                      }
+                      return null;
+                    },
                   ),
                 )
             ],
