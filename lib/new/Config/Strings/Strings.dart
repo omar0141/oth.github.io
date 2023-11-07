@@ -1,1 +1,1 @@
-const urlName = "";
+const urlName = "/shakosh";
