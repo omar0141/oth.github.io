@@ -210,6 +210,7 @@
   "it-only-takes-a-minute-to-create-your-account": "It only takes a minute to create your account",
   "delivery-address": "Delivery Address",
   "checkout-success": "Your order has been sent successfully",
+  "order-canceled": "Your order has been canceled successfully",
   "my-orders": "My Orders",
   "delivery-fees": "Delivery Fees",
   "status": "Status",

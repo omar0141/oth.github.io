@@ -1,177 +1,201 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:shakosh/helper/translation.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shakosh/screens/details/details_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:math_expressions/math_expressions.dart';
+import 'package:shakosh/main.dart';
+import 'package:shakosh/Bloc/Cart/cart_bloc.dart';
+import 'package:shakosh/Components/CartWidget.dart';
+import 'package:shakosh/Config/Images/Images.dart';
+import 'package:shakosh/Config/Translations/Translation.dart';
+import 'package:shakosh/Config/Utils/SizeConfig.dart';
+import 'package:shakosh/Data/Models/ProductModel.dart';
+import 'package:shakosh/Data/Remote/MyApi.dart';
+import 'package:shakosh/Screens/Cart/Components/TotalCartWidget.dart';
 
-import '../../../size_config.dart';
-import 'package:provider/provider.dart';
-import 'package:shakosh/controller/cart_wishlist.dart';
-import 'package:shakosh/models/Item.dart';
-import 'package:shakosh/constants.dart';
-
-class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
-
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  List<Item> items = [];
+class Body extends StatelessWidget {
+  const Body({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
-        child: Consumer<Cart>(builder: (context, cart, child) {
-          return ListView.builder(
-              itemCount: cart.basket.length,
-              itemBuilder: (context, i) {
-                double tax = 0;
-                if (cart.basket[i]!.equation != null) {
-                  Parser p = Parser();
-                  String newtax = cart.basket[i]!.equation!.replaceAll('x',
-                      '${cart.basket[i]!.discount_price == 0 ? cart.basket[i]!.price : cart.basket[i]!.discount_price! * cart.basket[i]!.multiplier!}');
-                  tax = p
-                      .parse(newtax)
-                      .evaluate(EvaluationType.REAL, ContextModel());
-                } else {
-                  tax = 0;
-                }
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        List<ProductModel> products = state.cart;
+        return screenWidth > 768
+            ? Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: cartProducts(products, context),
+                    ),
+                  ),
+                  TotalCartWidget()
+                ],
+              )
+            : Padding(
+                padding: const EdgeInsets.all(10),
+                child: cartProducts(products, context),
+              );
+      },
+    );
+  }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Card(
-                      elevation: 3,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              color: cart.myitems[i]!.error == true
-                                  ? Colors.red
-                                  : Colors.transparent,
-                              width: 1),
-                          borderRadius: BorderRadius.circular(15.0)),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 1,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return DetailsScreen(
-                                        itm_no: cart.basket[i]!.item_no,
-                                        itm_name: cart.basket[i]!.name,
-                                        price: cart.basket[i]!.price,
-                                        item: cart.basket[i],
-                                      );
-                                    }));
-                                  },
-                                  child: Container())),
-                          SizedBox(width: 20),
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cart.basket[i]!.name!,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 5),
-                                    child: Row(
+  ListView cartProducts(List<ProductModel> products, BuildContext context) {
+    return ListView(
+      shrinkWrap: screenWidth > 768 ? false : true,
+      physics: screenWidth > 768 ? null : NeverScrollableScrollPhysics(),
+      children: [
+        for (var product in products)
+          Stack(
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: 135,
+                    child: Card(
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child: productImage(product.thumbnail)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
                                       children: [
-                                        CircleAvatar(
-                                          maxRadius: 15,
-                                          backgroundColor: kPrimaryColor,
-                                          child: IconButton(
-                                            iconSize: 15,
-                                            icon: Icon(Icons.add),
-                                            color: Colors.white,
-                                            onPressed: () {
-                                              cart.add(cart.basket[i], context);
-                                            },
+                                        Expanded(
+                                          child: Text(
+                                            "language_iso".tr == "ar"
+                                                ? product.nameAlt ?? ""
+                                                : product.name ?? "",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10, left: 10),
-                                          child: Text(cart.basket[i]!.qty
-                                              .toStringAsFixed(0)),
+                                        SizedBox(
+                                          width: 10,
                                         ),
-                                        CircleAvatar(
-                                          maxRadius: 15,
-                                          backgroundColor: Colors.grey[300],
-                                          child: IconButton(
-                                            icon: Icon(Icons.remove),
-                                            color: Colors.white,
-                                            iconSize: 15,
-                                            onPressed: () {
-                                              cart.remove_qty(
-                                                  cart.basket[i], context);
-                                            },
+                                        InkWell(
+                                          hoverColor: Colors.transparent,
+                                          onTap: () {
+                                            BlocProvider.of<CartBloc>(context)
+                                                .add(RemoveFromCartEvent(
+                                                    product: product,
+                                                    remove: true));
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color:
+                                                colors(context).kprimaryColor,
                                           ),
+                                        )
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          product.netPrice.toStringAsFixed(2) +
+                                              " " +
+                                              "le".tr,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: colors(context)
+                                                  .kSecondaryColor,
+                                              fontSize: 18),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Text(
-                                    '${cart.basket[i]!.price! + tax}EGP',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: kPrimaryColor),
-                                  ),
-                                ],
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                AwesomeDialog(
-                                  context: context,
-                                  title: Translation.get(
-                                      'cart-delete-item-message'),
-                                  btnOkOnPress: () {
-                                    cart.remove(cart.basket[i], context);
-                                  },
-                                ).show();
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: mySize(screenWidth * 0.4,
+                                              screenWidth * 0.4, 150, 150, 150),
+                                          child: CartWidget(
+                                            product: product,
+                                            height: 35,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+              if (product.stock == 999999999999999)
+                Positioned.directional(
+                    textDirection: "language_iso".tr == "ar"
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,
+                    top: 10,
+                    start: 10,
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                          color: colors(context).kSecondaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "reserve".tr,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: colors(context).whiteColor),
+                      ),
+                    )),
+            ],
+          ),
+      ],
+    );
+  }
 
-                                // AwesomeDialog(
-                                //   context: context,
-                                //   dialogType: DialogType.SUCCES,
-                                //   title: Translation.get("success"),
-                                //   desc: Translation.get("address-success"),
-                                //   btnOkColor: Colors.green,
-                                //   btnOkText: Translation.get("ok"),
-                                //   btnOkOnPress: () {
-                                //     Navigator.pushNamed(
-                                //         context, Myaddresses.routeName);
-                                //   },
-                                // ).show();
-                                //  cart.remove(cart.basket[i], context);
-                              },
-                              child: Icon(
-                                FontAwesomeIcons.trashAlt,
-                                color: Colors.red,
-                                size: 22,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                );
-              });
-        }));
+  ClipRRect productImage(String? image) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: FastCachedImage(
+          height: mySize(100, 100, 100, 100, 100),
+          url: MyApi.media + (image ?? ""),
+          fit: BoxFit.fill,
+          loadingBuilder: (context, url) => SizedBox(
+                height: mySize(100, 100, 100, 100, 100),
+                child: Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                        color: colors(context).kprimaryColor),
+                  ),
+                ),
+              ),
+          errorBuilder: (context, url, error) => SvgPicture.asset(
+                unLoadedImage,
+                height: mySize(100, 100, 100, 100, 100),
+              )),
+    );
   }
 }

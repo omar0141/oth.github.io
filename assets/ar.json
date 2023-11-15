@@ -203,6 +203,7 @@
   "it-only-takes-a-minute-to-create-your-account": "يستغرق إنشاء حسابك دقيقة واحدة فقط",
   "delivery-address": "عنوان التوصيل",
   "checkout-success": "تم إرسال طلبك بنجاح",
+  "order-canceled": "تم إلغاء طلبك بنجاح",
   "my-orders": "طلباتي",
   "delivery-fees": "مصاريف التوصيل",
   "status": "الحالة",

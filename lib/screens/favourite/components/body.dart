@@ -1,41 +1,46 @@
-import 'package:shakosh/constants.dart';
-import 'package:flutter/material.dart';
-import '../../../components/product_card.dart';
-import '../../../controller/cart_wishlist.dart';
-import 'package:provider/provider.dart';
-import 'package:shakosh/models/Item.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shakosh/main.dart';
+import 'package:shakosh/Bloc/Favourite/favourite_bloc.dart';
+import 'package:shakosh/Components/ProductsWidget.dart';
+import 'package:shakosh/Config/Translations/Translation.dart';
+import 'package:shakosh/Data/Models/ProductModel.dart';
 
-import '../../../size_config.dart';
+class Body extends StatelessWidget {
+  const Body({super.key});
 
-class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
-
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  List<Item> favourites = [];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      child: Consumer<Cart>(builder: (context, value, _) {
-        return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisSpacing: 10,
-                crossAxisCount: 2,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.26)),
-            itemCount: value.favourites.length,
-            itemBuilder: (context, i) {
-              if (value.favourites.isNotEmpty) {
-                return ProductCard(value.favourites[i], true, kPrimaryColor);
-              } else {
-                return const CircularProgressIndicator();
-              }
-            });
-      }),
+    return BlocBuilder<FavouriteBloc, FavouriteState>(
+      builder: (context, state) {
+        List<ProductModel> products = state.favourite;
+        return Column(
+          children: [
+            if (screenWidth > 768)
+              SizedBox(
+                height: 20,
+              ),
+            if (screenWidth > 768)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "favourite".tr,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  )
+                ],
+              ),
+            if (screenWidth > 768)
+              SizedBox(
+                height: 20,
+              ),
+            ProductsWidget(products: products),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
     );
   }
 }

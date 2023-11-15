@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shakosh/new/Config/Translations/Translation.dart';
+import 'package:shakosh/Config/Translations/Translation.dart';
 
 class Test extends StatelessWidget {
   Test({super.key});
