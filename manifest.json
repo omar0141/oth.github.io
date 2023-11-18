@@ -1,0 +1,35 @@
+{
+    "name": "بيت العدد الأصلية |   عدد وأدوات يدوية وكهربائية أصلية",
+    "short_name": "بيت العدد الأصلية |   عدد وأدوات يدوية وكهربائية أصلية",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "بيت العدد الاصليه هو اكبر موقع لتجارة جميع انواع العدد الصناعيه و المنزليه فى مصر المناسبة لجميع انواع الحرف.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/assets/images/icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/images/icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/images/icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/assets/images/icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
