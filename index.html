@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html oncontextmenu="event.preventDefault();">
-
-<head>
-  <!--
+  <head>
+    <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
 
@@ -15,191 +14,190 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/test.github.io/">
+    <base href="/test.github.io/" />
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
-  <meta name="description" content="بيت العدد الاصليه هو اكبر موقع لتجارة جميع انواع العدد الصناعيه و المنزليه فى مصر المناسبة لجميع انواع الحرف.">
-  <meta name='keywords' content='Original Tools Home'/>
-  <meta name='author' content='Exabyte LLC'/>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="بيت العدد الاصليه هو اكبر موقع لتجارة جميع انواع العدد الصناعيه و المنزليه فى مصر المناسبة لجميع انواع الحرف." />
+    <meta name="keywords" content="Original Tools Home" />
+    <meta name="author" content="Exabyte LLC" />
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="بيت العدد الأصلية | عدد وأدوات يدوية ">
-  <link rel="apple-touch-icon" href="assets/assets/images/icons/Icon-192.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="بيت العدد الأصلية | عدد وأدوات يدوية " />
+    <link rel="apple-touch-icon" href="assets/assets/images/icons/Icon-192.png" />
 
-  <title>بيت العدد الأصلية | عدد وأدوات يدوية وكهربائية أصلية</title>
-  <link rel="shortcut icon" href="assets/assets/images/favicon.png" type="image/png">
-  <link rel="icon" href="assets/assets/images/favicon.png" type="image/png">
-  <link rel="manifest" href="manifest.json">
+    <title>بيت العدد الأصلية | عدد وأدوات يدوية وكهربائية أصلية</title>
+    <link rel="shortcut icon" href="assets/assets/images/favicon.png" type="image/png" />
+    <link rel="icon" href="assets/assets/images/favicon.png" type="image/png" />
+    <link rel="manifest" href="manifest.json" />
 
+    <style>
+      #splash,
+      #splash *,
+      body {
+        padding: 0;
+        border: none;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      #splash {
+        display: flex;
+        position: fixed;
+        width: 100%;
+        height: 100%;
 
+        background-color: #eee;
+      }
+      #logo {
+        position: relative;
+        display: block;
+        margin: auto;
+        width: auto;
+        height: auto;
 
-  <style>
-    #splash,
-    #splash *,
-    body {
-      padding: 0;
-      border: none;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    #splash {
-      display: flex;
-      position: fixed;
-      width: 100%;
-      height: 100%;
+        max-width: 75%;
+        max-height: 75%;
+        object-fit: contain;
 
-      background-color: #eee;
-    }
-    #logo {
-      position: relative;
-      display: block;
-      margin: auto;
-      width: auto;
-      height: auto;
+        -webkit-animation: jello-horizontal 2s ease-in-out 1s infinite both;
+        animation: jello-horizontal 2s ease-in-out 1s infinite both;
+      }
+      @-webkit-keyframes jello-horizontal {
+        0% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+        30% {
+          -webkit-transform: scale3d(1.25, 0.75, 1);
+          transform: scale3d(1.25, 0.75, 1);
+        }
+        40% {
+          -webkit-transform: scale3d(0.75, 1.25, 1);
+          transform: scale3d(0.75, 1.25, 1);
+        }
+        50% {
+          -webkit-transform: scale3d(1.15, 0.85, 1);
+          transform: scale3d(1.15, 0.85, 1);
+        }
+        65% {
+          -webkit-transform: scale3d(0.95, 1.05, 1);
+          transform: scale3d(0.95, 1.05, 1);
+        }
+        75% {
+          -webkit-transform: scale3d(1.05, 0.95, 1);
+          transform: scale3d(1.05, 0.95, 1);
+        }
+        100% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+      }
+      @keyframes jello-horizontal {
+        0% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+        30% {
+          -webkit-transform: scale3d(1.25, 0.75, 1);
+          transform: scale3d(1.25, 0.75, 1);
+        }
+        40% {
+          -webkit-transform: scale3d(0.75, 1.25, 1);
+          transform: scale3d(0.75, 1.25, 1);
+        }
+        50% {
+          -webkit-transform: scale3d(1.15, 0.85, 1);
+          transform: scale3d(1.15, 0.85, 1);
+        }
+        65% {
+          -webkit-transform: scale3d(0.95, 1.05, 1);
+          transform: scale3d(0.95, 1.05, 1);
+        }
+        75% {
+          -webkit-transform: scale3d(1.05, 0.95, 1);
+          transform: scale3d(1.05, 0.95, 1);
+        }
+        100% {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+      }
+    </style>
+  </head>
 
-      max-width: 75%;
-      max-height: 75%;
-      object-fit: contain;
+  <body>
+    <div id="splash">
+      <img id="logo" src="assets/assets/images/logo2.png" alt="Original Tools Home" />
+    </div>
+    <script>
+      const serviceWorkerVersion = "1850250032";
+      var scriptLoaded = false;
 
-      -webkit-animation: jello-horizontal 2s ease-in-out 1s infinite both;
-      animation: jello-horizontal 2s ease-in-out 1s infinite both;
-    }
-    @-webkit-keyframes jello-horizontal {
-      0% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
+      function loadMainDartJs() {
+        if (scriptLoaded) {
+          return;
+        }
+        scriptLoaded = true;
+        var scriptTag = document.createElement('script');
+        scriptTag.src = 'main.dart.js';
+        scriptTag.type = 'application/javascript';
+        document.body.append(scriptTag);
       }
-      30% {
-        -webkit-transform: scale3d(1.25, 0.75, 1);
-        transform: scale3d(1.25, 0.75, 1);
-      }
-      40% {
-        -webkit-transform: scale3d(0.75, 1.25, 1);
-        transform: scale3d(0.75, 1.25, 1);
-      }
-      50% {
-        -webkit-transform: scale3d(1.15, 0.85, 1);
-        transform: scale3d(1.15, 0.85, 1);
-      }
-      65% {
-        -webkit-transform: scale3d(0.95, 1.05, 1);
-        transform: scale3d(0.95, 1.05, 1);
-      }
-      75% {
-        -webkit-transform: scale3d(1.05, 0.95, 1);
-        transform: scale3d(1.05, 0.95, 1);
-      }
-      100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-      }
-    }
-    @keyframes jello-horizontal {
-      0% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-      }
-      30% {
-        -webkit-transform: scale3d(1.25, 0.75, 1);
-        transform: scale3d(1.25, 0.75, 1);
-      }
-      40% {
-        -webkit-transform: scale3d(0.75, 1.25, 1);
-        transform: scale3d(0.75, 1.25, 1);
-      }
-      50% {
-        -webkit-transform: scale3d(1.15, 0.85, 1);
-        transform: scale3d(1.15, 0.85, 1);
-      }
-      65% {
-        -webkit-transform: scale3d(0.95, 1.05, 1);
-        transform: scale3d(0.95, 1.05, 1);
-      }
-      75% {
-        -webkit-transform: scale3d(1.05, 0.95, 1);
-        transform: scale3d(1.05, 0.95, 1);
-      }
-      100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-      }
-    }
-  </style>
-</head>
 
-<body>
-  <div id="splash">
-    <img id="logo" src="assets/assets/images/logo2.png" alt="Original Tools Home" />
-  </div>
-  <script>
-    const serviceWorkerVersion = "4118076486";
-    var scriptLoaded = false;
+      if ('serviceWorker' in navigator) {
+        // Service workers are supported. Use them.
+        window.addEventListener('load', function () {
+          // Wait for registration to finish before dropping the <script> tag.
+          // Otherwise, the browser will load the script multiple times,
+          // potentially different versions.
+          var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+          navigator.serviceWorker.register(serviceWorkerUrl)
+            .then((reg) => {
+              function waitForActivation(serviceWorker) {
+                serviceWorker.addEventListener('statechange', () => {
+                  if (serviceWorker.state == 'activated') {
+                    console.log('Installed new service worker.');
+                    loadMainDartJs();
+                  }
+                });
+              }
+              if (!reg.active && (reg.installing || reg.waiting)) {
+                // No active web worker and we have installed or are installing
+                // one for the first time. Simply wait for it to activate.
+                waitForActivation(reg.installing || reg.waiting);
+              } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+                // When the app updates the serviceWorkerVersion changes, so we
+                // need to ask the service worker to update.
+                console.log('New service worker available.');
+                reg.update();
+                waitForActivation(reg.installing);
+              } else {
+                // Existing service worker is still good.
+                console.log('Loading app from service worker.');
+                loadMainDartJs();
+              }
+            });
 
-    function loadMainDartJs() {
-      if (scriptLoaded) {
-        return;
-      }
-      scriptLoaded = true;
-      var scriptTag = document.createElement('script');
-      scriptTag.src = 'main.dart.js';
-      scriptTag.type = 'application/javascript';
-      document.body.append(scriptTag);
-    }
-
-    if ('serviceWorker' in navigator) {
-      // Service workers are supported. Use them.
-      window.addEventListener('load', function () {
-        // Wait for registration to finish before dropping the <script> tag.
-        // Otherwise, the browser will load the script multiple times,
-        // potentially different versions.
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-        navigator.serviceWorker.register(serviceWorkerUrl)
-          .then((reg) => {
-            function waitForActivation(serviceWorker) {
-              serviceWorker.addEventListener('statechange', () => {
-                if (serviceWorker.state == 'activated') {
-                  console.log('Installed new service worker.');
-                  loadMainDartJs();
-                }
-              });
-            }
-            if (!reg.active && (reg.installing || reg.waiting)) {
-              // No active web worker and we have installed or are installing
-              // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing || reg.waiting);
-            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
-              // When the app updates the serviceWorkerVersion changes, so we
-              // need to ask the service worker to update.
-              console.log('New service worker available.');
-              reg.update();
-              waitForActivation(reg.installing);
-            } else {
-              // Existing service worker is still good.
-              console.log('Loading app from service worker.');
+          // If service worker doesn't succeed in a reasonable amount of time,
+          // fallback to plaint <script> tag.
+          setTimeout(() => {
+            if (!scriptLoaded) {
+              console.warn(
+                'Failed to load app from service worker. Falling back to plain <script> tag.',
+              );
               loadMainDartJs();
             }
-          });
-
-        // If service worker doesn't succeed in a reasonable amount of time,
-        // fallback to plaint <script> tag.
-        setTimeout(() => {
-          if (!scriptLoaded) {
-            console.warn(
-              'Failed to load app from service worker. Falling back to plain <script> tag.',
-            );
-            loadMainDartJs();
-          }
-        }, 4000);
-      });
-    } else {
-      // Service workers not supported. Just drop the <script> tag.
-      loadMainDartJs();
-    }
-  </script>
-</body>
-
+          }, 4000);
+        });
+      } else {
+        // Service workers not supported. Just drop the <script> tag.
+        loadMainDartJs();
+      }
+    </script>
+  </body>
 </html>
