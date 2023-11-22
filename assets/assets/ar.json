@@ -231,5 +231,6 @@
   "content-info": "محتويات العبوة",
   "tech-info": "معلومات تقنية",
   "user_doesnt_exist": "رقم الهاتف غير مسجل من قبل",
-  "user_already_exists": "رقم الهاتف مسجل من قبل"
+  "user_already_exists": "رقم الهاتف مسجل من قبل",
+  "sku": "كود المنتج"
 }
